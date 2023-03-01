@@ -8,9 +8,13 @@ t_data = readtable('seds_1.txt');
 % mu meter
 lambda = data(:,1);
 
+% color vector
+Vcol = jet(12);
+
 figure
 hold on
-plot(lambda,data(:,2:13))
+fig_1 =plot(lambda,data(:,2:13));
+set(fig_1, {'color'}, num2cell(jet(12),2));
 set(gca, 'yScale', 'log')
 set(gca, 'xScale', 'log')
 set(gca, 'XTick', [0.1 0.2 0.3 0.5 0.8 1.2 1.8 2.7 4]);
@@ -61,6 +65,7 @@ L1 = [linspace(UwlAve,UwlAve,12),linspace(VwlAve,VwlAve,12),linspace(JwlAve,JwlA
 figure;
 hold on
 p1 = plot(lambda,data(:,2:13));
+set(p1, {'color'}, num2cell(jet(12),2));
 p2 = scatter(L1(:,1:12),Uave,'filled',MarkerFaceColor=[0 0 0]);
 p3 = scatter(L1(:,13:24),Vave,'filled',MarkerFaceColor=[0 0 1]);
 p4 = scatter(L1(:,25:36),Jave,'filled',MarkerFaceColor=[1 0 0]);
@@ -86,13 +91,13 @@ leg2=legend(ah1,[p2,p3,p4],'U band', 'V band','J band','Location','northeastouts
 % ave mag for each band type
 % First ave wavelength then convert to mag
 
-m_U = 23.9 - 2.3*log10(Uave);
-m_V = 23.9 - 2.3*log10(Vave);
-m_J = 23.9 - 2.3*log10(Jave);
+m_U = 23.9 - 2.5*log10(Uave);
+m_V = 23.9 - 2.5*log10(Vave);
+m_J = 23.9 - 2.5*log10(Jave);
 
 % convert entire data to mag
 
-mag = 23.9 - 2.3*log10(data(:,2:13));
+mag = 23.9 - 2.5*   log10(data(:,2:13));
 
 %%
 
@@ -100,6 +105,7 @@ mag = 23.9 - 2.3*log10(data(:,2:13));
 figure;
 hold on
 p5 = plot(lambda,mag);
+set(p5, {'color'}, num2cell(jet(12),2));
 p6 = scatter(L1(:,1:12),m_U,'filled',MarkerFaceColor=[0 0 0]);
 p7 = scatter(L1(:,13:24),m_V,'filled',MarkerFaceColor=[0 0 1]);
 p8 = scatter(L1(:,25:36),m_J,'filled',MarkerFaceColor=[1 0 0]);
@@ -167,6 +173,7 @@ hold on
 % p3 = scatter(L1(:,13:24),Vave,'filled',MarkerFaceColor=[0 1 0]);
 % p4 = scatter(L1(:,25:36),Jave,'filled',MarkerFaceColor=[0 1 1]);
 p9 = plot(t_data.Var1,data(:,2:13));
+set(p9, {'color'}, num2cell(jet(12),2));
 p10 = scatter(L2(:,1:12),Rave,'filled',MarkerFaceColor=[0 0 0]);
 p11 = scatter(L2(:,13:24),Have,'filled',MarkerFaceColor=[0 0 1]);
 p12 = scatter(L2(:,25:36),Kave,'filled',MarkerFaceColor=[1 0 0]);
@@ -178,9 +185,6 @@ xlabel('Wavelength [\mum]')
 ylabel('Flux [\muJy]')
 title('Flux as a function of wavelength for galaxies at z=1')
 hold off
-
-% ah3=axes('position',get(gca,'position'),'visible','off');
-% leg5=legend(ah3,[p2,p3,p4],'U band', 'V band','J band','Location','northwestoutside');set(leg5,'FontSize',9);
 
 leg6=legend(p9,'G1','G2','G3','G4','G5','G6','G7','G8','G9','G10','G11','G12','Location','best');
 ah4=axes('position',get(gca,'position'),'visible','off');
@@ -253,41 +257,21 @@ hold off
 xv = transpose([0,0.9205,1.6,1.6,0,0]);
 yv = transpose([1.3,1.3,1.8980,2.5,2.5,1.3]);
 
-% xv = [0,1.6,1.6,0,0].';
-% yv = [0,0,2.5,2.5,0].';
-%%
-% [0 0 0.9205 1.6 1.6]
-% [1.3 2.5 1.3 1.8980 2.5]
 P = [xv,yv];
 pgon = polyshape(P,'SolidBoundaryOrientation','ccw' );
 plot(pgon)
 
 TFin = isinterior(pgon,VJ,UV);
 
-%%
-
-% [in,on] = inpolygon(UV,VJ,xv,yv);
-
 numel(VJ(TFin))
 numel(VJ(~TFin))
 
-%%
-
-% Remove nans 
-% xv(isnan(xv)) = [] ;
-% yv(isnan(yv)) = [] ;
-% GEt the boundary 
-idx = boundary(xv,yv) ; 
-xv = xv(idx) ; yv = yv(idx) ; 
-patch(xv,yv,'k')
-
-% hold on
-% plot(VJ,UV,'r+')
-% hold off
 
 %%
 
 % plot VUJ diagram
+
+Mcol =(jet(12));
 
 figure
 plot(xv,yv)
@@ -298,11 +282,24 @@ set(gca, 'XLim', [0 2.5]);
 set(gca, 'YLim', [0 2.5]);
 ylabel('U-V [AB_{mag}]')
 xlabel('V-J [AB_{mag}]')
-% scatter(x1,y1)
-% scatter(x2,y2)
-% plot(VJ,UV,VJ(in),UV(in),'.r',VJ(~in),UV(~in),'.black')
-plot(VJ(TFin),UV(TFin),'b*') % points inside
-plot(VJ(~TFin),UV(~TFin),'r+') % points outside
+title('VUJ diagram')
+legend('G1','G2','G3','G4','G5','G6','G7','G8','G9','G10','G11','G12',Location='best',Orientation='vertical')
+% fig_2 = plot(VJ(TFin),UV(TFin),'*'); % points inside
+% set(fig_2, {'color'}, Mcol(TFin,:));
+% fig_3 = plot(VJ(~TFin),UV(~TFin),'+'); % points outside
+% set(fig_1, {'color'}, Mcol(~TFin,:));
+scatter(VJ(1),UV(1),"MarkerFaceColor",Mcol(1,:));
+scatter(VJ(2),UV(2),"MarkerFaceColor",Mcol(2,:));
+scatter(VJ(3),UV(3),"MarkerFaceColor",Mcol(3,:));
+scatter(VJ(4),UV(4),"MarkerFaceColor",Mcol(4,:));
+scatter(VJ(5),UV(5),"MarkerFaceColor",Mcol(5,:));
+scatter(VJ(6),UV(6),"MarkerFaceColor",Mcol(6,:));
+scatter(VJ(7),UV(7),"MarkerFaceColor",Mcol(7,:));
+scatter(VJ(8),UV(8),"MarkerFaceColor",Mcol(8,:));
+scatter(VJ(9),UV(9),"MarkerFaceColor",Mcol(9,:));
+scatter(VJ(10),UV(10),"MarkerFaceColor",Mcol(10,:));
+scatter(VJ(11),UV(11),"MarkerFaceColor",Mcol(11,:));
+scatter(VJ(12),UV(12),"MarkerFaceColor",Mcol(12,:));
 hold off
 
 

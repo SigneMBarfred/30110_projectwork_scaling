@@ -25,16 +25,23 @@ hdu_list.info()
 # Print column names
 print(hdu_list[1].columns)
 
+
 # Convert data in to an astropy.table - Because it's more convenient
 evt_data = Table(hdu_list[1].data)
 
 # Display table
 evt_data
 
+# Panda table
+
 # Remove noise and unreliable values (-99, >300)
-evt_data = evt_data[evt_data.rebounds != -99]
-m = abs(evt_data) > 300
-evt_data = evt_data(m)
+evt_data = evt_data[evt_data != -99]
+#evt_data.remove_rows([])
+# If statement to remove rows with higher values than 300
+
+
+# m = evt_data > 300
+# evt_data = evt_data(m)
 
 # Defin central wavelength (Cwl) in Ångstrom[Å] from used bands from cosmos2020
 Cwl_CFHT_u = 3709
@@ -71,14 +78,22 @@ Cwl_GALEX_NUV = 2307
 Cwl_F814W = 8333
 
 #lambda = np.array([Cwl_CFHT_u,Cwl_CFHT_ustar,Cwl_HSC_g,Cwl_HSC_r,Cwl_HSC_i,Cwl_HSC_z,Cwl_HSC_y,Cwl_UVISTA_Y,
-#          Cwl_UVISTA_J,Cwl_UVISTA_H,Cwl_UVISTA_Ks,Cwl_SC_IB427,Cwl_SC_IB464,Cwl_SC_IA484,Cwl_SC_IB505,
-#          Cwl_SC_IA527,Cwl_SC_IB574,Cwl_SC_IA624,Cwl_SC_IA679,Cwl_SC_IB709,Cwl_SC_IA738,Cwl_SC_IA767,
-#          Cwl_SC_IB827,Cwl_SC_NB711,Cwl_SC_NB816,Cwl_IRAC_CH1,Cwl_IRAC_CH2,Cwl_SPLASH_CH2,Cwl_SPLASH_CH3,
-#          Cwl_GALEX_FUV,Cwl_GALEX_NUV,Cwl_F814W])
+ #         Cwl_UVISTA_J,Cwl_UVISTA_H,Cwl_UVISTA_Ks,Cwl_SC_IB427,Cwl_SC_IB464,Cwl_SC_IA484,Cwl_SC_IB505,
+ #         Cwl_SC_IA527,Cwl_SC_IB574,Cwl_SC_IA624,Cwl_SC_IA679,Cwl_SC_IB709,Cwl_SC_IA738,Cwl_SC_IA767,
+  #        Cwl_SC_IB827,Cwl_SC_NB711,Cwl_SC_NB816,Cwl_IRAC_CH1,Cwl_IRAC_CH2,Cwl_SPLASH_CH2,Cwl_SPLASH_CH3,
+   #       Cwl_GALEX_FUV,Cwl_GALEX_NUV,Cwl_F814W])
 
 
 #### Plot 1 scatter(wl,flux) of 10 galaxies
-
+  
+a = [1, 3, 5, 7]
+b = [11, -2, 4, 19]
+plt.scatter(a, b)
+  
+c = [1, 3, 2, 1]
+  
+plt.errorbar(a, b, yerr=c, fmt="o")
+plt.show()
 
 
 

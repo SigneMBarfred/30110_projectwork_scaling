@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Mar 10 12:50:55 2023
-
-@author: Nikolaj Lange Dons
+@author: Nikolaj Lange Dons, Rasmus Bruun and Signe Barfred
 """
 
 import numpy as np
@@ -100,10 +99,10 @@ G10_fluxerr = np.array([evt_data['GALEX_FUV_FLUXERR'][1:10],evt_data['GALEX_NUV_
 
 plt.scatter(Lambda, G10_flux[:,0])
 plt.xlim(0,80000)
-plt.ylim(-1,1)
+plt.ylim(-10,10)
 
-#plt.errorbar(Lambda, G10_flux, yerr=G10_fluxerr, fmt="o")
-#plt.show()
+plt.errorbar(Lambda[1:], G10_flux[1:,0], yerr=G10_fluxerr[:,0], fmt="o")
+plt.show()
 
 
 # Create array with flux from bands in order from cosmos2020

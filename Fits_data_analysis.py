@@ -7,45 +7,19 @@ Created on Fri Mar 10 12:50:55 2023
 
 import numpy as np
 from astropy.io import fits
-from astropy.table import Table
-from matplotlib.colors import LogNorm
-
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Set up matplotlib
-import matplotlib.pyplot as plt
-#%matplotlib inline
-
-# Load file
-# open it with memmap=True to prevent RAM storage issues.
 hdu_list = fits.open('COSMOS2020_flux_mag_zphot.fits')
-hdu_list.info()
 
-# Print column names
-print(hdu_list[1].columns)
-
-
-# Convert data in to an astropy.table - Because it's more convenient
 evt_data = hdu_list[1].data
 
-# Display table
-evt_data
-
-# Panda table
 
 # Remove noise and unreliable values (-99, >300)
-evt_data = evt_data[evt_data != -99]
-#evt_data.remove_rows([]
 
 
-# If statement to remove rows with higher values than 300
 
-
-# m = evt_data > 300
-# evt_data = evt_data(m)
-
-# Defin central wavelength (Cwl) in Ångstrom[Å] from used bands from cosmos2020
+# Define central wavelength (Cwl) in Ångstrom[Å] from used bands/filters from cosmos2020
 Cwl_GALEX_FUV = 1526
 Cwl_GALEX_NUV = 2307
 Cwl_CFHT_u = 3709
@@ -85,6 +59,7 @@ Lambda = np.array([Cwl_CFHT_u,Cwl_CFHT_ustar,Cwl_HSC_g,Cwl_HSC_r,Cwl_HSC_i,Cwl_H
           Cwl_SC_IB827,Cwl_SC_NB711,Cwl_SC_NB816,Cwl_IRAC_CH1,Cwl_IRAC_CH2,Cwl_SPLASH_CH2,Cwl_SPLASH_CH3,
           Cwl_GALEX_FUV,Cwl_GALEX_NUV,Cwl_F814W])
 
+#sorts lambda from lowest to highest
 def selection_sort(Lambda):
     for i in range(len(Lambda)):
         swap = i + np.argmin(Lambda[i:])
@@ -92,12 +67,9 @@ def selection_sort(Lambda):
     return Lambda
 Lambda = selection_sort(Lambda)
 
-    
-#### Plot 1 scatter(wl,flux) of 10 galaxies
 
-
-
-G10_flux = np.matrix([evt_data['GALEX_FUV_FLUX'][1:10],evt_data['GALEX_NUV_FLUX'][1:10],evt_data['CFHT_u_FLUX'][1:10],
+#Ændr [1:10] til [0:9] så vi tager første række med
+G10_flux = np.array([evt_data['GALEX_FUV_FLUX'][1:10],evt_data['GALEX_NUV_FLUX'][1:10],evt_data['CFHT_u_FLUX'][1:10],
                      evt_data['CFHT_ustar_FLUX'][1:10],evt_data['SC_IB427_FLUX'][1:10],evt_data['SC_IB464_FLUX'][1:10],
                      evt_data['HSC_g_FLUX'][1:10],evt_data['SC_IA484_FLUX'][1:10],evt_data['SC_IB505_FLUX'][1:10],
                      evt_data['SC_IA527_FLUX'][1:10],evt_data['SC_IB574_FLUX'][1:10],evt_data['HSC_r_FLUX'][1:10],
@@ -109,8 +81,7 @@ G10_flux = np.matrix([evt_data['GALEX_FUV_FLUX'][1:10],evt_data['GALEX_NUV_FLUX'
                      evt_data['UVISTA_Ks_FLUX'][1:10],evt_data['IRAC_CH1_FLUX'][1:10],evt_data['IRAC_CH2_FLUX'][1:10],
                      evt_data['SPLASH_CH2_FLUX'][1:10],evt_data['SPLASH_CH3_FLUX'][1:10]])
 
-
-G10_fluxerr = np.matrix([evt_data['GALEX_FUV_FLUXERR'][1:10],evt_data['GALEX_NUV_MAGERR'][1:10],
+G10_fluxerr = np.array([evt_data['GALEX_FUV_FLUXERR'][1:10],evt_data['GALEX_NUV_MAGERR'][1:10],
                         evt_data['CFHT_u_FLUXERR'][1:10],evt_data['CFHT_ustar_FLUXERR'][1:10],
                         evt_data['SC_IB427_FLUXERR'][1:10],evt_data['SC_IB464_FLUXERR'][1:10],
                         evt_data['HSC_g_FLUXERR'][1:10],evt_data['SC_IA484_FLUXERR'][1:10],
@@ -125,17 +96,18 @@ G10_fluxerr = np.matrix([evt_data['GALEX_FUV_FLUXERR'][1:10],evt_data['GALEX_NUV
                         evt_data['UVISTA_H_FLUXERR'][1:10], evt_data['UVISTA_Ks_FLUXERR'][1:10],
                         evt_data['IRAC_CH1_FLUXERR'][1:10], evt_data['IRAC_CH2_FLUXERR'][1:10],
                         evt_data['SPLASH_CH4_FLUXERR'][1:10], evt_data['SPLASH_CH4_FLUXERR'][1:10]])
-# SPLASH_CH4 Burde nok fjernes der mangler en fluxerr
 
 
-plt.scatter(Lambda, G10_flux)
+plt.scatter(Lambda, G10_flux[:,0])
+plt.xlim(0,80000)
+plt.ylim(-1,1)
 
-plt.errorbar(Lambda, G10_flux, yerr=G10_fluxerr, fmt="o")
-plt.show()
+#plt.errorbar(Lambda, G10_flux, yerr=G10_fluxerr, fmt="o")
+#plt.show()
 
 
 # Create array with flux from bands in order from cosmos2020
-Band_flux = 1
+#Band_flux = 1
 
 # Close FITS file so it won't use up excess memory
 hdu_list.close()

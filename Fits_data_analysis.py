@@ -10,14 +10,14 @@ from astropy.io import fits
 import matplotlib.pyplot as plt
 
 #loading data as recarrays
-hdu = fits.open('COSMOS2020_flux_mag_zphot.fits')
+hdu = fits.open('COSMOS2020_flux_mag.fits')
 data = hdu[1].data
 
 
 # Remove noise and unreliable values
 for colname in data.names:
     data = data[data[colname] >= -98]
-    data = data[data[colname] <= 300]
+    data = data[data[colname] <= 1000]
 
 # Define central wavelength (Cwl) in Ångstrom[Å] from used bands/filters from cosmos2020
 Cwl_GALEX_FUV = 1526
@@ -68,41 +68,39 @@ Lambda = selection_sort(Lambda)
 Lambda = Lambda*10**-4
 
 #matrix with 10 columns of galaxies and 30 rows with filters
-G10_flux = np.array([data['GALEX_FUV_FLUX'][0:9],data['GALEX_NUV_FLUX'][0:9],
-                     data['CFHT_u_FLUX'][0:9],data['CFHT_ustar_FLUX'][0:9],
-                     data['SC_IB427_FLUX'][0:9],data['SC_IB464_FLUX'][0:9],
-                     data['HSC_g_FLUX'][0:9],data['SC_IA484_FLUX'][0:9],
-                     data['SC_IB505_FLUX'][0:9],data['SC_IA527_FLUX'][0:9],
-                     data['SC_IB574_FLUX'][0:9],data['HSC_r_FLUX'][0:9],
-                     data['SC_IA624_FLUX'][0:9],data['SC_IA679_FLUX'][0:9],
-                     data['SC_IB709_FLUX'][0:9],data['SC_NB711_FLUX'][0:9],
-                     data['SC_IA738_FLUX'][0:9],data['SC_IA767_FLUX'][0:9],
-                     data['HSC_i_FLUX'][0:9],data['SC_NB816_FLUX'][0:9],
-                     data['SC_IB827_FLUX'][0:9],data['F814W_FLUX'][0:9],
-                     data['HSC_z_FLUX'][0:9],data['HSC_y_FLUX'][0:9],
-                     data['UVISTA_Y_FLUX'][0:9],data['UVISTA_J_FLUX'][0:9],
-                     data['UVISTA_H_FLUX'][0:9],data['UVISTA_Ks_FLUX'][0:9],
-                     data['IRAC_CH1_FLUX'][0:9],data['IRAC_CH2_FLUX'][0:9]])
+G10_flux = np.array([data['GALEX_FUV_FLUX'],data['GALEX_NUV_FLUX'],
+                     data['CFHT_u_FLUX'],data['CFHT_ustar_FLUX'],
+                     data['SC_IB427_FLUX'],data['SC_IB464_FLUX'],
+                     data['HSC_g_FLUX'],data['SC_IA484_FLUX'],
+                     data['SC_IB505_FLUX'],data['SC_IA527_FLUX'],
+                     data['SC_IB574_FLUX'],data['HSC_r_FLUX'],
+                     data['SC_IA624_FLUX'],data['SC_IA679_FLUX'],
+                     data['SC_IB709_FLUX'],data['SC_NB711_FLUX'],
+                     data['SC_IA738_FLUX'],data['SC_IA767_FLUX'],
+                     data['HSC_i_FLUX'],data['SC_NB816_FLUX'],
+                     data['SC_IB827_FLUX'],data['F814W_FLUX'],
+                     data['HSC_z_FLUX'],data['HSC_y_FLUX'],
+                     data['UVISTA_Y_FLUX'],data['UVISTA_J_FLUX'],
+                     data['UVISTA_H_FLUX'],data['UVISTA_Ks_FLUX'],
+                     data['IRAC_CH1_FLUX'],data['IRAC_CH2_FLUX']])
 
-G10_fluxerr = np.array([data['GALEX_FUV_FLUXERR'][0:9],data['GALEX_NUV_FLUXERR'][0:9],
-                        data['CFHT_u_FLUXERR'][0:9],data['CFHT_ustar_FLUXERR'][0:9],
-                        data['SC_IB427_FLUXERR'][0:9],data['SC_IB464_FLUXERR'][0:9],
-                        data['HSC_g_FLUXERR'][0:9],data['SC_IA484_FLUXERR'][0:9],
-                        data['SC_IB505_FLUXERR'][0:9],data['SC_IA527_FLUXERR'][0:9],
-                        data['SC_IB574_FLUXERR'][0:9],data['HSC_r_FLUXERR'][0:9],
-                        data['SC_IA624_FLUXERR'][0:9],data['SC_IA679_FLUXERR'][0:9],
-                        data['SC_IB709_FLUXERR'][0:9],data['SC_NB711_FLUXERR'][0:9],
-                        data['SC_IA738_FLUXERR'][0:9],data['SC_IA767_FLUXERR'][0:9],
-                        data['HSC_i_FLUXERR'][0:9],data['SC_NB816_FLUXERR'][0:9],
-                        data['SC_IB827_FLUXERR'][0:9],data['F814W_FLUXERR'][0:9],
-                        data['HSC_z_FLUXERR'][0:9],data['HSC_y_FLUXERR'][0:9],
-                        data['UVISTA_Y_FLUXERR'][0:9], data['UVISTA_J_FLUXERR'][0:9],
-                        data['UVISTA_H_FLUXERR'][0:9], data['UVISTA_Ks_FLUXERR'][0:9],
-                        data['IRAC_CH1_FLUXERR'][0:9], data['IRAC_CH2_FLUXERR'][0:9]])
+G10_flux = G10_flux/np.array([data['UVISTA_Ks_FLUX']])
 
-#change units from janskys to W/m^2
-# G10_flux = G10_flux*10**-26
-# G10_fluxerr = G10_fluxerr*10**-26
+G10_fluxerr = np.array([data['GALEX_FUV_FLUXERR'],data['GALEX_NUV_FLUXERR'],
+                        data['CFHT_u_FLUXERR'],data['CFHT_ustar_FLUXERR'],
+                        data['SC_IB427_FLUXERR'],data['SC_IB464_FLUXERR'],
+                        data['HSC_g_FLUXERR'],data['SC_IA484_FLUXERR'],
+                        data['SC_IB505_FLUXERR'],data['SC_IA527_FLUXERR'],
+                        data['SC_IB574_FLUXERR'],data['HSC_r_FLUXERR'],
+                        data['SC_IA624_FLUXERR'],data['SC_IA679_FLUXERR'],
+                        data['SC_IB709_FLUXERR'],data['SC_NB711_FLUXERR'],
+                        data['SC_IA738_FLUXERR'],data['SC_IA767_FLUXERR'],
+                        data['HSC_i_FLUXERR'],data['SC_NB816_FLUXERR'],
+                        data['SC_IB827_FLUXERR'],data['F814W_FLUXERR'],
+                        data['HSC_z_FLUXERR'],data['HSC_y_FLUXERR'],
+                        data['UVISTA_Y_FLUXERR'], data['UVISTA_J_FLUXERR'],
+                        data['UVISTA_H_FLUXERR'], data['UVISTA_Ks_FLUXERR'],
+                        data['IRAC_CH1_FLUXERR'], data['IRAC_CH2_FLUXERR']])
 
 #initialize layout of galaxy 1
 fig, ax = plt.subplots()
@@ -115,7 +113,7 @@ ax.errorbar(Lambda, G10_flux[:,0], yerr = G10_fluxerr[:,0],fmt = "o", alpha = 0.
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlim(10**-1, 10**1)
-ax.set_ylim(10**-1, 10**2)
+ax.set_ylim(10**-6, 10**2)
 ax.set_xlabel("Wavelength (µm)")
 ax.set_ylabel("Flux density (W/m2)")
 ax.set_title("Flux Density against Wavelength of Galaxy 1")
@@ -135,6 +133,22 @@ ax.set_ylim(10**-1, 10**2)
 ax.set_xlabel("Wavelength (µm)")
 ax.set_ylabel("Flux density (W/m2)")
 ax.set_title("Flux Density against Wavelength of Galaxy 2")
+
+#initialize layout of G3
+fig, ax = plt.subplots()
+
+#add scatterplot and error bars of G3
+ax.errorbar(Lambda, G10_flux[:,2], yerr = G10_fluxerr[:,2],fmt = "o", alpha = 0.7,
+            elinewidth = 0.7, capsize = 5, markeredgecolor = "k", markersize = 2)
+
+#set logarithmic scale on the x and y variable
+ax.set_xscale("log")
+ax.set_yscale("log")
+ax.set_xlim(10**-1, 10**1)
+ax.set_ylim(10**-1, 10**2)
+ax.set_xlabel("Wavelength (µm)")
+ax.set_ylabel("Flux density (W/m2)")
+ax.set_title("Flux Density against Wavelength of Galaxy 3")
 
 # Close FITS file so it won't use up excess memory
 hdu.close()

@@ -114,10 +114,9 @@ t = Table([[data[data.names[0]]],[data[data.names[1]]],[data[data.names[2]]],[da
                 [data[data.names[124]]],[data[data.names[125]]],[data[data.names[126]]],
                 [data[data.names[127]]]], names=(data.names))
 
+# Saves changes to new fits
 t.write('table1.fits', format='fits')
 
-# Saves changes to new fits     
-data.writeto('Filtered_hdul')
 
 # Close FITS file so it won't use up excess memory
 hdul.close()

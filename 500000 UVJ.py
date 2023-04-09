@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Mar 29 09:38:48 2023
+Created on Wed Apr  5 00:24:57 2023
 
 @author: Nikolaj Lange Dons
 """
@@ -8,121 +8,110 @@ Created on Wed Mar 29 09:38:48 2023
 import numpy as np
 from astropy.io import fits
 import matplotlib.pyplot as plt
-from astropy.table import Table
 
 #loading data as recarrays
-hdu = fits.open('filtered_SED.fits')
+hdu = fits.open('filtered_SED.fits',memmap=True)
 data = hdu[1].data
-t = Table.read('filtered_SED.fits', format='fits',memmap=True)
 
-#defines UV and VJ
-UV = np.transpose(data['restU']) - np.transpose(data['restV'])
-VJ = np.transpose(data['restV']) - np.transpose(data['restJ'])
+selection_all = np.logical_and((data['z_phot'] > 0), (data['z_phot'] < 4), (data['CFHT_u_MAG'] < 50))
 
-UV = UV.reshape(511006)
-VJ = VJ.reshape(511006)
+U = 23.9 - 2.5*np.log10(data['restU'][0,:])
+V = 23.9 - 2.5*np.log10(data['restV'][0,:])
+J = 23.9 - 2.5*np.log10(data['restJ'][0,:])
+mass = data['mass'][0,:]
 
-UV = np.float64(UV)
-VJ = np.float64(VJ)
+UV = U[selection_all[0,:]] - V[selection_all[0,:]]
+VJ = V[selection_all[0,:]] - J[selection_all[0,:]]
 
-# UVJ diagram for all galaxies
-fig, ax = plt.subplots(figsize=(4, 4))
-h = ax.hexbin(VJ, UV, gridsize = 100, cmap = "inferno", vmax = 1000)
-cb = fig.colorbar(h, ax=ax)
-cb = cb.set_label('counts')
-ax.set_xlim(-5, 5)
-ax.set_ylim(-5, 5)
-ax.set_xlabel("V - J (AB mag)")
-ax.set_ylabel("U - V (AB mag)")
-ax.set_title("UVJ diagram")
+UV.reshape(476363)
+VJ.reshape(476363)
 
-"""
-# Divide in to catogories
-cat1_mask = np.logical_and(t['z_phot'] > 0.1, t['z_phot'] < 0.3)
-cat1_index = [i for i, x in enumerate(cat1_mask[0,:]) if x]
-cat1_restU = np.transpose(t['restU'][cat1_mask])
-cat1_restV = np.transpose(t['restV'][cat1_mask])
-cat1_restJ = np.transpose(t['restJ'][cat1_mask])
+test0 = "%d galaxies"
+int0 = len(UV)
+print(test0%int0)
 
-cat2_mask = np.logical_and(t['z_phot'] > 0.9, t['z_phot'] < 1.1)
-cat2_index = [i for i, x in enumerate(cat2_mask[0,:]) if x]
-cat2_restU = np.transpose(t['restU'][cat2_mask])
-cat2_restV = np.transpose(t['restV'][cat2_mask])
-cat2_restJ = np.transpose(t['restJ'][cat2_mask])
+######################
 
-cat3_mask = np.logical_and(t['z_phot'] > 1.9, t['z_phot'] < 2.1)
-cat3_index = [i for i, x in enumerate(cat3_mask[0,:]) if x]
-cat3_restU = np.transpose(t['restU'][cat3_mask])
-cat3_restV = np.transpose(t['restV'][cat3_mask])
-cat3_restJ = np.transpose(t['restJ'][cat3_mask])
+# UVJ diagram for galaxies at all redshifts
 
-# Create UV and VJ arrays
-UVcat1 = cat1_restU - cat1_restV
-VJcat1 = cat1_restV - cat1_restJ
-UVcat2 = cat2_restU - cat2_restV
-VJcat2 = cat2_restV - cat2_restJ
-UVcat3 = cat3_restU - cat3_restV
-VJcat3 = cat3_restV - cat3_restJ
+fig0, ax = plt.subplots(figsize = (8, 6))
+hb0 = ax.hexbin(VJ, UV, vmax = 3000, cmap = "hot", gridsize = (173,100), mincnt = 0)
+cb0 = fig0.colorbar(hb0, ax = ax)
+cb0.set_label("Number of galaxies")
+ax.set_xlim(0,2.5)
+ax.set_ylim(0,2.5)
+ax.set_xlabel("V - J [AB mag]", fontsize=12)
+ax.set_ylabel("U - V [AB mag]", fontsize=12)
+ax.set_title("UVJ diagram for galaxies at all redshifts", fontsize=18)
 
-# sf boundary
-
-cat1UVVJ = 0.88 * VJcat1 + 0.69
-
-cat1_col = np.array([[-2.5*np.log10(t['CFHT_u_MAG'][cat1_mask]/t['SC_IB574_MAG'][cat1_mask])],
-         [-2.5*np.log10(t['SC_IB574_MAG'][cat1_mask]/t['UVISTA_J_MAG'][cat1_mask])]])
-
-
+######################
 
 # UVJ diagram for cat1
-fig, ax = plt.subplots(figsize=(4,4))
-ax.set_box_aspect(1)
-ax.set_title("UVJ diagram for 0.1 < z > 0.3") #defines the title
-ax.set_xlabel("V - J (AB mag)") #defines x-axis label
-ax.set_ylabel("U - V (AB mag)") #defines y-axis label
-ax.text(0.05,0.95,'Quiescent',ha='left',va='top',transform=ax.transAxes,fontsize=10)
-hb = ax.hexbin(VJcat1, UVcat1, gridsize=80, cmap='inferno') #adds the points to the plot
-cb = fig.colorbar(hb, ax=ax)
-cb.set_label('counts')
-ax.plot([-0.5, 0.693], [1.3, 1.3], color = "r") #draws the horizontal line
-ax.plot([1.6, 1.6], [2.1, 4], color = "r") #draws the vertical line
-ax.plot([0.693, 1.6], [1.3, 2.098], color = "r") #draws the tilted line
-ax.set_xlim(0,4) #defines range of x-axis
-ax.set_ylim(-0.5,3.5) #defines range of y-axis
+# 0.1 < z < 0.3
+
+selection_cat1 = np.logical_and((data['z_phot'] > 0.1), (data['z_phot'] < 0.3), (data['CFHT_u_MAG'] < 50))
+
+UV_cat1 = U[selection_cat1[0,:]] - V[selection_cat1[0,:]]
+VJ_cat1 = V[selection_cat1[0,:]] - J[selection_cat1[0,:]]
+
+fig1, ax = plt.subplots(figsize = (8, 6))
+hb1 = ax.hexbin(VJ_cat1, UV_cat1, vmax = 50, cmap = "hot", gridsize = (173,100), mincnt = 0)
+cb1 = fig1.colorbar(hb1, ax = ax)
+cb1.set_label("Number of galaxies")
+ax.plot([-4, 0.693], [1.3, 1.3], color = "g", lw = 5) #draws the horizontal line
+ax.plot([1.6, 1.6], [2.098, 4], color = "g", lw = 5) #draws the vertical line
+ax.plot([0.693, 1.6], [1.3, 2.098], color = "g", lw = 5) #draws the tilted line
+ax.set_xlim(0,2.5)
+ax.set_ylim(0,2.5)
+ax.set_xlabel("V - J [AB mag]", fontsize=12)
+ax.set_ylabel("U - V [AB mag]", fontsize=12)
+ax.set_title("UVJ diagram for 0.1 < z < 0.3", fontsize=18)
+
+######################
 
 # UVJ diagram for cat2
-fig, ax = plt.subplots(figsize=(4,4))
-ax.set_box_aspect(1)
-ax.set_title("UVJ diagram for 0.9 < z > 1.1") #defines the title
-ax.set_xlabel("V - J (AB mag)") #defines x-axis label
-ax.set_ylabel("U - V (AB mag)") #defines y-axis label
-ax.text(0.05,0.95,'Quiescent',ha='left',va='top',transform=ax.transAxes,fontsize=10)
-hb = ax.hexbin(VJcat2, UVcat2, gridsize=80, cmap='inferno') #adds the points to the plot
-cb = fig.colorbar(hb, ax=ax)
-cb.set_label('counts')
-ax.plot([-0.5, 0.693], [1.3, 1.3], color = "r") #draws the horizontal line
-ax.plot([1.6, 1.6], [2.1, 4], color = "r") #draws the vertical line
-ax.plot([0.693, 1.6], [1.3, 2.098], color = "r") #draws the tilted line
-ax.set_xlim(0,4) #defines range of x-axis
-ax.set_ylim(-0.5,3.5) #defines range of y-axis
+# 0.9 < z < 1.1
 
+selection_cat2 = np.logical_and((data['z_phot'] > 0.9), (data['z_phot'] < 1.1), (data['CFHT_u_MAG'] < 50))
+
+UV_cat2 = U[selection_cat2[0,:]] - V[selection_cat2[0,:]]
+VJ_cat2 = V[selection_cat2[0,:]] - J[selection_cat2[0,:]]
+
+fig2, ax = plt.subplots(figsize = (8, 6))
+hb2 = ax.hexbin(VJ_cat2, UV_cat2, vmax = 50, cmap = "hot", gridsize = (173,100), mincnt = 0)
+cb2 = fig2.colorbar(hb2, ax = ax)
+cb2.set_label("Number of galaxies")
+ax.plot([-4.0, 0.81], [1.3, 1.3], color = "g", lw = 5) #draws the horizontal line
+ax.plot([1.6, 1.6], [2.0, 4], color = "g", lw = 5) #draws the vertical line
+ax.plot([0.81, 1.6], [1.3, 2.0], color = "g", lw = 5) #draws the tilted line
+ax.set_xlim(0,2.5)
+ax.set_ylim(0,2.5)
+ax.set_xlabel("V - J [AB mag]", fontsize=12)
+ax.set_ylabel("U - V [AB mag]", fontsize=12)
+ax.set_title("UVJ diagram for 0.9 < z < 1.1", fontsize=18)
+
+######################
 
 # UVJ diagram for cat3
-fig, ax = plt.subplots(figsize=(4,4))
-ax.set_box_aspect(1)
-ax.set_title("UVJ diagram for 1.9 < z > 2.1") #defines the title
-ax.set_xlabel("V - J (AB mag)") #defines x-axis label
-ax.set_ylabel("U - V (AB mag)") #defines y-axis label
-ax.text(0.05,0.95,'Quiescent',ha='left',va='top',transform=ax.transAxes,fontsize=10)
-hb = ax.hexbin(VJcat2, UVcat2, gridsize=80, cmap='inferno') #adds the points to the plot
-cb = fig.colorbar(hb, ax=ax)
-cb.set_label('counts')
-ax.plot([-0.5, 0.693], [1.3, 1.3], color = "r") #draws the horizontal line
-ax.plot([1.6, 1.6], [2.1, 4], color = "r") #draws the vertical line
-ax.plot([0.693, 1.6], [1.3, 2.098], color = "r") #draws the tilted line
-ax.set_xlim(0,4) #defines range of x-axis
-ax.set_ylim(-0.5,3.5) #defines range of y-axis
+# 1.9 < z < 2.1
 
-"""
+selection_cat3 = np.logical_and((data['z_phot'] > 1.9), (data['z_phot'] < 2.1), (data['CFHT_u_MAG'] < 50))
+
+UV_cat3 = U[selection_cat3[0,:]] - V[selection_cat3[0,:]]
+VJ_cat3 = V[selection_cat3[0,:]] - J[selection_cat3[0,:]]
+
+fig3, ax = plt.subplots(figsize = (8, 6))
+hb3 = ax.hexbin(VJ_cat3, UV_cat3, vmax = 50, cmap = "hot", gridsize = (173,100), mincnt = 0)
+cb3 = fig3.colorbar(hb3, ax = ax)
+cb3.set_label("Number of galaxies")
+ax.plot([-4.0, 0.92], [1.3, 1.3], color = "g", lw = 5) #draws the horizontal line
+ax.plot([1.6, 1.6], [1.9, 4], color = "g", lw = 5) #draws the vertical line
+ax.plot([0.92, 1.6], [1.3, 1.9], color = "g", lw = 5) #draws the tilted line
+ax.set_xlim(0,2.5)
+ax.set_ylim(0,2.5)
+ax.set_xlabel("V - J [AB mag]", fontsize=12)
+ax.set_ylabel("U - V [AB mag]", fontsize=12)
+ax.set_title("UVJ diagram for 1.9 < z < 2.1", fontsize=18)
 
 # Close FITS file so it won't use up excess memory
 hdu.close()

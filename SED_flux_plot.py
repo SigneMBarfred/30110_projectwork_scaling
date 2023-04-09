@@ -20,6 +20,28 @@ os.chdir('C://Users//Nikolaj Lange Dons/OneDrive - Danmarks Tekniske Universitet
 hdu = fits.open('filtered_SED.fits',memmap=True)
 data = hdu[1].data
 
+Uband = np.genfromtxt('CFHT_CFH12k.B.dat') #skip_header=1, skip_footer=1, names=True, dtype=None, delimiter=' '
+Vband = np.genfromtxt('CFHT_CFH12k.R.dat')
+Jband = np.genfromtxt('2MASS_2MASS.J.dat')
+
+Uband[:,1] = 10**Uband[:,1]
+Vband[:,1] = 10**Vband[:,1]
+Jband[:,1] = 10**Jband[:,1]
+
+flux_min = 3*10**-2;
+Uband_max = np.max(Uband[:,1]);
+Vband_max = np.max(Vband[:,1]);
+Jband_max = np.max(Jband[:,1]);
+
+Uband[:,1] = Uband[:,1] / Uband_max #Normalize
+Vband[:,1] = Vband[:,1] / Vband_max
+Jband[:,1] = Jband[:,1] / Jband_max
+
+# Match wl to correct microns
+Uband[:,0] = Uband[:,0]/10000
+Vband[:,0] = Vband[:,0]/10000
+Jband[:,0] = Jband[:,0]/10000
+
 # Define central wavelength (Cwl) in Ångstrom[Å] from used bands/filters from cosmos2020
 Cwl_GALEX_NUV = 2307
 Cwl_CFHT_u = 3709
@@ -55,6 +77,13 @@ Lambda = np.array([Cwl_CFHT_u,Cwl_CFHT_ustar,Cwl_HSC_g,Cwl_HSC_r,Cwl_HSC_i,Cwl_H
           Cwl_SC_IA527,Cwl_SC_IB574,Cwl_SC_IA624,Cwl_SC_IA679,Cwl_SC_IB709,Cwl_SC_IA738,Cwl_SC_IA767,
           Cwl_SC_IB827,Cwl_SC_NB711,Cwl_SC_NB816,Cwl_IRAC_CH1,Cwl_IRAC_CH2,Cwl_GALEX_NUV])
 
+def selection_sort(Lambda):
+    for i in range(len(Lambda)):
+        swap = i + np.argmin(Lambda[i:])
+        (Lambda[i], Lambda[swap]) = (Lambda[swap], Lambda[i])
+    return Lambda
+Lambda = selection_sort(Lambda)
+
 #converts lambda from ångstrøm to micrometer
 Lambda = Lambda*10**-4
 
@@ -76,7 +105,7 @@ Gflux = np.array([data['GALEX_NUV_FLUX'],data['CFHT_u_FLUX'],
 Gflux.reshape(28, 511006)
 
 # Normalize around Ks_filter
-Gflux = Gflux/np.array([data['UVISTA_Ks_FLUX']])
+Gflux = Gflux/data['UVISTA_Ks_FLUX']
 
 # Do the same for flux_err
 Gfluxerr = np.array([data['GALEX_NUV_FLUXERR'],data['CFHT_u_FLUXERR'],
@@ -95,6 +124,9 @@ Gfluxerr = np.array([data['GALEX_NUV_FLUXERR'],data['CFHT_u_FLUXERR'],
                         data['IRAC_CH1_FLUXERR'], data['IRAC_CH2_FLUXERR']])
 Gfluxerr.reshape(28, 511006)
 
+Gfluxerr = Gfluxerr/data['UVISTA_Ks_FLUX']
+
+
 #initialize layout of plot1 containing 3 galaxies [red, yellow, blue]
 fig1, ax = plt.subplots()
 
@@ -110,15 +142,21 @@ G2 = ax.errorbar(Lambda, Gflux[:,0,1], yerr = Gfluxerr[:,0,1],fmt = "o", alpha =
 G3 = ax.errorbar(Lambda, Gflux[:,0,2], yerr = Gfluxerr[:,0,2],fmt = "o", alpha = 0.7,
             elinewidth = 0.7, capsize = 5, markeredgecolor = "b", markersize = 2)
 
+# Add Uband, Vband and Jband 
+U1 = ax.plot(Uband[:,0],Uband[:,1]*flux_min, 'b', alpha = 0.5, label="Uband")
+V1 = ax.plot(Vband[:,0],Vband[:,1]*flux_min, 'k', alpha = 0.5, label="V band")
+J1 = ax.plot(Jband[:,0],Jband[:,1]*flux_min, 'r', alpha = 0.5, label="J band")
+plt.legend(handles=[Uband])
+
 #set logarithmic scale on the x and y variable
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlim(10**-1, 10**1)
-ax.set_ylim(10**-6, 10**2)
+ax.set_ylim(10**-2, 10**1)
 ax.set_xlabel("Wavelength (µm)")
 ax.set_ylabel("Flux density")
-ax.legend((G1, G2, G3),
-           ('Galaxy 1', 'Galaxy 2', 'Galaxy 3'),
+ax.legend((G1, G2, G3, U1, V1, J1),
+           ('Galaxy 1', 'Galaxy 2', 'Galaxy 3', 'U band', 'V band', 'J band'),
            scatterpoints=1,
            loc='lower right',
            ncol=1,
@@ -147,15 +185,20 @@ G5 = ax.errorbar(Lambda, Gflux_cat1[:,4], yerr = Gfluxerr_cat1[:,4],fmt = "o", a
 G6 = ax.errorbar(Lambda, Gflux_cat1[:,5], yerr = Gfluxerr_cat1[:,5],fmt = "o", alpha = 0.7,
             elinewidth = 0.7, capsize = 5, markeredgecolor = "b", markersize = 2)
 
+# Add Uband, Vband and Jband 
+U2 = ax.plot(Uband[:,0],Uband[:,1]*flux_min, 'b', alpha = 0.5)
+V2 = ax.plot(Vband[:,0],Vband[:,1]*flux_min, 'k', alpha = 0.5)
+J2 = ax.plot(Jband[:,0],Jband[:,1]*flux_min, 'r', alpha = 0.5)
+
 #set logarithmic scale on the x and y variable
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlim(10**-1, 10**1)
-ax.set_ylim(10**-6, 10**2)
+ax.set_ylim(10**-2, 10**1)
 ax.set_xlabel("Wavelength (µm)")
 ax.set_ylabel("Flux density")
-ax.legend((G4, G5, G6),
-           ('Galaxy 4', 'Galaxy 5', 'Galaxy 6'),
+ax.legend((G4, G5, G6, U2, V2, J2),
+           ('Galaxy 4', 'Galaxy 5', 'Galaxy 6', 'U band', 'V band', 'J band'),
            scatterpoints=1,
            loc='lower right',
            ncol=1,
@@ -184,15 +227,20 @@ G8 = ax.errorbar(Lambda, Gflux_cat2[:,7], yerr = Gfluxerr_cat2[:,7],fmt = "o", a
 G9 = ax.errorbar(Lambda, Gflux_cat2[:,8], yerr = Gfluxerr_cat2[:,8],fmt = "o", alpha = 0.7,
             elinewidth = 0.7, capsize = 5, markeredgecolor = "b", markersize = 2)
 
+# Add Uband, Vband and Jband 
+U3 = ax.plot(Uband[:,0],Uband[:,1]*flux_min, 'b', alpha = 0.5)
+V3 = ax.plot(Vband[:,0],Vband[:,1]*flux_min, 'k', alpha = 0.5)
+J3 = ax.plot(Jband[:,0],Jband[:,1]*flux_min, 'r', alpha = 0.5)
+
 #set logarithmic scale on the x and y variable
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlim(10**-1, 10**1)
-ax.set_ylim(10**-6, 10**2)
+ax.set_ylim(10**-2, 10**1)
 ax.set_xlabel("Wavelength (µm)")
 ax.set_ylabel("Flux density")
-ax.legend((G7, G8, G9),
-           ('Galaxy 7', 'Galaxy 8', 'Galaxy 9'),
+ax.legend((G7, G8, G9, U3, V3, J3),
+           ('Galaxy 7', 'Galaxy 8', 'Galaxy 9', 'U band', 'V band', 'J band'),
            scatterpoints=1,
            loc='lower right',
            ncol=1,
@@ -221,15 +269,20 @@ G11 = ax.errorbar(Lambda, Gflux_cat3[:,10], yerr = Gfluxerr_cat3[:,10],fmt = "o"
 G12 = ax.errorbar(Lambda, Gflux_cat3[:,11], yerr = Gfluxerr_cat3[:,11],fmt = "o", alpha = 0.7,
             elinewidth = 0.7, capsize = 5, markeredgecolor = "b", markersize = 2)
 
+# Add Uband, Vband and Jband 
+U4 = ax.plot(Uband[:,0],Uband[:,1]*flux_min, 'b', alpha = 0.5)
+V4 = ax.plot(Vband[:,0],Vband[:,1]*flux_min, 'k', alpha = 0.5)
+J4 = ax.plot(Jband[:,0],Jband[:,1]*flux_min, 'r', alpha = 0.5)
+
 #set logarithmic scale on the x and y variable
 ax.set_xscale("log")
 ax.set_yscale("log")
 ax.set_xlim(10**-1, 10**1)
-ax.set_ylim(10**-6, 10**2)
+ax.set_ylim(10**-2, 10**1)
 ax.set_xlabel("Wavelength (µm)")
 ax.set_ylabel("Flux density")
-ax.legend((G10, G11, G12),
-           ('Galaxy 10', 'Galaxy 11', 'Galaxy 12'),
+ax.legend((G10, G11, G12, U4, V4, J4),
+           ('Galaxy 10', 'Galaxy 11', 'Galaxy 12', 'U band', 'V band', 'J band'),
            scatterpoints=1,
            loc='lower right',
            ncol=1,

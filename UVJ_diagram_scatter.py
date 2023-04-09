@@ -22,9 +22,9 @@ data = hdu[1].data
 
 selection_all = np.logical_and((data['z_phot'] > 0), (data['z_phot'] < 4), (data['CFHT_u_MAG'] < 50))
 
-U = data['restU'][0,:]
-V = data['restV'][0,:]
-J = data['restJ'][0,:]
+U = 23.9 - 2.5*np.log10(data['restU'][0,:])
+V = 23.9 - 2.5*np.log10(data['restV'][0,:])
+J = 23.9 - 2.5*np.log10(data['restJ'][0,:])
 sfr = data['sfr'][0,:]
 mass = data['mass'][0,:]
 
@@ -32,6 +32,7 @@ UV = U[selection_all[0,:]] - V[selection_all[0,:]]
 VJ = V[selection_all[0,:]] - J[selection_all[0,:]]
 sfr_sel = sfr[selection_all[0,:]]
 
+# Kan ikke huske hvad dette er - ups :)
 ssfr = np.log10(sfr[selection_all[0,:]])- mass[selection_all[0,:]]+9.
 
 UV.reshape(476363)
@@ -46,8 +47,8 @@ fig0 , ax = plt.subplots(figsize=(8,6))
 hb0 = ax.scatter(VJ, UV, c=sfr_sel, vmin=0,vmax=20,cmap='jet',alpha=0.4)
 cbar0 = fig0.colorbar(hb0, ax=ax ) # Adds a colorbar
 cbar0.set_label('counts',rotation=270,labelpad=20, fontsize=12)
-plt.xlim(-4,3)
-plt.ylim(-4,3)
+plt.xlim(-7.5,7.5)
+plt.ylim(-5,7.5)
 plt.xlabel('V - J [AB mag]',fontsize=12)
 plt.ylabel('U - V [AB mag]',fontsize=12)
 plt.title('UVJ diagram', fontsize=18)
@@ -71,8 +72,8 @@ cbar1.set_label('counts',rotation=270,labelpad=20, fontsize=12)
 ax.plot([-4, 0.693], [1.3, 1.3], color = "r") #draws the horizontal line
 ax.plot([1.6, 1.6], [2.098, 4], color = "r") #draws the vertical line
 ax.plot([0.693, 1.6], [1.3, 2.098], color = "r") #draws the tilted line
-ax.set_xlim(-4,3)
-ax.set_ylim(-4,3)
+ax.set_xlim(-2,4)
+ax.set_ylim(-2,4)
 ax.set_xlabel("V - J [AB mag]", fontsize=12)
 ax.set_ylabel("U - V [AB mag]", fontsize=12)
 ax.set_title("UVJ diagram for 0.1 < z < 0.3", fontsize=18)
@@ -88,17 +89,6 @@ UV_cat2 = U[selection_cat2[0,:]] - V[selection_cat2[0,:]]
 VJ_cat2 = V[selection_cat2[0,:]] - J[selection_cat2[0,:]]
 sfr_cat2 = sfr[selection_cat2[0,:]]
 
-# P3 = plt.figure(3)
-# plt.scatter(VJ_cat2, UV_cat2, c=sfr_cat2, vmin=0,vmax=20,cmap='jet',alpha=0.4)
-# cbar3 = plt.colorbar() # Adds a colorbar
-# cbar3.set_label('counts',rotation=270,labelpad=20)
-# plt.xlim(-4,3)
-# plt.ylim(-4,3)
-# plt.xlabel('V-J')
-# plt.ylabel('U-V')
-# plt.title('UVJ diagram for 0.9 < z < 1.1')
-# P3.show()
-
 fig2, ax = plt.subplots(figsize=(8,6))
 hb2 = ax.scatter(VJ_cat2, UV_cat2, c=sfr_cat2, vmin=0,vmax=20,cmap='jet',alpha=0.4)
 ax.text(0.05,0.95,'Quiescent',ha='left',va='top',transform=ax.transAxes,fontsize=14)
@@ -107,8 +97,8 @@ cbar2.set_label('counts',rotation=270,labelpad=20, fontsize=12)
 ax.plot([-4.0, 0.81], [1.3, 1.3], color = "r") #draws the horizontal line
 ax.plot([1.6, 1.6], [2.0, 4], color = "r") #draws the vertical line
 ax.plot([0.81, 1.6], [1.3, 2.0], color = "r") #draws the tilted line
-ax.set_xlim(-4,3)
-ax.set_ylim(-4,3)
+ax.set_xlim(-4,4)
+ax.set_ylim(-2,4)
 ax.set_xlabel("V - J [AB mag]", fontsize=12)
 ax.set_ylabel("U - V [AB mag]", fontsize=12)
 ax.set_title("UVJ diagram for 0.9 < z < 1.1", fontsize=18)
@@ -132,8 +122,8 @@ cbar3.set_label('counts',rotation=270,labelpad=20, fontsize=12)
 ax.plot([-4.0, 0.92], [1.3, 1.3], color = "r") #draws the horizontal line
 ax.plot([1.6, 1.6], [1.9, 4], color = "r") #draws the vertical line
 ax.plot([0.92, 1.6], [1.3, 1.9], color = "r") #draws the tilted line
-ax.set_xlim(-4,3)
-ax.set_ylim(-4,3)
+ax.set_xlim(-4,5)
+ax.set_ylim(-2,4)
 ax.set_xlabel("V - J [AB mag]", fontsize=12)
 ax.set_ylabel("U - V [AB mag]", fontsize=12)
 ax.set_title("UVJ diagram for 1.9 < z < 2.1", fontsize=18)

@@ -56,9 +56,9 @@ ylabel('Flux [\muJy]')
 title('Flux as a function of wavelength')
 plot(CFHT1(:,1),CFHT1(:,2).*flux_min)
 plot(CFHT2(:,1),CFHT2(:,2).*flux_min)
-plot(Subaru(:,1),Subaru(:,2).*flux_min)
+% plot(Subaru(:,1),Subaru(:,2).*flux_min) % False J band
 plot(NewJband(:,1),NewJband(:,2).*flux_min)
-legend('G1','G2','G3','G4','G5','G6','G7','G8','G9','G10','G11','G12','U-filter','V-filter','J-filter','New J',Location='southeastoutside',Orientation='vertical')
+legend('G1','G2','G3','G4','G5','G6','G7','G8','G9','G10','G11','G12','U-filter','V-filter','J-filter','New J',Location='southeast',Orientation='vertical')
 
 hold off
 
@@ -69,7 +69,7 @@ hold off
 % Averaging over U, V og J band
 
 % U - Ultraviolet
-U_c = 0.3709; U_w = 0.0518/2;
+U_c = 0.3750; U_w = 0.0200/2; % New U_c and U_w used from Magdis (3/9)
 U = table2array(varfun(@(x)((x>=(U_c-U_w)) & (x<=(U_c+U_w))), t_data(:,1)));      % Logical Vector
 U_band = data(U,2:13);
 
@@ -142,18 +142,19 @@ set(gca, 'yScale', 'log')
 set(gca, 'xScale', 'log')
 set(gca, 'XTick', [0.1 0.2 0.3 0.5 0.8 1.2 1.8 2.7 4]);
 set(gca, 'XLim', [0 5]);
+set(gca, 'YLim', [0 100]);
 xlabel('Wavelength [\mum]')
 ylabel('Flux [\muJy]')
 title('Flux as a function of wavelength')
 plot(CFHT1(:,1),CFHT1(:,2).*flux_min,'Color',[0 0 0])
 plot(CFHT2(:,1),CFHT2(:,2).*flux_min,'Color','b')
-plot(Subaru(:,1),Subaru(:,2).*flux_min,'Color','r')
+% plot(Subaru(:,1),Subaru(:,2).*flux_min,'Color','r')  % False J band
 plot(NewJband(:,1),NewJband(:,2).*flux_min,'Color','r')
 hold off
 
-leg1=legend(p1,'G1','G2','G3','G4','G5','G6','G7','G8','G9','G10','G11','G12','Location','southeastoutside');
+leg1=legend(p1,'G1','G2','G3','G4','G5','G6','G7','G8','G9','G10','G11','G12','Location','southeast');
 ah1=axes('position',get(gca,'position'),'visible','off');
-leg2=legend(ah1,[p2,p3,p4],'U band', 'V band','J band','Location','northeastoutside');set(leg2,'FontSize',9);
+leg2=legend(ah1,[p2,p3,p4],'U band', 'V band','J band','Location','northeast');set(leg2,'FontSize',9);
 
 % saveas(f2,'Flux_wl_aveUVJ','fig');
 
@@ -187,14 +188,14 @@ p8 = scatter(L1(:,25:36),m_J,'filled',MarkerFaceColor=[1 0 0]);
 set(gca, 'xScale', 'log')
 set(gca, 'YDir','reverse')
 set(gca, 'XTick', [0.1 0.2 0.3 0.5 0.8 1.2 1.8 2.7 4]);
-set(gca, 'XLim', [0.3 0.8]);
+set(gca, 'XLim', [0 5]);
 set(gca, 'YLim', [18 40]);
 xlabel('Wavelength [\mum]')
 ylabel('AB magnitude')
 title('AB magnitude as a function of wavelength')
 plot(CFHT1(:,1),(23.9 - 2.5*log10(CFHT1(:,2)))+mag_max,'Color',[0 0 0])
 plot(CFHT2(:,1),(23.9 - 2.5*log10(CFHT2(:,2)))+mag_max,'Color','b')
-plot(Subaru(:,1),(23.9 - 2.5*log10(Subaru(:,2)))+mag_max,'Color','r')
+% plot(Subaru(:,1),(23.9 - 2.5*log10(Subaru(:,2)))+mag_max,'Color','r') % False J band
 plot(NewJband(:,1),(23.9 - 2.5*log10(NewJband(:,2)))+mag_max,'Color','r')
 hold off
 
@@ -264,6 +265,10 @@ set(gca, 'XLim', [0 5]);
 xlabel('Wavelength [\mum]')
 ylabel('Flux [\muJy]')
 title('Flux as a function of wavelength for galaxies at z=1')
+plot(CFHT1(:,1),CFHT1(:,2).*flux_min,'Color',[0 0 0])
+plot(CFHT2(:,1),CFHT2(:,2).*flux_min,'Color','b')
+% plot(Subaru(:,1),Subaru(:,2).*flux_min,'Color','r')  % False J band
+plot(NewJband(:,1),NewJband(:,2).*flux_min,'Color','r')
 hold off
 
 leg6=legend(p9,'G1','G2','G3','G4','G5','G6','G7','G8','G9','G10','G11','G12','Location','best');
@@ -284,15 +289,15 @@ nUV = UV > 1.3;
 %eq2 VJ
 nVJ = VJ < 1.6;
 %eq3
-UVVJ = 0.88 * VJ+0.69;
+UVVJ = 0.88 * VJ+0.59;
 
-%%
-% figure
-% hold on
-% plot(sort(VJ),sort(UVVJ))
-% plot([0 0.58 1],[1.3 1.3 1.3])
-% plot([1.6,1.6],[0,2.5])
-% hold off
+%
+figure
+hold on
+plot(sort(VJ),sort(UVVJ))
+plot([0 0.58 1],[1.3 1.3 1.3])
+plot([1.6,1.6],[0,2.5])
+hold off
 
 
 %%
@@ -375,5 +380,4 @@ legend([scat1,scat2,scat3,scat4,scat5,scat6,scat7,scat8,scat9,scat10, ...
     scat11,scat12],'G1','G2','G3','G4','G5','G6','G7','G8','G9','G10', ...
     'G11','G12',Location='best',Orientation='vertical')
 hold off
-
 

@@ -15,6 +15,7 @@ Created on Wed Apr  5 00:24:57 2023
 import numpy as np
 from astropy.io import fits
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
 
 #loading data as recarrays
 hdu = fits.open('filtered_SED.fits',memmap=True)
@@ -408,43 +409,186 @@ VJcat3 = V[idcat3[0,:]] - J[idcat3[0,:]]
 UVcat4 = U[idcat4[0,:]] - V[idcat4[0,:]]
 VJcat4 = V[idcat4[0,:]] - J[idcat4[0,:]]
 
-figure, ax = plt.subplots(2, 2, sharex=(True), sharey=(True), figsize=(10,10) )
+figure, ax = plt.subplots(2, 2, sharex=(True), sharey=(True), figsize=(12,10) )
+plt.tight_layout()
 
 # cat1
-hb1 = ax[0,0].hexbin(VJcat1, UVcat1, vmax = 50, cmap = "binary", mincnt = 0)
-# cb1 = figure.colorbar(hb1, ax = ax)
-# cb1.set_label("Number of galaxies")
+hb1 = ax[0,0].hexbin(VJcat1, UVcat1, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+cb1 = figure.colorbar(hb1, ax = ax)
+cb1.set_label("Number of galaxies", fontsize=15)
 ax[0,0].set_xlim(0,2.5)
 ax[0,0].set_ylim(0,2.5)
-ax[0,0].set_xlabel("VJ", fontsize=10)
-ax[0,0].set_ylabel("UV", fontsize=10)
-ax[0,0].set_title("0 < z < 0.5", fontsize=14)
+ax[0,0].set_ylabel("UV", fontsize=12)
+ax[0,0].text(0.25,0.925,"0 < z < 0.5",ha='right',va='bottom',transform=ax[0,0].transAxes,fontsize=12)
 
 # cat2
-hb2 = ax[0,1].hexbin(VJcat2, UVcat2, vmax = 50, cmap = "binary", mincnt = 0)
+hb2 = ax[0,1].hexbin(VJcat2, UVcat2, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
 ax[0,1].set_xlim(0,2.5)
 ax[0,1].set_ylim(0,2.5)
-ax[0,1].set_xlabel("VJ", fontsize=10)
-ax[0,1].set_ylabel("UV", fontsize=10)
-ax[0,1].set_title("0.25 < z < 0.75", fontsize=14)
+ax[0,1].text(0.35,0.925,"0.25 < z <0.75",ha='right',va='bottom',transform=ax[0,1].transAxes,fontsize=12)
 
 # cat3
-hb3 = ax[1,0].hexbin(VJcat3, UVcat3, vmax = 50, cmap = "binary", mincnt = 0)
+hb3 = ax[1,0].hexbin(VJcat3, UVcat3, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
 ax[1,0].set_xlim(0,2.5)
 ax[1,0].set_ylim(0,2.5)
-ax[1,0].set_xlabel("VJ", fontsize=10)
-ax[1,0].set_ylabel("UV", fontsize=10)
-ax[1,0].set_title("0.5 < z < 1", fontsize=14)
+ax[1,0].set_xlabel("VJ", fontsize=12)
+ax[1,0].set_ylabel("UV", fontsize=12)
+ax[1,0].text(0.25,0.925,"0.5 < z < 1",ha='right',va='bottom',transform=ax[1,0].transAxes,fontsize=12)
 
 # cat4
-hb4 = ax[1,1].hexbin(VJcat4, UVcat4, vmax = 50, cmap = "binary", mincnt = 0)
+hb4 = ax[1,1].hexbin(VJcat4, UVcat4, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
 ax[1,1].set_xlim(0,2.5)
 ax[1,1].set_ylim(0,2.5)
-ax[1,1].set_xlabel("VJ", fontsize=10)
-ax[1,1].set_ylabel("UV", fontsize=10)
-ax[1,1].set_title("0.75 < z < 1.25", fontsize=14)
+ax[1,1].set_xlabel("VJ", fontsize=12)
+ax[1,1].text(0.35,0.925,"0.75 < z < 1.25",ha='right',va='bottom',transform=ax[1,1].transAxes,fontsize=12)
 
 plt.show()
+
+# UVJ diagram for cat5,6,7 og 8
+idcat5 = np.logical_and((data['z_phot'] > 1), (data['z_phot'] < 1.5))
+idcat6 = np.logical_and((data['z_phot'] > 1.25), (data['z_phot'] < 1.75))
+idcat7 = np.logical_and((data['z_phot'] > 1.5), (data['z_phot'] < 2))
+idcat8 = np.logical_and((data['z_phot'] > 1.75), (data['z_phot'] < 2.25))
+
+UVcat5 = U[idcat5[0,:]] - V[idcat5[0,:]]
+VJcat5 = V[idcat5[0,:]] - J[idcat5[0,:]]
+UVcat6 = U[idcat6[0,:]] - V[idcat6[0,:]]
+VJcat6 = V[idcat6[0,:]] - J[idcat6[0,:]]
+UVcat7 = U[idcat7[0,:]] - V[idcat7[0,:]]
+VJcat7 = V[idcat7[0,:]] - J[idcat7[0,:]]
+UVcat8 = U[idcat8[0,:]] - V[idcat8[0,:]]
+VJcat8 = V[idcat8[0,:]] - J[idcat8[0,:]]
+
+figure, ax = plt.subplots(2, 2, sharex=(True), sharey=(True), figsize=(12,10) )
+plt.tight_layout()
+
+# cat5
+hb5 = ax[0,0].hexbin(VJcat5, UVcat5, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+cb5 = figure.colorbar(hb5, ax = ax)
+cb5.set_label("Number of galaxies", fontsize=15)
+ax[0,0].set_xlim(0,2.5)
+ax[0,0].set_ylim(0,2.5)
+ax[0,0].set_ylabel("UV", fontsize=12)
+ax[0,0].text(0.25,0.925,"1 < z < 1.5",ha='right',va='bottom',transform=ax[0,0].transAxes,fontsize=12)
+
+# cat6
+hb6 = ax[0,1].hexbin(VJcat6, UVcat6, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+ax[0,1].set_xlim(0,2.5)
+ax[0,1].set_ylim(0,2.5)
+ax[0,1].text(0.35,0.925,"1.25 < z <1.75",ha='right',va='bottom',transform=ax[0,1].transAxes,fontsize=12)
+
+# cat7
+hb7 = ax[1,0].hexbin(VJcat7, UVcat7, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+ax[1,0].set_xlim(0,2.5)
+ax[1,0].set_ylim(0,2.5)
+ax[1,0].set_xlabel("VJ", fontsize=12)
+ax[1,0].set_ylabel("UV", fontsize=12)
+ax[1,0].text(0.25,0.925,"1.5 < z < 2",ha='right',va='bottom',transform=ax[1,0].transAxes,fontsize=12)
+
+# cat8
+hb8 = ax[1,1].hexbin(VJcat8, UVcat8, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+ax[1,1].set_xlim(0,2.5)
+ax[1,1].set_ylim(0,2.5)
+ax[1,1].set_xlabel("VJ", fontsize=12)
+ax[1,1].text(0.35,0.925,"1.75 < z < 2.25",ha='right',va='bottom',transform=ax[1,1].transAxes,fontsize=12)
+
+plt.show()
+
+# UVJ diagram for cat9,10,11 og 12
+idcat9 = np.logical_and((data['z_phot'] > 2), (data['z_phot'] < 2.5))
+idcat10 = np.logical_and((data['z_phot'] > 2.25), (data['z_phot'] < 2.75))
+idcat11 = np.logical_and((data['z_phot'] > 2.5), (data['z_phot'] < 3))
+idcat12 = np.logical_and((data['z_phot'] > 2.75), (data['z_phot'] < 3.25))
+
+UVcat9 = U[idcat9[0,:]] - V[idcat9[0,:]]
+VJcat9 = V[idcat9[0,:]] - J[idcat9[0,:]]
+UVcat10 = U[idcat10[0,:]] - V[idcat10[0,:]]
+VJcat10 = V[idcat10[0,:]] - J[idcat10[0,:]]
+UVcat11 = U[idcat11[0,:]] - V[idcat11[0,:]]
+VJcat11 = V[idcat11[0,:]] - J[idcat11[0,:]]
+UVcat12 = U[idcat12[0,:]] - V[idcat12[0,:]]
+VJcat12 = V[idcat12[0,:]] - J[idcat12[0,:]]
+
+figure, ax = plt.subplots(2, 2, sharex=(True), sharey=(True), figsize=(12,10) )
+plt.tight_layout()
+
+# cat9
+hb9 = ax[0,0].hexbin(VJcat9, UVcat9, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+cb9 = figure.colorbar(hb9, ax = ax)
+cb9.set_label("Number of galaxies", fontsize=15)
+ax[0,0].set_xlim(0,2.5)
+ax[0,0].set_ylim(0,2.5)
+ax[0,0].set_ylabel("UV", fontsize=12)
+ax[0,0].text(0.25,0.925,"2 < z < 2.5",ha='right',va='bottom',transform=ax[0,0].transAxes,fontsize=12)
+
+# cat10
+hb10 = ax[0,1].hexbin(VJcat10, UVcat10, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+ax[0,1].set_xlim(0,2.5)
+ax[0,1].set_ylim(0,2.5)
+ax[0,1].text(0.35,0.925,"2.25 < z <2.75",ha='right',va='bottom',transform=ax[0,1].transAxes,fontsize=12)
+
+# cat11
+hb11 = ax[1,0].hexbin(VJcat11, UVcat11, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+ax[1,0].set_xlim(0,2.5)
+ax[1,0].set_ylim(0,2.5)
+ax[1,0].set_xlabel("VJ", fontsize=12)
+ax[1,0].set_ylabel("UV", fontsize=12)
+ax[1,0].text(0.25,0.925,"2.5 < z < 3",ha='right',va='bottom',transform=ax[1,0].transAxes,fontsize=12)
+
+# cat12
+hb12 = ax[1,1].hexbin(VJcat12, UVcat12, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+ax[1,1].set_xlim(0,2.5)
+ax[1,1].set_ylim(0,2.5)
+ax[1,1].set_xlabel("VJ", fontsize=12)
+ax[1,1].text(0.35,0.925,"2.75 < z < 3.25",ha='right',va='bottom',transform=ax[1,1].transAxes,fontsize=12)
+
+# UVJ diagram for cat13,14,15 og blank
+idcat13 = np.logical_and((data['z_phot'] > 2), (data['z_phot'] < 2.5))
+idcat14 = np.logical_and((data['z_phot'] > 2.25), (data['z_phot'] < 2.75))
+idcat15 = np.logical_and((data['z_phot'] > 2.5), (data['z_phot'] < 3))
+
+UVcat13 = U[idcat13[0,:]] - V[idcat13[0,:]]
+VJcat13 = V[idcat13[0,:]] - J[idcat13[0,:]]
+UVcat14 = U[idcat14[0,:]] - V[idcat14[0,:]]
+VJcat14 = V[idcat14[0,:]] - J[idcat14[0,:]]
+UVcat15 = U[idcat15[0,:]] - V[idcat15[0,:]]
+VJcat15 = V[idcat15[0,:]] - J[idcat15[0,:]]
+
+figure, ax = plt.subplots(2, 2, sharex=(True), sharey=(True), figsize=(12,10) )
+plt.tight_layout()
+
+# cat13
+hb13 = ax[0,0].hexbin(VJcat13, UVcat13, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+cb13 = figure.colorbar(hb13, ax = ax)
+cb13.set_label("Number of galaxies", fontsize=15)
+ax[0,0].set_xlim(0,2.5)
+ax[0,0].set_ylim(0,2.5)
+ax[0,0].set_ylabel("UV", fontsize=12)
+ax[0,0].text(0.25,0.925,"3 < z < 3.5",ha='right',va='bottom',transform=ax[0,0].transAxes,fontsize=12)
+
+# cat14
+hb14 = ax[0,1].hexbin(VJcat14, UVcat14, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+ax[0,1].set_xlim(0,2.5)
+ax[0,1].set_ylim(0,2.5)
+ax[0,1].text(0.35,0.925,"3.25 < z <3.75",ha='right',va='bottom',transform=ax[0,1].transAxes,fontsize=12)
+
+# cat15
+hb11 = ax[1,0].hexbin(VJcat15, UVcat15, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+ax[1,0].set_xlim(0,2.5)
+ax[1,0].set_ylim(0,2.5)
+ax[1,0].set_xlabel("VJ", fontsize=12)
+ax[1,0].set_ylabel("UV", fontsize=12)
+ax[1,0].text(0.25,0.925,"3.5 < z < 4",ha='right',va='bottom',transform=ax[1,0].transAxes,fontsize=12)
+
+# cat16
+hb16 = ax[1,1].hexbin(VJ, UV, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+ax[1,1].set_xlim(0,2.5)
+ax[1,1].set_ylim(0,2.5)
+ax[1,1].set_xlabel("VJ", fontsize=12)
+ax[1,1].text(0.35,0.925,"0 < z < 4",ha='right',va='bottom',transform=ax[1,1].transAxes,fontsize=12)
+plt.show()
+
+
 
 # Close FITS file so it won't use up excess memory
 hdu.close()

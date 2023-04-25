@@ -15,7 +15,6 @@ Created on Wed Apr  5 00:24:57 2023
 import numpy as np
 from astropy.io import fits
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
 
 #loading data as recarrays
 hdu = fits.open('filtered_SED.fits',memmap=True)
@@ -167,6 +166,11 @@ IDS_cat1 = iduv1_cat1 & idvj1_cat1 & iduvj_cat1 & idvj2_cat1 & iduv2_cat1
 NQ_cat1 = sum(IDS_cat1)
 NSF_cat1 = sum(~IDS_cat1)
 cat1_total = NQ_cat1 + NSF_cat1
+# Mass
+m1 = mass[idUVJ_cat1[0,:]]
+NQ_m1 = np.average(m1[IDS_cat1])
+nSF_m1 = np.average(m1[~IDS_cat1])
+
 
 # cat2: 0.25 < z < 0.75
 idUVJ_cat2_lower = np.logical_and((data['z_phot'] > 0.25), (data['z_phot'] < 0.5), (data['CFHT_u_MAG'] < 50))
@@ -201,6 +205,10 @@ IDS_cat3 = iduv1_cat3 & idvj1_cat3 & iduvj_cat3 & idvj2_cat3 & iduv2_cat3
 NQ_cat3 = sum(IDS_cat3)
 NSF_cat3 = sum(~IDS_cat3)
 cat3_total = NQ_cat3 + NSF_cat3
+# Mass
+m3 = mass[idUVJ_cat3[0,:]]
+NQ_m3 = np.average(m3[IDS_cat3])
+nSF_m3 = np.average(m3[~IDS_cat3])
 
 # cat4: 0.75 < z < 1.25
 idUVJ_cat4_lower = np.logical_and((data['z_phot'] > 0.75), (data['z_phot'] < 1), (data['CFHT_u_MAG'] < 50))
@@ -235,6 +243,10 @@ IDS_cat5 = iduv1_cat5 & idvj1_cat5 & iduvj_cat5 & idvj2_cat5 & iduv2_cat5
 NQ_cat5 = sum(IDS_cat5)
 NSF_cat5 = sum(~IDS_cat5)
 cat5_total = NQ_cat5 + NSF_cat5
+# Mass
+m5 = mass[idUVJ_cat5[0,:]]
+NQ_m5 = np.average(m5[IDS_cat5])
+nSF_m5 = np.average(m5[~IDS_cat5])
 
 # cat6: 1.25 < z < 1.75
 idUVJ_cat6 = np.logical_and((data['z_phot'] > 1.25), (data['z_phot'] < 1.75), (data['CFHT_u_MAG'] < 50))
@@ -259,6 +271,10 @@ IDS_cat7 = iduv1_cat7 & idvj1_cat7 & iduvj_cat7 & idvj2_cat7 & iduv2_cat7
 NQ_cat7 = sum(IDS_cat7)
 NSF_cat7 = sum(~IDS_cat7)
 cat7_total = NQ_cat7 + NSF_cat7
+# Mass
+m7 = mass[idUVJ_cat7[0,:]]
+NQ_m7 = np.average(m7[IDS_cat7])
+nSF_m7 = np.average(m7[~IDS_cat7])
 
 # cat8: 1.75 < z < 2.25
 idUVJ_cat8_lower = np.logical_and((data['z_phot'] > 1.75), (data['z_phot'] < 2), (data['CFHT_u_MAG'] < 50))
@@ -293,6 +309,10 @@ IDS_cat9 = iduv1_cat9 & idvj1_cat9 & iduvj_cat9 & idvj2_cat9 & iduv2_cat9
 NQ_cat9 = sum(IDS_cat9)
 NSF_cat9 = sum(~IDS_cat9)
 cat9_total = NQ_cat9 + NSF_cat9
+# Mass
+m9 = mass[idUVJ_cat9[0,:]]
+NQ_m9 = np.average(m9[IDS_cat9])
+nSF_m9 = np.average(m9[~IDS_cat9])
 
 
 # cat10: 2.25 < z < 2.75
@@ -318,6 +338,10 @@ IDS_cat11 = iduv1_cat11 & idvj1_cat11 & iduvj_cat11 & idvj2_cat11 & iduv2_cat11
 NQ_cat11 = sum(IDS_cat11)
 NSF_cat11 = sum(~IDS_cat11)
 cat11_total = NQ_cat11 + NSF_cat11
+# Mass
+m11 = mass[idUVJ_cat11[0,:]]
+NQ_m11 = np.average(m11[IDS_cat11])
+nSF_m11 = np.average(m11[~IDS_cat11])
 
 # cat12: 2.75 < z < 3.25
 idUVJ_cat12 = np.logical_and((data['z_phot'] > 2.75), (data['z_phot'] < 3.25), (data['CFHT_u_MAG'] < 50))
@@ -343,6 +367,7 @@ NQ_cat13 = sum(IDS_cat13)
 NSF_cat13 = sum(~IDS_cat13)
 cat13_total = NQ_cat13 + NSF_cat13
 
+
 # cat14: 3.25 < z < 3.75
 idUVJ_cat14 = np.logical_and((data['z_phot'] > 3.25), (data['z_phot'] < 3.75), (data['CFHT_u_MAG'] < 50))
 iduv1_cat14 = UVz[idUVJ_cat14[0,:]] >= 1.3
@@ -367,6 +392,7 @@ NQ_cat15 = sum(IDS_cat15)
 NSF_cat15 = sum(~IDS_cat15)
 cat15_total = NQ_cat15 + NSF_cat15
 
+
 # Create a matrix
 QSF = np.array([[0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75], 
          [NQ_cat1,NQ_cat2,NQ_cat3,NQ_cat4,NQ_cat5,NQ_cat6,NQ_cat7,NQ_cat8,NQ_cat9,
@@ -376,14 +402,14 @@ QSF = np.array([[0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75],
          [cat1_total,cat2_total,cat3_total,cat4_total,cat5_total,cat6_total,
           cat7_total,cat8_total,cat9_total,cat10_total,cat11_total,cat12_total,
           cat13_total,cat14_total,cat15_total]])
-
+# QSF = [z, num quiesent, num starforming, total]
 
 #initialize layout of plot for nQ/nSF
 fig1, ax = plt.subplots()
 
 #add scatterplot for cat1
-SF = ax.plot(QSF[0,:],QSF[2,:]/QSF[3,:], 'b', label="nSF")
-Q = ax.plot(QSF[0,:],QSF[1,:]/QSF[3,:], 'r', label="nQ")
+SF = ax.plot(QSF[0,:],QSF[2,:]/QSF[3,:], 'b', marker='o', label="nSF")
+Q = ax.plot(QSF[0,:],QSF[1,:]/QSF[3,:],'r', marker='o', label="nQ")
 plt.legend()
 
 ax.set_xlim(0,4)
@@ -581,28 +607,67 @@ ax[1,0].set_ylabel("UV", fontsize=12)
 ax[1,0].text(0.25,0.925,"3.5 < z < 4",ha='right',va='bottom',transform=ax[1,0].transAxes,fontsize=12)
 
 # cat16
-hb16 = ax[1,1].hexbin(VJ, UV, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(866,500))
+hb16 = ax[1,1].hexbin(VJ, UV, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
 ax[1,1].set_xlim(0,2.5)
 ax[1,1].set_ylim(0,2.5)
 ax[1,1].set_xlabel("VJ", fontsize=12)
 ax[1,1].text(0.35,0.925,"0 < z < 4",ha='right',va='bottom',transform=ax[1,1].transAxes,fontsize=12)
-
-
-
-# ADJUSTED COLORBAR FOR
-figure, ax1 = plt.subplots()
-#with adjusted colorbar sp it is not saturated
-
-hb17 = ax1.hexbin(VJ, UV, vmax = 1000, cmap = "binary", mincnt = 0, gridsize=(173,100))
-cb16 = figure.colorbar(hb17, ax = ax1)
-ax1.set_xlim(0,2.5)
-ax1.set_ylim(0,2.5)
-ax1.set_xlabel("VJ", fontsize=12)
-ax1.title.set_text('Non-saturated UVJ (all redshifts, 0-4)')
-ax1.text(0.1,2.45,"0 < z < 4",ha='left',va='top',fontsize=12)
-
-
 plt.show()
+
+#############################
+
+## Mass
+
+# 0 < z < 0.5
+m1_cat1 = np.log10(mass[idUVJ_cat1[0,:]])
+mass_axe = np.array([8,8.5,9,9.5,10,10.5,11,11.5,12,12.5,13])
+
+id_SF_bin1_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 7.75), (m1[~IDS_cat1] < 8.25))
+id_Q_bin1_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 7.75), (m1[IDS_cat1] < 8.25))
+id_SF_bin2_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 8.25), (m1[~IDS_cat1] < 8.75))
+id_Q_bin2_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 8.25), (m1[IDS_cat1] < 8.75))
+id_SF_bin3_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 8.75), (m1[~IDS_cat1] < 9.25))
+id_Q_bin3_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 8.75), (m1[IDS_cat1] < 9.25))
+id_SF_bin4_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 9.25), (m1[~IDS_cat1] < 9.75))
+id_Q_bin4_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 9.25), (m1[IDS_cat1] < 9.75))
+id_SF_bin5_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 9.75), (m1[~IDS_cat1] < 10.25))
+id_Q_bin5_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 9.75), (m1[IDS_cat1] < 10.25))
+id_SF_bin6_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 10.25), (m1[~IDS_cat1] < 10.75))
+id_Q_bin6_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 10.25), (m1[IDS_cat1] < 10.75))
+id_SF_bin7_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 10.75), (m1[~IDS_cat1] < 11.25))
+id_Q_bin7_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 10.75), (m1[IDS_cat1] < 11.25))
+id_SF_bin8_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 11.25), (m1[~IDS_cat1] < 11.75))
+id_Q_bin8_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 11.25), (m1[IDS_cat1] < 11.75))
+id_SF_bin9_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 11.75), (m1[~IDS_cat1] < 12.25))
+id_Q_bin9_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 11.75), (m1[IDS_cat1] < 12.25))
+id_SF_bin10_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 12.25), (m1[~IDS_cat1] < 12.75))
+id_Q_bin10_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 12.25), (m1[IDS_cat1] < 12.75))
+id_SF_bin11_cat1 = np.logical_and((m1_cat1[~IDS_cat1] > 12.75), (m1[~IDS_cat1] < 13.25))
+id_Q_bin11_cat1 = np.logical_and((m1_cat1[IDS_cat1] > 12.75), (m1[IDS_cat1] < 13.25))
+
+
+nSF_cat1 = np.array([np.sum(id_SF_bin1_cat1),np.sum(id_SF_bin2_cat1), np.sum(id_SF_bin3_cat1), np.sum(id_SF_bin4_cat1),
+        np.sum(id_SF_bin5_cat1), np.sum(id_SF_bin6_cat1), np.sum(id_SF_bin7_cat1), np.sum(id_SF_bin8_cat1),
+        np.sum(id_SF_bin9_cat1), np.sum(id_SF_bin10_cat1), np.sum(id_SF_bin11_cat1)])
+
+NQ_cat1 = np.array([np.sum(id_Q_bin1_cat1), np.sum(id_Q_bin2_cat1), np.sum(id_Q_bin3_cat1), np.sum(id_Q_bin4_cat1),
+        np.sum(id_Q_bin5_cat1), np.sum(id_Q_bin6_cat1), np.sum(id_Q_bin7_cat1), np.sum(id_Q_bin8_cat1), 
+        np.sum(id_Q_bin9_cat1), np.sum(id_Q_bin10_cat1),np.sum(id_Q_bin11_cat1)])
+
+total_cat1 = nSF_cat1 + NQ_cat1
+
+#initialize layout of plot
+fig1, ax = plt.subplots()
+
+#add scatterplot for cat1
+ax.plot(mass_axe,nSF_cat1/total_cat1, 'b', marker='o', label="nSF")
+ax.plot(mass_axe,NQ_cat1/total_cat1,'r', marker='o', label="nQ")
+plt.legend()
+
+# ax.set_xlim(0,4)
+ax.set_xlabel("log mass")
+ax.set_ylabel("Fraction of galaxies")
+ax.set_title("Fraction of galaxies with mass at 0 < z < 0.5")
 
 
 

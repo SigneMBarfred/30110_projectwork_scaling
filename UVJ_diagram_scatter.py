@@ -573,7 +573,7 @@ ax[0,1].set_ylim(0,2.5)
 ax[0,1].text(0.35,0.925,"3.25 < z <3.75",ha='right',va='bottom',transform=ax[0,1].transAxes,fontsize=12)
 
 # cat15
-hb11 = ax[1,0].hexbin(VJcat15, UVcat15, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+hb15 = ax[1,0].hexbin(VJcat15, UVcat15, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
 ax[1,0].set_xlim(0,2.5)
 ax[1,0].set_ylim(0,2.5)
 ax[1,0].set_xlabel("VJ", fontsize=12)

@@ -2,7 +2,7 @@
 """
 Created on Wed Apr 12 10:03:50 2023
 
-@author: Nikolaj Lange Dons
+@author: Nikolaj, Signe, Rasmus
 """
 
 # -*- coding: utf-8 -*-

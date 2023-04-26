@@ -607,11 +607,26 @@ ax[1,0].set_ylabel("UV", fontsize=12)
 ax[1,0].text(0.25,0.925,"3.5 < z < 4",ha='right',va='bottom',transform=ax[1,0].transAxes,fontsize=12)
 
 # cat16
-hb16 = ax[1,1].hexbin(VJ, UV, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(173,100))
+hb16 = ax[1,1].hexbin(VJ, UV, vmax = 100, cmap = "binary", mincnt = 0, gridsize=(866,500))
 ax[1,1].set_xlim(0,2.5)
 ax[1,1].set_ylim(0,2.5)
 ax[1,1].set_xlabel("VJ", fontsize=12)
 ax[1,1].text(0.35,0.925,"0 < z < 4",ha='right',va='bottom',transform=ax[1,1].transAxes,fontsize=12)
+
+
+
+# ADJUSTED COLORBAR FOR
+figure, ax1 = plt.subplots()
+#with adjusted colorbar sp it is not saturated
+
+hb17 = ax1.hexbin(VJ, UV, vmax = 1000, cmap = "binary", mincnt = 0, gridsize=(173,100))
+cb16 = figure.colorbar(hb17, ax = ax1)
+ax1.set_xlim(0,2.5)
+ax1.set_ylim(0,2.5)
+ax1.set_xlabel("VJ", fontsize=12)
+ax1.title.set_text('Non-saturated UVJ (all redshifts, 0-4)')
+ax1.text(0.1,2.45,"0 < z < 4",ha='left',va='top',fontsize=12)
+
 plt.show()
 
 #############################

@@ -657,7 +657,7 @@ total_cat1 = nSF_cat1 + NQ_cat1
 nSF_error1 = (nSF_cat1/total_cat1)*np.sqrt(1/nSF_cat1+1/total_cat1)
 NQ_error1 = (NQ_cat1/total_cat1)*np.sqrt(1/NQ_cat1+1/total_cat1)
 
-# If there is les than 50 galaxies the point is invalid because there is not enougth data
+# If there is less than 50 galaxies the point is invalid because there is not enougth data
 mask1 = nSF_cat1 > 30
 
 #initialize layout of plot
@@ -869,7 +869,7 @@ mask4 = nSF_cat4 > 30
 #initialize layout of plot
 fig1, ax = plt.subplots()
 
-#add scatterplot for cat1
+#add scatterplot for category
 SF = ax.errorbar(mass_axe[mask4],nSF_cat4[mask4]/total_cat4[mask4], yerr = nSF_error4[mask4], fmt = "o", alpha = 0.7,
             elinewidth = 0.7, capsize = 5, markeredgecolor = "b", markersize = 2, label='nSF')
 nQ = ax.errorbar(mass_axe[mask4],NQ_cat4[mask4]/total_cat4[mask4], yerr = NQ_error4[mask4], fmt = "o", alpha = 0.7,
@@ -991,7 +991,7 @@ mask5 = nSF_cat5 > 30
 #initialize layout of plot
 fig1, ax = plt.subplots()
 
-#add scatterplot for cat1
+#add scatterplot for cat5
 SF = ax.errorbar(mass_axe[mask5],nSF_cat5[mask5]/total_cat5[mask5], yerr = nSF_error5[mask5], fmt = "o", alpha = 0.7,
             elinewidth = 0.7, capsize = 5, markeredgecolor = "b", markersize = 2, label='nSF')
 nQ = ax.errorbar(mass_axe[mask5],NQ_cat5[mask5]/total_cat5[mask5], yerr = NQ_error5[mask5], fmt = "o", alpha = 0.7,
@@ -1005,8 +1005,29 @@ ax.set_title("Fraction of galaxies with mass at 2.5 < z < 4")
 
 
 
+## average mass of SF in redshift 0.0-0.5
+av_m1_SF = np.log10(nSF_m1)
+
+## average mass of Quiscent redshift 0.0-0.5
+av_m1_Q = np.log10(NQ_m1)
 
 
+
+## average mass of SF in redshift 0.0-0.5
+#Define mass
+m2 = mass[idUVJ_cat2_lower[0,:]]
+
+nQ_m2 = np.average(m2[IDS_cat2_upper] & m2[IDS_cat2_lower])
+
+av_m2_Q = np.log10(nQ_m2)
+
+
+# m11 = mass[idUVJ_cat11[0,:]]
+# NQ_m11 = np.average(m11[IDS_cat11])
+# nSF_m11 = np.average(m11[~IDS_cat11])
+#av_m2_SF = np.log10(np.average(m2[~IDS_cat1]))
+## average mass of Quiscent redshift 0.0-0.5
+#av_m2_Q = np.log10(np.average(m2[IDS_cat2_lower]+m2[IDS_cat2_upper]))
 
 
 

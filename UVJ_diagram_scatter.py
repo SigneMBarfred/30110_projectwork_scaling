@@ -1152,5 +1152,145 @@ ax.set_xlabel("redshift z", fontsize=12)
 ax.set_ylabel("Average mass", fontsize=12)
 ax.set_title("Average mass for SFGs", fontsize=18)
 
+
+
+"""
+Next, we wish to output plots of the Star Formation Rate as a function of the galaxy's solar mass
+It is of interest to distinguish between the star forming, denoted SF, and the Quiscent, denoted Q, which are categorized based on the boundaries in the Williams paper.
+"""
+#PLOTTE SFR vs SOLAR MASS
+
+#Define redshift intervals for the SFRS
+SFR = data['sfr'][0,:]
+
+# 0 < z < 0.5
+SFR_cat1 = SFR[idUVJ_cat1[0,:]]
+
+# 0.5 < z < 1
+SFR_cat2 = SFR[idUVJ_cat3[0,:]]
+
+# 1 < z < 1.5
+SFR_cat3 = SFR[idUVJ_cat5[0,:]]
+
+# 1.5 < z < 2.5
+SFR_cat4_lower = SFR[idUVJ_cat7[0,:]]
+SFR_cat4_upper = SFR[idUVJ_cat9[0,:]]
+SFR_cat4 = np.hstack((SFR_cat4_lower,SFR_cat4_upper))
+
+
+# 2.5 < z < 4
+SFR_cat5_lower = SFR[idUVJ_cat11[0,:]]
+SFR_cat5_mid = SFR[idUVJ_cat13[0,:]]
+SFR_cat5_upper = SFR[idUVJ_cat15[0,:]]
+SFR_cat5 = np.hstack((SFR_cat5_lower, SFR_cat5_mid, SFR_cat5_upper))
+
+####
+#SFR BIN 1 - redshift 0-0.5 
+SFR_SF_cat1 = SFR_cat1[~IDS_cat1]
+SFR_Q_cat1 = SFR_cat1[IDS_cat1]
+
+plt.clf()
+fig, ax1 = plt.subplots()
+
+SFR_SF_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[~IDS_cat1]), SFR_SF_cat1,alpha=0.2,c='blue',s = 3)
+SFR_Q_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[IDS_cat1]), SFR_Q_cat1,alpha=0.2,c='red', s = 3)
+ax1.set_title('SFR as related to mass for 0 < z < 0.5')
+ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
+ax1.set_ylabel('SFR')
+ax1.legend([SFR_SF_cat1_p,SFR_Q_cat1_p],['SF','Q'],markerscale = 4)
+ax1.set_ylim(0,20)
+ax1.set_xlim(8,13)
+
+plt.show() #plot shows lookbacktime of approx 5 Gy (out of the 13,8Gy possible)
+
+####
+#SFR BIN 2 - corresponding to redshift interval earlier called cat3 
+SFR_SF_cat2 = SFR_cat2[~IDS_cat3]
+SFR_Q_cat2 = SFR_cat2[IDS_cat3]
+mass_SF_cat2 = np.log10(mean_mass_cat3[~IDS_cat3])
+mass_Q_cat2 = np.log10(mean_mass_cat3[IDS_cat3])
+
+plt.clf()
+fig, ax2 = plt.subplots()
+
+SFR_SF_cat2_p = ax2.scatter(mass_SF_cat2[::10], SFR_SF_cat2[::10],alpha=0.2,c='blue',s = 3)
+SFR_Q_cat2_p = ax2.scatter(mass_Q_cat2[::10], SFR_Q_cat2[::10],alpha=0.2,c='red', s = 3)
+ax2.set_title('SFR as related to mass for 0.5 < z < 1')
+ax2.set_xlabel('$log_{10}$ ($M_{\odot}$)')
+ax2.set_ylabel('SFR')
+ax2.legend([SFR_SF_cat2_p,SFR_Q_cat2_p],['SF','Q'],markerscale = 4)
+ax2.set_ylim(0,20)
+ax2.set_xlim(8,13)
+
+plt.show() #Once again it is seen how theres a significant increase in the average mass observed for the galaxies when redshift increases - observational bias?
+#timescale is btween approx 5 and 7.8 Gy back in time
+
+####
+#SFR BIN 3 - redshift 1-1.5
+SFR_SF_cat3 = SFR_cat3[~IDS_cat5]
+SFR_Q_cat3 = SFR_cat3[IDS_cat5]
+mass_SF_cat3 = np.log10(mean_mass_cat5[~IDS_cat5])
+mass_Q_cat3 = np.log10(mean_mass_cat5[IDS_cat5])
+
+plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of previous
+fig, ax3 = plt.subplots()
+
+SFR_SF_cat3_p = ax3.scatter(mass_SF_cat3[::10], SFR_SF_cat3[::10], alpha=0.2,c='blue',s = 3)
+SFR_Q_cat3_p = ax3.scatter(mass_Q_cat3[::10], SFR_Q_cat3[::10], alpha=0.2,c='red', s = 3)
+ax3.set_title('SFR as related to mass for 1 < z < 1.5')
+ax3.set_xlabel('$log_{10}$ ($M_{\odot}$)')
+ax3.set_ylabel('SFR')
+ax3.legend([SFR_SF_cat3_p,SFR_Q_cat3_p],['SF','Q'],markerscale = 4)
+ax3.set_ylim(0,20)
+ax3.set_xlim(8,13)
+
+plt.show()  #only every 10th point is plotted bc otherwise it is difficult to discern tendency
+
+####
+#SFR BIN 4 - redshift 1.5-2.5
+newIDS_cat4 = np.hstack((IDS_cat7,IDS_cat9)) #combining 2 redshift bins into 1 
+SFR_SF_cat4 = SFR_cat4[~newIDS_cat4]
+SFR_Q_cat4 = SFR_cat4[newIDS_cat4]
+mass_SF_cat4 = np.log10(np.hstack((mean_mass_cat7[~IDS_cat7],mean_mass_cat9[~IDS_cat9])))
+mass_Q_cat4 = np.log10(np.hstack((mean_mass_cat7[IDS_cat7],mean_mass_cat9[IDS_cat9])))
+
+plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
+fig, ax4 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
+
+SFR_SF_cat4_p = ax4.scatter(mass_SF_cat4[::10], SFR_SF_cat4[::10], alpha=0.2,c='blue',s = 3) #only every 10 point is plotted
+SFR_Q_cat4_p = ax4.scatter(mass_Q_cat4[::10], SFR_Q_cat4[::10], alpha=0.2,c='red', s = 3)
+ax4.set_title('SFR as related to mass for 1.5 < z < 2.5')
+ax4.set_xlabel('$log_{10}$ ($M_{\odot}$)')
+ax4.set_ylabel('SFR')
+ax4.legend([SFR_SF_cat4_p,SFR_Q_cat4_p],['SF','Q'],markerscale = 4)
+ax4.set_ylim(0,20)
+ax4.set_xlim(8,13)
+
+plt.show()
+
+####
+#SFR B IN 5 - redshift 2.5-4.5
+newIDS_cat5 = np.hstack((IDS_cat11,IDS_cat13,IDS_cat15)) #combining 2 redshift bins into 1 
+SFR_SF_cat5 = SFR_cat5[~newIDS_cat5]
+SFR_Q_cat5 = SFR_cat5[newIDS_cat5]
+mass_SF_cat5 = np.log10(np.hstack((mean_mass_cat11[~IDS_cat11],mean_mass_cat13[~IDS_cat13],mean_mass_cat15[~IDS_cat15])))
+mass_Q_cat5 = np.log10(np.hstack((mean_mass_cat11[IDS_cat11],mean_mass_cat13[IDS_cat13],mean_mass_cat15[IDS_cat15])))
+
+plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
+fig, ax5 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
+
+SFR_SF_cat5_p = ax5.scatter(mass_SF_cat5[::10], SFR_SF_cat5[::10], alpha=0.2,c='blue',s = 3) #only every 10 point is plotted
+SFR_Q_cat5_p = ax5.scatter(mass_Q_cat5[::10], SFR_Q_cat5[::10], alpha=0.2,c='red', s = 3)
+ax5.set_title('SFR as related to mass for 2.5 < z < 4')
+ax5.set_xlabel('$log_{10}$ ($M_{\odot}$)')
+ax5.set_ylabel('SFR')
+ax5.legend([SFR_SF_cat5_p,SFR_Q_cat5_p],['SF','Q'],markerscale = 4)
+ax5.set_ylim(0,20)
+ax5.set_xlim(8,13)
+
+plt.show()
+
+
+
 # Close FITS file so it won't use up excess memory
 hdu.close()

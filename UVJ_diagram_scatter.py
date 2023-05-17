@@ -360,7 +360,8 @@ IDS_cat13 = iduv1_cat13 & idvj1_cat13 & iduvj_cat13 & idvj2_cat13 & iduv2_cat13
 NQ_cat13 = sum(IDS_cat13)
 NSF_cat13 = sum(~IDS_cat13)
 cat13_total = NQ_cat13 + NSF_cat13
-
+# Mass
+m13 = mass[idUVJ_cat13[0,:]]
 
 # cat14: 3.25 < z < 3.75
 idUVJ_cat14 = np.logical_and((data['z_phot'] > 3.25), (data['z_phot'] < 3.75), (data['CFHT_u_MAG'] < 50))
@@ -385,7 +386,8 @@ IDS_cat15 = iduv1_cat15 & idvj1_cat15 & iduvj_cat15 & idvj2_cat15 & iduv2_cat15
 NQ_cat15 = sum(IDS_cat15)
 NSF_cat15 = sum(~IDS_cat15)
 cat15_total = NQ_cat15 + NSF_cat15
-
+# Mass
+m15 = mass[idUVJ_cat15[0,:]]
 
 # Create a matrix
 QSF = np.array([[0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75], 
@@ -1001,22 +1003,8 @@ ax.set_xlabel("log mass")
 ax.set_ylabel("Fraction of galaxies")
 ax.set_title("Fraction of galaxies with mass at 2.5 < z < 4")
 
-# plot(z, log10(mass))
 
-# 0 < z < 0.5
-SFR_cat1 = SFR[idUVJ_cat1[0,:]]
-# 0.5 < z < 1
-SFR_cat2 = SFR[idUVJ_cat3[0,:]]
-# 1 < z < 1.5
-SFR_cat3 = SFR[idUVJ_cat5[0,:]]
-# 1.5 < z < 2.5
-SFR_cat4_lower = SFR[idUVJ_cat7[0,:]]
-SFR_cat4_upper = SFR[idUVJ_cat9[0,:]]
-# 2.5 < z < 4
-SFR_cat5_lower = SFR[idUVJ_cat11[0,:]]
-SFR_cat5_mid = SFR[idUVJ_cat13[0,:]]
-SFR_cat5_upper = SFR[idUVJ_cat15[0,:]]
-     
+
 ########
 # 0 < z < 0.5
 mean_mass_cat1 = mass[idUVJ_cat1[0,:]]
@@ -1150,147 +1138,177 @@ ax.set_xlim(0,4)
 ax.set_yscale('log')
 ax.set_xlabel("redshift z", fontsize=12)
 ax.set_ylabel("Average mass", fontsize=12)
-ax.set_title("Average mass for SFGs", fontsize=18)
+ax.set_title("Average mass at redshift z", fontsize=18)
 
-
-
-"""
-Next, we wish to output plots of the Star Formation Rate as a function of the galaxy's solar mass
-It is of interest to distinguish between the star forming, denoted SF, and the Quiscent, denoted Q, which are categorized based on the boundaries in the Williams paper.
-"""
-#PLOTTE SFR vs SOLAR MASS
-
-#Define redshift intervals for the SFRS
-SFR = data['sfr'][0,:]
+# plot(z, log10(mass))
 
 # 0 < z < 0.5
 SFR_cat1 = SFR[idUVJ_cat1[0,:]]
+SFR_nSF_cat1 = SFR_cat1[~IDS_cat1]
+SFR_nQ_cat1 = SFR_cat1[IDS_cat1]
+MASS_nSF_cat1 = m1[~IDS_cat1]
+MASS_nQ_cat1 = m1[IDS_cat1]
 
 # 0.5 < z < 1
 SFR_cat2 = SFR[idUVJ_cat3[0,:]]
+SFR_nSF_cat2 = SFR_cat2[~IDS_cat3]
+SFR_nQ_cat2 = SFR_cat2[IDS_cat3]
+MASS_nSF_cat2 = m3[~IDS_cat3]
+MASS_nQ_cat2 = m3[IDS_cat3]
 
 # 1 < z < 1.5
 SFR_cat3 = SFR[idUVJ_cat5[0,:]]
+SFR_nSF_cat3 = SFR_cat3[~IDS_cat5]
+SFR_nQ_cat3 = SFR_cat3[IDS_cat5]
+MASS_nSF_cat3 = m5[~IDS_cat5]
+MASS_nQ_cat3 = m5[IDS_cat5]
 
-# 1.5 < z < 2.5
-SFR_cat4_lower = SFR[idUVJ_cat7[0,:]]
-SFR_cat4_upper = SFR[idUVJ_cat9[0,:]]
-SFR_cat4 = np.hstack((SFR_cat4_lower,SFR_cat4_upper))
+# 1.5 < z < 2
+SFR_cat4 = SFR[idUVJ_cat7[0,:]]
+SFR_nSF_cat4 = SFR_cat4[~IDS_cat7]
+SFR_nQ_cat4 = SFR_cat4[IDS_cat7]
+MASS_nSF_cat4 = m7[~IDS_cat7]
+MASS_nQ_cat4 = m7[IDS_cat7]
+
+# 2 < z < 2.5
+SFR_cat5 = SFR[idUVJ_cat9[0,:]]
+SFR_nSF_cat5 = SFR_cat5[~IDS_cat9]
+SFR_nQ_cat5 = SFR_cat5[IDS_cat9]
+MASS_nSF_cat5 = m9[~IDS_cat9]
+MASS_nQ_cat5 = m9[IDS_cat9]
+
+# 2.5 < z < 3
+SFR_cat6 = SFR[idUVJ_cat11[0,:]]
+SFR_nSF_cat6 = SFR_cat6[~IDS_cat11]
+SFR_nQ_cat6 = SFR_cat6[IDS_cat11]
+MASS_nSF_cat6 = m11[~IDS_cat11]
+MASS_nQ_cat6 = m11[IDS_cat11]
+
+# 3 < z < 3.5
+SFR_cat7 = SFR[idUVJ_cat13[0,:]]
+SFR_nSF_cat7 = SFR_cat7[~IDS_cat13]
+SFR_nQ_cat7 = SFR_cat7[IDS_cat13]
+MASS_nSF_cat7 = m13[~IDS_cat13]
+MASS_nQ_cat7 = m13[IDS_cat13]
+
+# 3.5 < z < 4
+SFR_cat8 = SFR[idUVJ_cat15[0,:]]
+SFR_nSF_cat8 = SFR_cat8[~IDS_cat15]
+SFR_nQ_cat8 = SFR_cat8[IDS_cat15]
+MASS_nSF_cat8 = m15[~IDS_cat15]
+MASS_nQ_cat8 = m15[IDS_cat15]
+
+SFR_nSF_all = [*SFR_nSF_cat1, *SFR_nSF_cat2, *SFR_nSF_cat3, *SFR_nSF_cat4, *SFR_nSF_cat5, *SFR_nSF_cat6, *SFR_nSF_cat7, *SFR_nSF_cat8]
+SFR_nQ_all = [*SFR_nQ_cat1, *SFR_nQ_cat2, *SFR_nQ_cat3, *SFR_nQ_cat4, *SFR_nQ_cat5, *SFR_nQ_cat6, *SFR_nQ_cat7, *SFR_nQ_cat8]
+MASS_nSF_all = [*MASS_nSF_cat1, *MASS_nSF_cat2, *MASS_nSF_cat3, *MASS_nSF_cat4, *MASS_nSF_cat5, *MASS_nSF_cat6, *MASS_nSF_cat7, *MASS_nSF_cat8]
+MASS_nQ_all = [*MASS_nQ_cat1, *MASS_nQ_cat2, *MASS_nQ_cat3, *MASS_nQ_cat4, *MASS_nQ_cat5, *MASS_nQ_cat6, *MASS_nQ_cat7, *MASS_nQ_cat8]
+
+fig, ax = plt.subplots()
+ax.scatter(np.log10(mass),SFR)
+ax.set_xlim(8,13)
+# ax.set_ylim(8,13)
 
 
-# 2.5 < z < 4
-SFR_cat5_lower = SFR[idUVJ_cat11[0,:]]
-SFR_cat5_mid = SFR[idUVJ_cat13[0,:]]
-SFR_cat5_upper = SFR[idUVJ_cat15[0,:]]
-SFR_cat5 = np.hstack((SFR_cat5_lower, SFR_cat5_mid, SFR_cat5_upper))
+#initialize layout of plot
+fig1, ax = plt.subplots()
 
-####
-#SFR BIN 1 - redshift 0-0.5 
-SFR_SF_cat1 = SFR_cat1[~IDS_cat1]
-SFR_Q_cat1 = SFR_cat1[IDS_cat1]
+#add scatterplot for cat1
+SF_cat1 = ax.scatter(MASS_nSF_cat1,SFR_nSF_cat1, color='b', marker='o', label="nSF")
+Q_cat1 = ax.scatter(MASS_nQ_cat1,SFR_nQ_cat1, color='r', marker='o', label="nQ")
+SF_cat2 = ax.scatter(MASS_nSF_cat2,SFR_nSF_cat2, color='b', marker='o')
+Q_cat2 = ax.scatter(MASS_nQ_cat2,SFR_nQ_cat2, color='r', marker='o')
+SF_cat3 = ax.scatter(MASS_nSF_cat3,SFR_nSF_cat3, color='b', marker='o')
+Q_cat3 = ax.scatter(MASS_nQ_cat3,SFR_nQ_cat3, color='r', marker='o')
+SF_cat4 = ax.scatter(MASS_nSF_cat4,SFR_nSF_cat4, color='b', marker='o')
+Q_cat4 = ax.scatter(MASS_nQ_cat4,SFR_nQ_cat4, color='r', marker='o')
+SF_cat5 = ax.scatter(MASS_nSF_cat5,SFR_nSF_cat5, color='b', marker='o')
+Q_cat5 = ax.scatter(MASS_nQ_cat5,SFR_nQ_cat5, color='r', marker='o')
+SF_cat6 = ax.scatter(MASS_nSF_cat6,SFR_nSF_cat6, color='b', marker='o')
+Q_cat6 = ax.scatter(MASS_nQ_cat6,SFR_nQ_cat6, color='r', marker='o')
+SF_cat7 = ax.scatter(MASS_nSF_cat7,SFR_nSF_cat7, color='b', marker='o')
+Q_cat7 = ax.scatter(MASS_nQ_cat7,SFR_nQ_cat7, color='r', marker='o')
+SF_cat8 = ax.scatter(MASS_nSF_cat8,SFR_nSF_cat8, color='b', marker='o')
+Q_cat8 = ax.scatter(MASS_nQ_cat8,SFR_nQ_cat8, color='r', marker='o')
 
-plt.clf()
-fig, ax1 = plt.subplots()
+plt.legend()
+# ax.set_xscale('log')
+ax.set_yscale('log')
+ax.set_xlabel("mass", fontsize=12)
+ax.set_ylabel("SFR", fontsize=12)
+ax.set_title("SFR as a function of mass", fontsize=18)
 
-SFR_SF_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[~IDS_cat1]), SFR_SF_cat1,alpha=0.2,c='blue',s = 3)
-SFR_Q_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[IDS_cat1]), SFR_Q_cat1,alpha=0.2,c='red', s = 3)
-ax1.set_title('SFR as related to mass for 0 < z < 0.5')
-ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
-ax1.set_ylabel('SFR')
-ax1.legend([SFR_SF_cat1_p,SFR_Q_cat1_p],['SF','Q'],markerscale = 4)
-ax1.set_ylim(0,20)
-ax1.set_xlim(8,13)
 
-plt.show() #plot shows lookbacktime of approx 5 Gy (out of the 13,8Gy possible)
 
-####
-#SFR BIN 2 - corresponding to redshift interval earlier called cat3 
-SFR_SF_cat2 = SFR_cat2[~IDS_cat3]
-SFR_Q_cat2 = SFR_cat2[IDS_cat3]
-mass_SF_cat2 = np.log10(mean_mass_cat3[~IDS_cat3])
-mass_Q_cat2 = np.log10(mean_mass_cat3[IDS_cat3])
 
-plt.clf()
-fig, ax2 = plt.subplots()
+#initialize layout of plot
+fig1, ax = plt.subplots()
 
-SFR_SF_cat2_p = ax2.scatter(mass_SF_cat2[::10], SFR_SF_cat2[::10],alpha=0.2,c='blue',s = 3)
-SFR_Q_cat2_p = ax2.scatter(mass_Q_cat2[::10], SFR_Q_cat2[::10],alpha=0.2,c='red', s = 3)
-ax2.set_title('SFR as related to mass for 0.5 < z < 1')
-ax2.set_xlabel('$log_{10}$ ($M_{\odot}$)')
-ax2.set_ylabel('SFR')
-ax2.legend([SFR_SF_cat2_p,SFR_Q_cat2_p],['SF','Q'],markerscale = 4)
-ax2.set_ylim(0,20)
-ax2.set_xlim(8,13)
+#add scatterplot for cat1
+SF_MASS = ax.hexbin(np.log10(MASS_nSF_all),SFR_nSF_all, vmax = 50, cmap = "binary", mincnt = 0,gridsize=(173,100))
 
-plt.show() #Once again it is seen how theres a significant increase in the average mass observed for the galaxies when redshift increases - observational bias?
-#timescale is btween approx 5 and 7.8 Gy back in time
+cb = fig1.colorbar(SF_MASS)
+cb.set_label("Number of galaxies", fontsize=12)
 
-####
-#SFR BIN 3 - redshift 1-1.5
-SFR_SF_cat3 = SFR_cat3[~IDS_cat5]
-SFR_Q_cat3 = SFR_cat3[IDS_cat5]
-mass_SF_cat3 = np.log10(mean_mass_cat5[~IDS_cat5])
-mass_Q_cat3 = np.log10(mean_mass_cat5[IDS_cat5])
-
-plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of previous
-fig, ax3 = plt.subplots()
-
-SFR_SF_cat3_p = ax3.scatter(mass_SF_cat3[::10], SFR_SF_cat3[::10], alpha=0.2,c='blue',s = 3)
-SFR_Q_cat3_p = ax3.scatter(mass_Q_cat3[::10], SFR_Q_cat3[::10], alpha=0.2,c='red', s = 3)
-ax3.set_title('SFR as related to mass for 1 < z < 1.5')
-ax3.set_xlabel('$log_{10}$ ($M_{\odot}$)')
-ax3.set_ylabel('SFR')
-ax3.legend([SFR_SF_cat3_p,SFR_Q_cat3_p],['SF','Q'],markerscale = 4)
-ax3.set_ylim(0,20)
-ax3.set_xlim(8,13)
-
-plt.show()  #only every 10th point is plotted bc otherwise it is difficult to discern tendency
-
-####
-#SFR BIN 4 - redshift 1.5-2.5
-newIDS_cat4 = np.hstack((IDS_cat7,IDS_cat9)) #combining 2 redshift bins into 1 
-SFR_SF_cat4 = SFR_cat4[~newIDS_cat4]
-SFR_Q_cat4 = SFR_cat4[newIDS_cat4]
-mass_SF_cat4 = np.log10(np.hstack((mean_mass_cat7[~IDS_cat7],mean_mass_cat9[~IDS_cat9])))
-mass_Q_cat4 = np.log10(np.hstack((mean_mass_cat7[IDS_cat7],mean_mass_cat9[IDS_cat9])))
-
-plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
-fig, ax4 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
-
-SFR_SF_cat4_p = ax4.scatter(mass_SF_cat4[::10], SFR_SF_cat4[::10], alpha=0.2,c='blue',s = 3) #only every 10 point is plotted
-SFR_Q_cat4_p = ax4.scatter(mass_Q_cat4[::10], SFR_Q_cat4[::10], alpha=0.2,c='red', s = 3)
-ax4.set_title('SFR as related to mass for 1.5 < z < 2.5')
-ax4.set_xlabel('$log_{10}$ ($M_{\odot}$)')
-ax4.set_ylabel('SFR')
-ax4.legend([SFR_SF_cat4_p,SFR_Q_cat4_p],['SF','Q'],markerscale = 4)
-ax4.set_ylim(0,20)
-ax4.set_xlim(8,13)
-
-plt.show()
-
-####
-#SFR B IN 5 - redshift 2.5-4.5
-newIDS_cat5 = np.hstack((IDS_cat11,IDS_cat13,IDS_cat15)) #combining 2 redshift bins into 1 
-SFR_SF_cat5 = SFR_cat5[~newIDS_cat5]
-SFR_Q_cat5 = SFR_cat5[newIDS_cat5]
-mass_SF_cat5 = np.log10(np.hstack((mean_mass_cat11[~IDS_cat11],mean_mass_cat13[~IDS_cat13],mean_mass_cat15[~IDS_cat15])))
-mass_Q_cat5 = np.log10(np.hstack((mean_mass_cat11[IDS_cat11],mean_mass_cat13[IDS_cat13],mean_mass_cat15[IDS_cat15])))
-
-plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
-fig, ax5 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
-
-SFR_SF_cat5_p = ax5.scatter(mass_SF_cat5[::10], SFR_SF_cat5[::10], alpha=0.2,c='blue',s = 3) #only every 10 point is plotted
-SFR_Q_cat5_p = ax5.scatter(mass_Q_cat5[::10], SFR_Q_cat5[::10], alpha=0.2,c='red', s = 3)
-ax5.set_title('SFR as related to mass for 2.5 < z < 4')
-ax5.set_xlabel('$log_{10}$ ($M_{\odot}$)')
-ax5.set_ylabel('SFR')
-ax5.legend([SFR_SF_cat5_p,SFR_Q_cat5_p],['SF','Q'],markerscale = 4)
-ax5.set_ylim(0,20)
-ax5.set_xlim(8,13)
+# ax.set_xscale('log')
+ax.set_yscale('log')
+# ax.set_ylim(0,1000)
+ax.set_xlabel("mass", fontsize=12)
+ax.set_ylabel("SFR", fontsize=12)
+ax.set_title("SFR as a function of mass", fontsize=18)
 
 plt.show()
 
 
+figure, ax = plt.subplots(2, 2, sharex=(True), sharey=(True), figsize=(12,10) )
+plt.tight_layout()
+
+# cat1
+hb1 = ax[0,0].hexbin(np.log10(MASS_nSF_cat1),SFR_nSF_cat1, vmax = 10000, cmap = "binary", mincnt = 0, gridsize=(173,100))
+cb1 = figure.colorbar(hb1, ax = ax)
+cb1.set_label("Number of galaxies", fontsize=15)
+# ax[0,0].set_xlim(0,2.5)
+# ax[0,0].set_ylim(0,2.5)
+ax[0,0].set_xscale('log')
+ax[0,0].set_yscale('log')
+ax[0,0].set_xlabel("mass", fontsize=12)
+ax[0,0].set_ylabel("SFR", fontsize=12)
+ax[0,0].set_title("SFR as a function of mass", fontsize=18)
+
+
+# figure, ax = plt.subplots(2, 2, sharex=(True), sharey=(True), figsize=(12,10) )
+# plt.tight_layout()
+
+# # cat1
+# hb1 = ax[0,0].hexbin(np.log10(MASS_nSF_cat1),SFR_nSF_cat1, vmax = 10, cmap = "binary", mincnt = 0, gridsize=(173,100))
+# cb1 = figure.colorbar(hb1, ax = ax)
+# cb1.set_label("Number of galaxies", fontsize=15)
+# # ax[0,0].set_xscale('log')
+# ax[0,0].set_yscale('log')
+# ax[0,0].set_ylabel("UV", fontsize=12)
+# ax[0,0].text(0.25,0.925,"0 < z < 0.5",ha='right',va='bottom',transform=ax[0,0].transAxes,fontsize=12)
+
+# # cat2
+# hb2 = ax[0,1].hexbin(np.log10(MASS_nSF_cat2),SFR_nSF_cat2, vmax = 10, cmap = "binary", mincnt = 0, gridsize=(173,100))
+# # ax[0,1].set_xscale('log')
+# ax[0,1].set_yscale('log')
+# ax[0,1].text(0.35,0.925,"0.25 < z <0.75",ha='right',va='bottom',transform=ax[0,1].transAxes,fontsize=12)
+
+# # cat3
+# hb3 = ax[1,0].hexbin(np.log10(MASS_nSF_cat3),SFR_nSF_cat3, vmax = 10, cmap = "binary", mincnt = 0, gridsize=(173,100))
+# # ax[1,0].set_xscale('log')
+# ax[1,0].set_yscale('log')
+# ax[1,0].set_xlabel("VJ", fontsize=12)
+# ax[1,0].set_ylabel("UV", fontsize=12)
+# ax[1,0].text(0.25,0.925,"0.5 < z < 1",ha='right',va='bottom',transform=ax[1,0].transAxes,fontsize=12)
+
+# # cat4
+# hb4 = ax[1,1].hexbin(np.log10(MASS_nSF_cat4),SFR_nSF_cat4, vmax = 10, cmap = "binary", mincnt = 0, gridsize=(173,100))
+# # ax[1,1].set_xscale('log')
+# ax[1,1].set_yscale('log')
+# ax[1,1].set_xlabel("VJ", fontsize=12)
+# ax[1,1].text(0.35,0.925,"0.75 < z < 1.25",ha='right',va='bottom',transform=ax[1,1].transAxes,fontsize=12)
+
+# plt.show()
 
 # Close FITS file so it won't use up excess memory
 hdu.close()

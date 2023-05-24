@@ -1522,6 +1522,11 @@ p1 = np.poly1d(z1)
 plt.clf()
 fig, ax1 = plt.subplots()
 
+mass_array = range(10**7, 10**12, 10000000)
+logmass = np.log10(mass_array)
+lookback1 = 10.754
+logSF1 = (0.84 - 0.026*lookback1)*np.log10(mass_array) - (6.51 - 0.011*lookback1)
+
 #all the data points for the redshift bin
 SFR_SF_cat1_p = ax1.hexbin(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_nSF_cat1),vmax = 3, cmap = "Blues", mincnt = 1, gridsize=(346,200))
 SFR_Q_cat1_p = ax1.hexbin(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_nQ_cat1),vmax = 3, cmap = "Reds", mincnt = 1, gridsize=(346,200))
@@ -1537,6 +1542,7 @@ ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax1.set_ylabel('$log_{10}$(SFR)')
 ax1.set_ylim(-6,2)
 ax1.set_xlim(8,12)
+ax1.plot(logmass,logSF1,c="r",ls="--",lw=2)
 
 plt.show()
 
@@ -1553,6 +1559,11 @@ p2 = np.poly1d(z2)
 plt.clf()
 fig, ax2 = plt.subplots()
 
+mass_array = range(10**7, 10**12, 10000000)
+logmass = np.log10(mass_array)
+lookback2 = 7.069
+logSF2 = (0.84 - 0.026*lookback2)*np.log10(mass_array) - (6.51 - 0.011*lookback2)
+
 SFR_SF_cat2_p = ax2.hexbin(mass_SF_cat2, np.log10(SFR_SF_cat2),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
 SFR_Q_cat2_p = ax2.hexbin(mass_Q_cat2, np.log10(SFR_Q_cat2),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
 # trend_SF_cat2 = ax2.plot(mass_SF_cat2, p2(mass_SF_cat2),color="black", linewidth=3, linestyle="--")
@@ -1567,6 +1578,7 @@ ax2.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax2.set_ylabel('$log_{10}$(SFR)')
 ax2.set_ylim(-6,4)  
 ax2.set_xlim(8,12)
+ax2.plot(logmass,logSF2,c="r",ls="--",lw=2)
 
 plt.show() #Once again it is seen how theres a significant increase in the average mass observed for the galaxies when redshift increases - observational bias?
 #timescale is btween approx 5 and 7.8 Gy back in time
@@ -1589,6 +1601,11 @@ p3 = np.poly1d(z3)
 plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of previous
 fig, ax3 = plt.subplots()
 
+mass_array = range(10**7, 10**12, 10000000)
+logmass = np.log10(mass_array)
+lookback3 = 5.011
+logSF3 = (0.84 - 0.026*lookback3)*np.log10(mass_array) - (6.51 - 0.011*lookback3)
+
 SFR_SF_cat3_p = ax3.hexbin(mass_SF_cat3, np.log10(SFR_SF_cat3), vmax = 10, cmap = "Blues", mincnt = 1, gridsize=(346,200))
 SFR_Q_cat3_p = ax3.hexbin(mass_Q_cat3, np.log10(SFR_Q_cat3), vmax = 2, cmap = "Reds", mincnt = 1, gridsize=(346,200))
 # trend_SF_cat3 = ax3.plot(mass_SF_cat3, p3(mass_SF_cat3),color="black", linewidth=3, linestyle="--")
@@ -1603,6 +1620,7 @@ ax3.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax3.set_ylabel('$log_{10}$(SFR)')
 ax3.set_ylim(-6,4)
 ax3.set_xlim(8,12)
+ax3.plot(logmass,logSF3,c="r",ls="--",lw=2)
 
 plt.show()  #only every 10th point is plotted bc otherwise it is difficult to discern tendency
 
@@ -1620,6 +1638,11 @@ p4 = np.poly1d(z4)
 plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
 fig, ax4 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
 
+mass_array = range(10**7, 10**12, 10000000)
+logmass = np.log10(mass_array)
+lookback4 = 3.316
+logSF4 = (0.84 - 0.026*lookback4)*np.log10(mass_array) - (6.51 - 0.011*lookback4)
+
 SFR_SF_cat4_p = ax4.hexbin(mass_SF_cat4, np.log10(SFR_SF_cat4), vmax = 15, cmap = "Blues", mincnt = 1, gridsize=(346,200)) #only every 10 point is plotted
 SFR_Q_cat4_p = ax4.hexbin(mass_Q_cat4, np.log10(SFR_Q_cat4), vmax = 2, cmap = "Reds", mincnt = 1, gridsize=(346,200))
 # trend_SF_cat4 = ax4.plot(mass_SF_cat4, p4(mass_SF_cat4),color="black", linewidth=3, linestyle="--")
@@ -1634,6 +1657,7 @@ ax4.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax4.set_ylabel('$log_{10}$(SFR)')
 ax4.set_ylim(-6,4)
 ax4.set_xlim(8,12)
+ax4.plot(logmass,logSF4,c="r",ls="--",lw=2)
 
 plt.show()
 
@@ -1651,6 +1675,11 @@ p5 = np.poly1d(z5)
 plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
 fig, ax5 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
 
+mass_array = range(10**7, 10**12, 10000000)
+logmass = np.log10(mass_array)
+lookback5 = 1.985
+logSF5 = (0.84 - 0.026*lookback5)*np.log10(mass_array) - (6.51 - 0.011*lookback5)
+
 SFR_SF_cat5_p = ax5.hexbin(mass_SF_cat5, np.log10(SFR_SF_cat5), vmax = 15, cmap = "Blues", mincnt = 1, gridsize=(346,200)) #only every 10 point is plotted
 SFR_Q_cat5_p = ax5.hexbin(mass_Q_cat5, np.log10(SFR_Q_cat5), vmax = 2, cmap = "Reds", mincnt = 1, gridsize=(346,200))
 # trend_SF_cat5 = ax5.plot(mass_SF_cat5, p5(mass_SF_cat5),color="black", linewidth=3, linestyle="--")
@@ -1665,6 +1694,8 @@ ax5.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax5.set_ylabel('$log_{10}$(SFR)')
 ax5.set_ylim(-6,4)
 ax5.set_xlim(8,12)
+ax5.plot(logmass,logSF5,c="r",ls="--",lw=2)
+
 plt.show()
 
 

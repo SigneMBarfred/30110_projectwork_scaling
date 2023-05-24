@@ -1372,7 +1372,7 @@ INT1_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN1],z_bin1_SFR_Mass[1,:][ID_BIN1
 SFR_SF_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_SF_cat1),alpha=0.2,c='blue',s = 3)
 SFR_Q_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_Q_cat1),alpha=0.2,c='red', s = 3)
 
-INT1_sfr_p = ax1.scatter(INT1_sfr[IDS_cat1], np.log10(SFR_Q_cat1),alpha=0.2,c='orange', s = 5, marker = '+')
+INT1_sfr_p = ax1.scatter(np.average(INT1_sfr[0,:]), np.average(INT1_sfr[1,:]),c='orange', s = 100, marker = 'x')
 ax1.set_title('SFR as related to mass for 0 < z < 0.5')
 ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax1.set_ylabel('$log_{10}$(SFR)')

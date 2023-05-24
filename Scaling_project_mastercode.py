@@ -1363,16 +1363,43 @@ z_bin1_SFR_Mass = np.vstack((np.log10(mean_mass_cat1[~IDS_cat1]),np.log10(SFR_SF
 #z_bin1_ave = np.average(xx,axis=1)
 
 
-
-ID_BIN1 = np.logical_and(z_bin1_SFR_Mass[0,:]>=8,z_bin1_SFR_Mass[0,:]<9)
+#mass 8-8.5
+ID_BIN1 = np.logical_and(z_bin1_SFR_Mass[0,:]>=8,z_bin1_SFR_Mass[0,:]<8.5)
 INT1_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN1],z_bin1_SFR_Mass[1,:][ID_BIN1]))
 
-##
+#mass 8.5-9
+ID_BIN2 = np.logical_and(z_bin1_SFR_Mass[0,:]>=8.5,z_bin1_SFR_Mass[0,:]<9)
+INT2_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN2],z_bin1_SFR_Mass[1,:][ID_BIN2]))
 
+#mass 9-9.5
+ID_BIN3 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9,z_bin1_SFR_Mass[0,:]<9.5)
+INT3_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN3],z_bin1_SFR_Mass[1,:][ID_BIN3]))
+
+#mass 9.5-10.5
+ID_BIN4 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9.5,z_bin1_SFR_Mass[0,:]<10.5)
+INT4_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN4],z_bin1_SFR_Mass[1,:][ID_BIN4]))
+
+
+#mass 10.5-12
+ID_BIN5 = np.logical_and(z_bin1_SFR_Mass[0,:]>=10.5,z_bin1_SFR_Mass[0,:]<12)
+INT5_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN5],z_bin1_SFR_Mass[1,:][ID_BIN5]))
+
+
+
+##
+#all the data points for the redshift bin
 SFR_SF_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_SF_cat1),alpha=0.2,c='blue',s = 3)
 SFR_Q_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_Q_cat1),alpha=0.2,c='red', s = 3)
 
+#the averages for mass intervals
 INT1_sfr_p = ax1.scatter(np.average(INT1_sfr[0,:]), np.average(INT1_sfr[1,:]),c='orange', s = 100, marker = 'x')
+INT2_sfr_p = ax1.scatter(np.average(INT2_sfr[0,:]), np.average(INT2_sfr[1,:]),c='orange', s = 100, marker = 'x')
+INT3_sfr_p = ax1.scatter(np.average(INT3_sfr[0,:]), np.average(INT3_sfr[1,:]),c='orange', s = 100, marker = 'x')
+INT4_sfr_p = ax1.scatter(np.average(INT4_sfr[0,:]), np.average(INT4_sfr[1,:]),c='orange', s = 100, marker = 'x')
+INT5_sfr_p = ax1.scatter(np.average(INT5_sfr[0,:]), np.average(INT5_sfr[1,:]),c='orange', s = 100, marker = 'x')
+
+
+
 ax1.set_title('SFR as related to mass for 0 < z < 0.5')
 ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax1.set_ylabel('$log_{10}$(SFR)')

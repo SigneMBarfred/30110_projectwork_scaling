@@ -1358,20 +1358,21 @@ SFR_Q_cat1 = SFR_cat1[IDS_cat1]
 
 plt.clf()
 fig, ax1 = plt.subplots()
-
-##
-#make SFR averages for broad intervals of masses for SF
+#make SFR averages for broad intervals of masses for SF for 0<z<0.5
 z_bin1_SFR_Mass = np.vstack((np.log10(mean_mass_cat1[~IDS_cat1]),np.log10(SFR_SF_cat1)))
 #z_bin1_ave = np.average(xx,axis=1)
 
 
 
 ID_BIN1 = np.logical_and(z_bin1_SFR_Mass[0,:]>=8,z_bin1_SFR_Mass[0,:]<9)
-INT1_sfr = z_bin1_SFR_Mass[ID_BIN1]
+INT1_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN1],z_bin1_SFR_Mass[1,:][ID_BIN1]))
+
 ##
 
 SFR_SF_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_SF_cat1),alpha=0.2,c='blue',s = 3)
 SFR_Q_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_Q_cat1),alpha=0.2,c='red', s = 3)
+
+INT1_sfr_p = ax1.scatter(INT1_sfr[IDS_cat1], np.log10(SFR_Q_cat1),alpha=0.2,c='orange', s = 5, marker = '+')
 ax1.set_title('SFR as related to mass for 0 < z < 0.5')
 ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax1.set_ylabel('$log_{10}$(SFR)')

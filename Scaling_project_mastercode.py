@@ -20,7 +20,6 @@ U = 23.9 - 2.5*np.log10(data['restU'][0,:])
 V = 23.9 - 2.5*np.log10(data['restV'][0,:])
 J = 23.9 - 2.5*np.log10(data['restJ'][0,:])
 mass = data['mass'][0,:]
-z = data['z_phot'][0,:]
 
 UV = U[selection_all[0,:]] - V[selection_all[0,:]]
 VJ = V[selection_all[0,:]] - J[selection_all[0,:]]
@@ -1153,12 +1152,7 @@ SF = ax.errorbar(mass_QSF[0,:],mass_QSF[2,:], yerr = mass_QSF[3,:], fmt = "o", a
             elinewidth = 0.7, capsize = 5, markeredgecolor = "b", markersize = 2, label='nSF')
 nQ = ax.errorbar(mass_QSF[0,:],mass_QSF[1,:], yerr = np.log10(mass_QSF[4,:]), fmt = "o", alpha = 0.7,
             elinewidth = 0.7, capsize = 5, markeredgecolor = "r", markersize = 2, label='nQ')
-
-all_data_p = ax.scatter(np.log10(mass),z)
-
 ax.set_xlim(0,4)
-
-
 # ax.set_ylim(8,13)
 ax.set_yscale('log')
 ax.set_xlabel("redshift z", fontsize=12)
@@ -1358,14 +1352,10 @@ ax1_1.set_xlim(8,13)
 plt.show() #plot shows lookbacktime of approx 1.3 Gy (out of the 13,8Gy possible)
 
 
-############
-#######################
 #SFR BIN 1 - redshift 0-0.5 
 SFR_SF_cat1 = SFR_cat1[~IDS_cat1]
 SFR_Q_cat1 = SFR_cat1[IDS_cat1]
 
-plt.clf()
-fig, ax1 = plt.subplots()
 #make SFR averages for broad intervals of masses for SF for 0<z<0.5
 z_bin1_SFR_Mass = np.vstack((np.log10(mean_mass_cat1[~IDS_cat1]),np.log10(SFR_SF_cat1)))
 #z_bin1_ave = np.average(xx,axis=1)
@@ -1386,15 +1376,37 @@ INT3_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN3],z_bin1_SFR_Mass[1,:][ID_BIN3
 ID_BIN4 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9.5,z_bin1_SFR_Mass[0,:]<10.5)
 INT4_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN4],z_bin1_SFR_Mass[1,:][ID_BIN4]))
 
+
 #mass 10.5-12
 ID_BIN5 = np.logical_and(z_bin1_SFR_Mass[0,:]>=10.5,z_bin1_SFR_Mass[0,:]<12)
 INT5_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN5],z_bin1_SFR_Mass[1,:][ID_BIN5]))
 
+#######
 
-## IT'S PLOTTING TIME ##
+#calculate equation for trendline
+z1 = np.polyfit(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_SF_cat1), 1)
+p1 = np.poly1d(z1)
+
+plt.clf()
+fig, ax1 = plt.subplots()
+
 #all the data points for the redshift bin
 SFR_SF_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_SF_cat1),alpha=0.2,c='blue',s = 3)
 SFR_Q_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_Q_cat1),alpha=0.2,c='red', s = 3)
+
+
+SFR_SF_cat1_p = ax1.hexbin(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_SF_cat1),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
+SFR_Q_cat1_p = ax1.hexbin(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_Q_cat1),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+trend_SF_cat1 = ax1.plot(np.log10(mean_mass_cat1[~IDS_cat1]), p1(np.log10(mean_mass_cat1[~IDS_cat1])),color="black", linewidth=3, linestyle="--")
+cb1 = fig.colorbar(SFR_SF_cat1_p)
+cb2 = fig.colorbar(SFR_Q_cat1_p)
+cb1.set_label("Number of SF galaxies", fontsize=12)
+cb2.set_label("Number of Q galaxies", fontsize=12)
+ax1.set_title('SFR as related to mass for 0 < z < 0.5')
+ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
+ax1.set_ylabel('$log_{10}$(SFR)')
+ax1.set_ylim(-6,4)
+ax1.set_xlim(8,12)
 
 #the averages for mass intervals
 INT1_sfr_p = ax1.scatter(np.average(INT1_sfr[0,:]), np.average(INT1_sfr[1,:]),c='orange', s = 100, marker = 'x')
@@ -1403,66 +1415,33 @@ INT3_sfr_p = ax1.scatter(np.average(INT3_sfr[0,:]), np.average(INT3_sfr[1,:]),c=
 INT4_sfr_p = ax1.scatter(np.average(INT4_sfr[0,:]), np.average(INT4_sfr[1,:]),c='orange', s = 100, marker = 'x')
 INT5_sfr_p = ax1.scatter(np.average(INT5_sfr[0,:]), np.average(INT5_sfr[1,:]),c='orange', s = 100, marker = 'x')
 
-
-ax1.set_title('SFR as related to mass for 0 < z < 0.5')
-ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
-ax1.set_ylabel('$log_{10}$(SFR)')
-ax1.legend([SFR_SF_cat1_p,SFR_Q_cat1_p],['SF','Q'],markerscale = 4)
-ax1.set_ylim(-4,4)
-ax1.set_xlim(8,13)
-
 plt.show() #plot shows lookbacktime of approx 5 Gy (out of the 13,8Gy possible)
 
-##
-########
-
+####
 #SFR BIN 2 - corresponding to redshift interval earlier called cat3 
 SFR_SF_cat2 = SFR_cat2[~IDS_cat3]
 SFR_Q_cat2 = SFR_cat2[IDS_cat3]
 mass_SF_cat2 = np.log10(mean_mass_cat3[~IDS_cat3])
 mass_Q_cat2 = np.log10(mean_mass_cat3[IDS_cat3])
+#calculate equation for trendline
+z2 = np.polyfit(mass_SF_cat2, np.log10(SFR_SF_cat2), 1)
+p2 = np.poly1d(z2)
 
 plt.clf()
 fig, ax2 = plt.subplots()
 
-#make SFR averages for broad intervals of masses for SF for 0.5<z<1
-z_bin2_SFR_Mass = np.vstack((np.log10(mean_mass_cat3[~IDS_cat3]),np.log10(SFR_SF_cat2)))
-#z_bin1_ave = np.average(xx,axis=1)
-
-#mass 8-8.5
-z2_ID_BIN1 = np.logical_and(z_bin2_SFR_Mass[0,:]>=8,z_bin2_SFR_Mass[0,:]<8.5)
-z2_INT1_sfr = np.vstack((z_bin1_SFR_Mass[0,:][z2_ID_BIN1],z_bin1_SFR_Mass[1,:][ID_BIN1]))
-
-#mass 8.5-9
-ID_BIN2 = np.logical_and(z_bin1_SFR_Mass[0,:]>=8.5,z_bin1_SFR_Mass[0,:]<9)
-INT2_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN2],z_bin1_SFR_Mass[1,:][ID_BIN2]))
-
-#mass 9-9.5
-ID_BIN3 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9,z_bin1_SFR_Mass[0,:]<9.5)
-INT3_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN3],z_bin1_SFR_Mass[1,:][ID_BIN3]))
-
-#mass 9.5-10.5
-ID_BIN4 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9.5,z_bin1_SFR_Mass[0,:]<10.5)
-INT4_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN4],z_bin1_SFR_Mass[1,:][ID_BIN4]))
-
-#mass 10.5-12
-ID_BIN5 = np.logical_and(z_bin1_SFR_Mass[0,:]>=10.5,z_bin1_SFR_Mass[0,:]<12)
-INT5_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN5],z_bin1_SFR_Mass[1,:][ID_BIN5]))
-
-
-## IT'S PLOTTING TIME ##
-#all the data points for the redshift bin
-
-
-
-SFR_SF_cat2_p = ax2.scatter(mass_SF_cat2, np.log10(SFR_SF_cat2),alpha=0.2,c='blue',s = 3)
-SFR_Q_cat2_p = ax2.scatter(mass_Q_cat2, np.log10(SFR_Q_cat2),alpha=0.2,c='red', s = 3)
+SFR_SF_cat2_p = ax2.hexbin(mass_SF_cat2, np.log10(SFR_SF_cat2),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
+SFR_Q_cat2_p = ax2.hexbin(mass_Q_cat2, np.log10(SFR_Q_cat2),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+trend_SF_cat2 = ax2.plot(mass_SF_cat2, p2(mass_SF_cat2),color="black", linewidth=3, linestyle="--")
+cb1 = fig.colorbar(SFR_SF_cat2_p)
+cb2 = fig.colorbar(SFR_Q_cat2_p)
+cb1.set_label("Number of SF galaxies", fontsize=12)
+cb2.set_label("Number of Q galaxies", fontsize=12)
 ax2.set_title('SFR as related to mass for 0.5 < z < 1')
 ax2.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax2.set_ylabel('$log_{10}$(SFR)')
-ax2.legend([SFR_SF_cat2_p,SFR_Q_cat2_p],['SF','Q'],markerscale = 4)
-ax2.set_ylim(-4,4)
-ax2.set_xlim(8,13)
+ax2.set_ylim(-6,4)  
+ax2.set_xlim(8,12)
 
 plt.show() #Once again it is seen how theres a significant increase in the average mass observed for the galaxies when redshift increases - observational bias?
 #timescale is btween approx 5 and 7.8 Gy back in time
@@ -1478,18 +1457,25 @@ SFR_SF_cat3 = SFR_cat3[~IDS_cat5]
 SFR_Q_cat3 = SFR_cat3[IDS_cat5]
 mass_SF_cat3 = np.log10(mean_mass_cat5[~IDS_cat5])
 mass_Q_cat3 = np.log10(mean_mass_cat5[IDS_cat5])
+#calculate equation for trendline
+z3 = np.polyfit(mass_SF_cat3, np.log10(SFR_SF_cat3), 1)
+p3 = np.poly1d(z3)
 
 plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of previous
 fig, ax3 = plt.subplots()
 
-SFR_SF_cat3_p = ax3.scatter(mass_SF_cat3, np.log10(SFR_SF_cat3), alpha=0.2,c='blue',s = 3)
-SFR_Q_cat3_p = ax3.scatter(mass_Q_cat3, np.log10(SFR_Q_cat3), alpha=0.2,c='red', s = 3)
+SFR_SF_cat3_p = ax3.hexbin(mass_SF_cat3, np.log10(SFR_SF_cat3), vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
+SFR_Q_cat3_p = ax3.hexbin(mass_Q_cat3, np.log10(SFR_Q_cat3), vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+trend_SF_cat3 = ax3.plot(mass_SF_cat3, p3(mass_SF_cat3),color="black", linewidth=3, linestyle="--")
+cb1 = fig.colorbar(SFR_SF_cat3_p)
+cb2 = fig.colorbar(SFR_Q_cat3_p)
+cb1.set_label("Number of SF galaxies", fontsize=12)
+cb2.set_label("Number of Q galaxies", fontsize=12)
 ax3.set_title('SFR as related to mass for 1 < z < 1.5')
 ax3.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax3.set_ylabel('$log_{10}$(SFR)')
-ax3.legend([SFR_SF_cat3_p,SFR_Q_cat3_p],['SF','Q'],markerscale = 4)
-ax3.set_ylim(-4,4)
-ax3.set_xlim(8,13)
+ax3.set_ylim(-6,4)
+ax3.set_xlim(8,12)
 
 plt.show()  #only every 10th point is plotted bc otherwise it is difficult to discern tendency
 
@@ -1500,20 +1486,25 @@ SFR_SF_cat4 = SFR_cat4[~newIDS_cat4]
 SFR_Q_cat4 = SFR_cat4[newIDS_cat4]
 mass_SF_cat4 = np.log10(np.hstack((mean_mass_cat7[~IDS_cat7],mean_mass_cat9[~IDS_cat9])))
 mass_Q_cat4 = np.log10(np.hstack((mean_mass_cat7[IDS_cat7],mean_mass_cat9[IDS_cat9])))
+#calculate equation for trendline
+z4 = np.polyfit(mass_SF_cat4, np.log10(SFR_SF_cat4), 1)
+p4 = np.poly1d(z4)
 
 plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
 fig, ax4 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
 
-SFR_SF_cat4_p = ax4.scatter(mass_SF_cat4, np.log10(SFR_SF_cat4), alpha=0.2,c='blue',s = 3) #only every 10 point is plotted
-SFR_Q_cat4_p = ax4.scatter(mass_Q_cat4, np.log10(SFR_Q_cat4), alpha=0.2,c='red', s = 3)
+SFR_SF_cat4_p = ax4.hexbin(mass_SF_cat4, np.log10(SFR_SF_cat4), vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200)) #only every 10 point is plotted
+SFR_Q_cat4_p = ax4.hexbin(mass_Q_cat4, np.log10(SFR_Q_cat4), vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+trend_SF_cat4 = ax4.plot(mass_SF_cat4, p4(mass_SF_cat4),color="black", linewidth=3, linestyle="--")
+cb1 = fig.colorbar(SFR_SF_cat4_p)
+cb2 = fig.colorbar(SFR_Q_cat4_p)
+cb1.set_label("Number of SF galaxies", fontsize=12)
+cb2.set_label("Number of Q galaxies", fontsize=12)
 ax4.set_title('SFR as related to mass for 1.5 < z < 2.5')
 ax4.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax4.set_ylabel('$log_{10}$(SFR)')
-ax4.legend([SFR_SF_cat4_p,SFR_Q_cat4_p],['SF','Q'],markerscale = 4)
-ax4.set_ylim(-4,4)
-ax4.set_xlim(8,13)
-
-plt.show()
+ax4.set_ylim(-6,4)
+ax4.set_xlim(8,12)
 
 ####
 #SFR B IN 5 - redshift 2.5-4.5
@@ -1522,22 +1513,25 @@ SFR_SF_cat5 = SFR_cat5[~newIDS_cat5]
 SFR_Q_cat5 = SFR_cat5[newIDS_cat5]
 mass_SF_cat5 = np.log10(np.hstack((mean_mass_cat11[~IDS_cat11],mean_mass_cat13[~IDS_cat13],mean_mass_cat15[~IDS_cat15])))
 mass_Q_cat5 = np.log10(np.hstack((mean_mass_cat11[IDS_cat11],mean_mass_cat13[IDS_cat13],mean_mass_cat15[IDS_cat15])))
+#calculate equation for trendline
+z5 = np.polyfit(mass_SF_cat5, np.log10(SFR_SF_cat5), 1)
+p5 = np.poly1d(z5)
 
 plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
 fig, ax5 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
 
-SFR_SF_cat5_p = ax5.scatter(mass_SF_cat5, np.log10(SFR_SF_cat5), alpha=0.2,c='blue',s = 3) #only every 10 point is plotted
-SFR_Q_cat5_p = ax5.scatter(mass_Q_cat5, np.log10(SFR_Q_cat5), alpha=0.2,c='red', s = 3)
+SFR_SF_cat5_p = ax5.hexbin(mass_SF_cat5, np.log10(SFR_SF_cat5), vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200)) #only every 10 point is plotted
+SFR_Q_cat5_p = ax5.hexbin(mass_Q_cat5, np.log10(SFR_Q_cat5), vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+trend_SF_cat5 = ax5.plot(mass_SF_cat5, p5(mass_SF_cat5),color="black", linewidth=3, linestyle="--")
+cb1 = fig.colorbar(SFR_SF_cat5_p)
+cb2 = fig.colorbar(SFR_Q_cat5_p)
+cb1.set_label("Number of SF galaxies", fontsize=12)
+cb2.set_label("Number of Q galaxies", fontsize=12)
 ax5.set_title('SFR as related to mass for 2.5 < z < 4')
 ax5.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax5.set_ylabel('$log_{10}$(SFR)')
-ax5.legend([SFR_SF_cat5_p,SFR_Q_cat5_p],['SF','Q'],markerscale = 4)
-ax5.set_ylim(-4,4)
-ax5.set_xlim(8,13)
-
-plt.show()
-
-
+ax5.set_ylim(-6,4)
+ax5.set_xlim(8,12)
 
 
 # Close FITS file so it won't use up excess memory

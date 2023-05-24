@@ -20,6 +20,7 @@ U = 23.9 - 2.5*np.log10(data['restU'][0,:])
 V = 23.9 - 2.5*np.log10(data['restV'][0,:])
 J = 23.9 - 2.5*np.log10(data['restJ'][0,:])
 mass = data['mass'][0,:]
+z = data['z_phot'][0,:]
 
 UV = U[selection_all[0,:]] - V[selection_all[0,:]]
 VJ = V[selection_all[0,:]] - J[selection_all[0,:]]
@@ -1152,7 +1153,12 @@ SF = ax.errorbar(mass_QSF[0,:],mass_QSF[2,:], yerr = mass_QSF[3,:], fmt = "o", a
             elinewidth = 0.7, capsize = 5, markeredgecolor = "b", markersize = 2, label='nSF')
 nQ = ax.errorbar(mass_QSF[0,:],mass_QSF[1,:], yerr = np.log10(mass_QSF[4,:]), fmt = "o", alpha = 0.7,
             elinewidth = 0.7, capsize = 5, markeredgecolor = "r", markersize = 2, label='nQ')
+
+all_data_p = ax.scatter(np.log10(mass),z)
+
 ax.set_xlim(0,4)
+
+
 # ax.set_ylim(8,13)
 ax.set_yscale('log')
 ax.set_xlabel("redshift z", fontsize=12)
@@ -1352,6 +1358,8 @@ ax1_1.set_xlim(8,13)
 plt.show() #plot shows lookbacktime of approx 1.3 Gy (out of the 13,8Gy possible)
 
 
+############
+#######################
 #SFR BIN 1 - redshift 0-0.5 
 SFR_SF_cat1 = SFR_cat1[~IDS_cat1]
 SFR_Q_cat1 = SFR_cat1[IDS_cat1]
@@ -1361,7 +1369,6 @@ fig, ax1 = plt.subplots()
 #make SFR averages for broad intervals of masses for SF for 0<z<0.5
 z_bin1_SFR_Mass = np.vstack((np.log10(mean_mass_cat1[~IDS_cat1]),np.log10(SFR_SF_cat1)))
 #z_bin1_ave = np.average(xx,axis=1)
-
 
 #mass 8-8.5
 ID_BIN1 = np.logical_and(z_bin1_SFR_Mass[0,:]>=8,z_bin1_SFR_Mass[0,:]<8.5)
@@ -1379,14 +1386,12 @@ INT3_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN3],z_bin1_SFR_Mass[1,:][ID_BIN3
 ID_BIN4 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9.5,z_bin1_SFR_Mass[0,:]<10.5)
 INT4_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN4],z_bin1_SFR_Mass[1,:][ID_BIN4]))
 
-
 #mass 10.5-12
 ID_BIN5 = np.logical_and(z_bin1_SFR_Mass[0,:]>=10.5,z_bin1_SFR_Mass[0,:]<12)
 INT5_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN5],z_bin1_SFR_Mass[1,:][ID_BIN5]))
 
 
-
-##
+## IT'S PLOTTING TIME ##
 #all the data points for the redshift bin
 SFR_SF_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_SF_cat1),alpha=0.2,c='blue',s = 3)
 SFR_Q_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_Q_cat1),alpha=0.2,c='red', s = 3)
@@ -1399,7 +1404,6 @@ INT4_sfr_p = ax1.scatter(np.average(INT4_sfr[0,:]), np.average(INT4_sfr[1,:]),c=
 INT5_sfr_p = ax1.scatter(np.average(INT5_sfr[0,:]), np.average(INT5_sfr[1,:]),c='orange', s = 100, marker = 'x')
 
 
-
 ax1.set_title('SFR as related to mass for 0 < z < 0.5')
 ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax1.set_ylabel('$log_{10}$(SFR)')
@@ -1409,7 +1413,9 @@ ax1.set_xlim(8,13)
 
 plt.show() #plot shows lookbacktime of approx 5 Gy (out of the 13,8Gy possible)
 
-####
+##
+########
+
 #SFR BIN 2 - corresponding to redshift interval earlier called cat3 
 SFR_SF_cat2 = SFR_cat2[~IDS_cat3]
 SFR_Q_cat2 = SFR_cat2[IDS_cat3]
@@ -1418,6 +1424,36 @@ mass_Q_cat2 = np.log10(mean_mass_cat3[IDS_cat3])
 
 plt.clf()
 fig, ax2 = plt.subplots()
+
+#make SFR averages for broad intervals of masses for SF for 0.5<z<1
+z_bin2_SFR_Mass = np.vstack((np.log10(mean_mass_cat3[~IDS_cat3]),np.log10(SFR_SF_cat2)))
+#z_bin1_ave = np.average(xx,axis=1)
+
+#mass 8-8.5
+z2_ID_BIN1 = np.logical_and(z_bin2_SFR_Mass[0,:]>=8,z_bin2_SFR_Mass[0,:]<8.5)
+z2_INT1_sfr = np.vstack((z_bin1_SFR_Mass[0,:][z2_ID_BIN1],z_bin1_SFR_Mass[1,:][ID_BIN1]))
+
+#mass 8.5-9
+ID_BIN2 = np.logical_and(z_bin1_SFR_Mass[0,:]>=8.5,z_bin1_SFR_Mass[0,:]<9)
+INT2_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN2],z_bin1_SFR_Mass[1,:][ID_BIN2]))
+
+#mass 9-9.5
+ID_BIN3 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9,z_bin1_SFR_Mass[0,:]<9.5)
+INT3_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN3],z_bin1_SFR_Mass[1,:][ID_BIN3]))
+
+#mass 9.5-10.5
+ID_BIN4 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9.5,z_bin1_SFR_Mass[0,:]<10.5)
+INT4_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN4],z_bin1_SFR_Mass[1,:][ID_BIN4]))
+
+#mass 10.5-12
+ID_BIN5 = np.logical_and(z_bin1_SFR_Mass[0,:]>=10.5,z_bin1_SFR_Mass[0,:]<12)
+INT5_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN5],z_bin1_SFR_Mass[1,:][ID_BIN5]))
+
+
+## IT'S PLOTTING TIME ##
+#all the data points for the redshift bin
+
+
 
 SFR_SF_cat2_p = ax2.scatter(mass_SF_cat2, np.log10(SFR_SF_cat2),alpha=0.2,c='blue',s = 3)
 SFR_Q_cat2_p = ax2.scatter(mass_Q_cat2, np.log10(SFR_Q_cat2),alpha=0.2,c='red', s = 3)

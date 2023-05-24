@@ -1391,14 +1391,14 @@ INT5_sfr = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN5],z_bin1_SFR_Mass[1,:][ID_BIN5
 SFR_SF_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_SF_cat1),alpha=0.2,c='blue',s = 3)
 SFR_Q_cat1_p = ax1.scatter(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_Q_cat1),alpha=0.2,c='red', s = 3)
 
-#the averages for mass intervals
-INT1_sfr_p = ax1.scatter(np.average(INT1_sfr[0,:]), np.average(INT1_sfr[1,:]),c='orange', s = 100, marker = 'x')
-INT2_sfr_p = ax1.scatter(np.average(INT2_sfr[0,:]), np.average(INT2_sfr[1,:]),c='orange', s = 100, marker = 'x')
-INT3_sfr_p = ax1.scatter(np.average(INT3_sfr[0,:]), np.average(INT3_sfr[1,:]),c='orange', s = 100, marker = 'x')
-INT4_sfr_p = ax1.scatter(np.average(INT4_sfr[0,:]), np.average(INT4_sfr[1,:]),c='orange', s = 100, marker = 'x')
-INT5_sfr_p = ax1.scatter(np.average(INT5_sfr[0,:]), np.average(INT5_sfr[1,:]),c='orange', s = 100, marker = 'x')
-
 fig, ax1 = plt.subplots()
+
+#the averages for mass intervals
+INT1_sfr_p = ax1.scatter(np.average(INT1_sfr[0,:]), np.average(INT1_sfr[1,:]),c = 'black', s = 100, marker = 'x')
+INT2_sfr_p = ax1.scatter(np.average(INT2_sfr[0,:]), np.average(INT2_sfr[1,:]),c = 'black', s = 100, marker = 'x')
+INT3_sfr_p = ax1.scatter(np.average(INT3_sfr[0,:]), np.average(INT3_sfr[1,:]),c = 'black', s = 100, marker = 'x')
+INT4_sfr_p = ax1.scatter(np.average(INT4_sfr[0,:]), np.average(INT4_sfr[1,:]),c = 'black', s = 100, marker = 'x')
+INT5_sfr_p = ax1.scatter(np.average(INT5_sfr[0,:]), np.average(INT5_sfr[1,:]),c = 'black', s = 100, marker = 'x')
 
 SFR_SF_cat1_p = ax1.hexbin(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_SF_cat1),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
 SFR_Q_cat1_p = ax1.hexbin(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_Q_cat1),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
@@ -1412,7 +1412,7 @@ ax1.set_ylabel('$log_{10}$(SFR)')
 ax1.set_ylim(-6,4)
 ax1.set_xlim(8,12)
 
-plt.show() #plot shows lookbacktime of approx 5 Gy (out of the 13,8Gy possible)
+#plot shows lookbacktime of approx 5 Gy (out of the 13,8Gy possible)
 
 ####
 #SFR BIN 2 - corresponding to redshift interval earlier called cat3 

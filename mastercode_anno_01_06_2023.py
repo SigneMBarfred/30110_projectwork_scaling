@@ -1212,7 +1212,7 @@ mass_Q_cat1 = np.log10(mean_mass_cat1[IDS_cat1])
 SFR_mass_stacked_cat1 = np.transpose(np.vstack((np.log10(SFR_SF_cat1), mass_SF_cat1))) #mass_sf_cat1 is already logged
 
 #sort rows by mass
-ind_1 = np.lexsort((SFR_mass_stacked_cat1[:,1], SFR_mass_stacked_cat1[:,0]))  #so it will go from least to largest mass
+ind_1 = np.lexsort((SFR_mass_stacked_cat1[:,0], SFR_mass_stacked_cat1[:,1]))  #so it will go from least to largest mass
 SFR_mass_stacked_cat1 = SFR_mass_stacked_cat1[ind_1] #sorts the entire 2 column matrix
 
 
@@ -1302,7 +1302,7 @@ mass_Q_cat2 = np.log10(mean_mass_cat3[IDS_cat3])
 SFR_mass_stacked_cat2 = np.transpose(np.vstack((np.log10(SFR_SF_cat2), mass_SF_cat2))) #mass_sf_cat2 is already logged
 
 #sort rows by mass
-ind = np.lexsort((SFR_mass_stacked_cat2[:,1], SFR_mass_stacked_cat2[:,0]))  #so it will go from least to largest mass
+ind = np.lexsort((SFR_mass_stacked_cat2[:,0], SFR_mass_stacked_cat2[:,1]))  #so it will go from least to largest mass
 SFR_mass_stacked_cat2 = SFR_mass_stacked_cat2[ind] #sorts the entire 2 column matrix
 
 #use the split command to make 10 approx equally long arrays with galaxies
@@ -1396,7 +1396,7 @@ mass_Q_cat3 = np.log10(mean_mass_cat5[IDS_cat5])
 SFR_mass_stacked_cat3 = np.transpose(np.vstack((np.log10(SFR_SF_cat3), mass_SF_cat3))) #mass_sf_cat2 is already logged
 
 #sort rows by mass
-ind_3 = np.lexsort((SFR_mass_stacked_cat3[:,1], SFR_mass_stacked_cat3[:,0]))  #so it will go from least to largest mass
+ind_3 = np.lexsort((SFR_mass_stacked_cat3[:,0], SFR_mass_stacked_cat3[:,1]))  #so it will go from least to largest mass
 SFR_mass_stacked_cat3 = SFR_mass_stacked_cat3[ind_3] #sorts the entire 2 column matrix
 
 #use the split command to make 10 approx equally long arrays with galaxies
@@ -1484,7 +1484,7 @@ mass_Q_cat4 = np.log10(np.hstack((mean_mass_cat7[IDS_cat7],mean_mass_cat9[IDS_ca
 SFR_mass_stacked_cat4 = np.transpose(np.vstack((np.log10(SFR_SF_cat4), mass_SF_cat4))) #mass_sf_cat4 is already logged
 
 #sort rows by mass
-ind_4 = np.lexsort((SFR_mass_stacked_cat4[:,1], SFR_mass_stacked_cat4[:,0]))  #so it will go from least to largest mass
+ind_4 = np.lexsort((SFR_mass_stacked_cat4[:,0], SFR_mass_stacked_cat4[:,1]))  #so it will go from least to largest mass
 SFR_mass_stacked_cat4 = SFR_mass_stacked_cat4[ind_4] #sorts the entire 2 column matrix
 
 #use the split command to make 10 approx equally long arrays with galaxies
@@ -1560,8 +1560,8 @@ plt.show()
 
 newIDS_cat5 = np.hstack((IDS_cat11,IDS_cat13,IDS_cat15)) #combining 2 redshift bins into 1 
 SFR_SF_cat5 = SFR_cat5[~newIDS_cat5]
-SFR_SF_cat5_id = np.logical_and(np.log10(SFR_SF_cat5)<4,np.log10(SFR_SF_cat5)>-4)
-
+SFR_SF_cat5_id = np.logical_and(np.log10(SFR_SF_cat5)<4,np.log10(SFR_SF_cat5)>-2)
+SFR_SF_cat5 = SFR_SF_cat5[SFR_SF_cat5_id]
 
 SFR_Q_cat5 = SFR_cat5[newIDS_cat5]
 mass_SF_cat5 = np.log10(np.hstack((mean_mass_cat11[~IDS_cat11],mean_mass_cat13[~IDS_cat13],mean_mass_cat15[~IDS_cat15])))
@@ -1573,7 +1573,7 @@ mass_Q_cat5 = np.log10(np.hstack((mean_mass_cat11[IDS_cat11],mean_mass_cat13[IDS
 SFR_mass_stacked_cat5 = np.transpose(np.vstack((np.log10(SFR_SF_cat5), mass_SF_cat5))) #mass_sf_cat4 is already logged
 
 #sort rows by mass
-ind_5 = np.lexsort((SFR_mass_stacked_cat5[:,1], SFR_mass_stacked_cat5[:,0]))  #so it will go from least to largest mass
+ind_5 = np.lexsort((SFR_mass_stacked_cat5[:,0], SFR_mass_stacked_cat5[:,1]))  #so it will go from least to largest mass
 SFR_mass_stacked_cat5 = SFR_mass_stacked_cat5[ind_5] #sorts the entire 2 column matrix
 
 #use the split command to make 10 approx equally long arrays with galaxies
@@ -1619,7 +1619,7 @@ fig, ax5 = plt.subplots() #there's no pythonic reason for calling the figure ax"
 mass_array = range(10**7, 10**12, 10000000)
 logmass = np.log10(mass_array)
 lookback5 = 1.985
-logSF5 = (0.84 - 0.026*lookback5)*np.log10(mass_array) - (6.51 - 0.011*lookback5)
+logSF5 = (0.84 - 0.026*lookback5)*np.log10(mass_array) - (6.51 - 0.11*lookback5)
 
 SFR_SF_cat5_p = ax5.hexbin(mass_SF_cat5, np.log10(SFR_SF_cat5),vmax = 8, cmap = "Blues", mincnt = 0.5, gridsize=(346,200))
 SFR_Q_cat5_p = ax5.hexbin(mass_Q_cat5, np.log10(SFR_Q_cat5),vmax = 3, cmap = "Reds", mincnt = 0.5, gridsize=(346,200))

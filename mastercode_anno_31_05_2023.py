@@ -79,75 +79,7 @@ ax.set_title("UVJ diagram for galaxies at all redshifts", fontsize=18)
 
 ######################
 
-# # UVJ diagram for cat1
-# # 0.1 < z < 0.3
 
-# selection_cat1 = np.logical_and((data['z_phot'] > 0.1), (data['z_phot'] < 0.3), (data['CFHT_u_MAG'] < 50))
-
-# UV_cat1 = U[selection_cat1[0,:]] - V[selection_cat1[0,:]]
-# VJ_cat1 = V[selection_cat1[0,:]] - J[selection_cat1[0,:]]
-
-# fig1, ax = plt.subplots(figsize = (8, 6))
-# hb1 = ax.hexbin(VJ_cat1, UV_cat1, vmax = 50, cmap = "hot", gridsize = (173,100), mincnt = 0)
-# cb1 = fig1.colorbar(hb1, ax = ax)
-# cb1.set_label("Number of galaxies")
-# ax.plot([-4, 0.693], [1.3, 1.3], color = "g", lw = 5) #draws the horizontal line
-# ax.plot([1.6, 1.6], [2.098, 4], color = "g", lw = 5) #draws the vertical line
-# ax.plot([0.693, 1.6], [1.3, 2.098], color = "g", lw = 5) #draws the tilted line
-# ax.set_xlim(0,2.5)
-# ax.set_ylim(0,2.5)
-# ax.set_xlabel("V - J [AB mag]", fontsize=12)
-# ax.set_ylabel("U - V [AB mag]", fontsize=12)
-# ax.set_title("UVJ diagram for 0.1 < z < 0.3", fontsize=18)
-
-# ######################
-
-# # UVJ diagram for cat2
-# # 0.9 < z < 1.1
-
-# selection_cat2 = np.logical_and((data['z_phot'] > 0.9), (data['z_phot'] < 1.1), (data['CFHT_u_MAG'] < 50))
-
-# UV_cat2 = U[selection_cat2[0,:]] - V[selection_cat2[0,:]]
-# VJ_cat2 = V[selection_cat2[0,:]] - J[selection_cat2[0,:]]
-
-# fig2, ax = plt.subplots(figsize = (8, 6))
-# hb2 = ax.hexbin(VJ_cat2, UV_cat2, vmax = 50, cmap = "hot", gridsize = (173,100), mincnt = 0)
-# cb2 = fig2.colorbar(hb2, ax = ax)
-# cb2.set_label("Number of galaxies")
-# ax.plot([-4.0, 0.81], [1.3, 1.3], color = "g", lw = 5) #draws the horizontal line
-# ax.plot([1.6, 1.6], [2.0, 4], color = "g", lw = 5) #draws the vertical line
-# ax.plot([0.81, 1.6], [1.3, 2.0], color = "g", lw = 5) #draws the tilted line
-# ax.set_xlim(0,2.5)
-# ax.set_ylim(0,2.5)
-# ax.set_xlabel("V - J [AB mag]", fontsize=12)
-# ax.set_ylabel("U - V [AB mag]", fontsize=12)
-# ax.set_title("UVJ diagram for 0.9 < z < 1.1", fontsize=18)
-
-# ######################
-
-# # UVJ diagram for cat3
-# # 1.9 < z < 2.1
-
-# selection_cat3 = np.logical_and((data['z_phot'] > 1.9), (data['z_phot'] < 2.1), (data['CFHT_u_MAG'] < 50))
-
-# UV_cat3 = U[selection_cat3[0,:]] - V[selection_cat3[0,:]]
-# VJ_cat3 = V[selection_cat3[0,:]] - J[selection_cat3[0,:]]
-
-# fig3, ax = plt.subplots(figsize = (8, 6))
-# hb3 = ax.hexbin(VJ_cat3, UV_cat3, vmax = 50, cmap = "hot", gridsize = (173,100), mincnt = 0)
-# cb3 = fig3.colorbar(hb3, ax = ax)
-# cb3.set_label("Number of galaxies")
-# ax.plot([-4.0, 0.92], [1.3, 1.3], color = "g", lw = 5) #draws the horizontal line
-# ax.plot([1.6, 1.6], [1.9, 4], color = "g", lw = 5) #draws the vertical line
-# ax.plot([0.92, 1.6], [1.3, 1.9], color = "g", lw = 5) #draws the tilted line
-# ax.set_xlim(0,2.5)
-# ax.set_ylim(0,2.5)
-# ax.set_xlabel("V - J [AB mag]", fontsize=12)
-# ax.set_ylabel("U - V [AB mag]", fontsize=12)
-# ax.set_title("UVJ diagram for 1.9 < z < 2.1", fontsize=18)
-
-##################
-# Q/SF
 SFR = data['sfr'][0,:]
 
 
@@ -1153,101 +1085,36 @@ mass_QSF = np.array([[0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.25,2.5,2.75,3,3.25,3.5,3
          [NQ_error1,NQ_error2,NQ_error3,NQ_error4,NQ_error5,NQ_error6,NQ_error7,NQ_error8,
           NQ_error9,NQ_error10,NQ_error11,NQ_error12,NQ_error13,NQ_error14,NQ_error15]])
 
-# plots
-fig, ax = plt.subplots()
-SF = ax.errorbar(mass_QSF[0,:],mass_QSF[2,:], yerr = mass_QSF[3,:], fmt = "o", alpha = 0.7,
-            elinewidth = 0.7, capsize = 5, markeredgecolor = "b", markersize = 2, label='nSF')
-nQ = ax.errorbar(mass_QSF[0,:],mass_QSF[1,:], yerr = np.log10(mass_QSF[4,:]), fmt = "o", alpha = 0.7,
-            elinewidth = 0.7, capsize = 5, markeredgecolor = "r", markersize = 2, label='nQ')
-ax.set_xlim(0,4)
-ax.set_ylim(8,13)
-ax.set_yscale('log')
-ax.set_xlabel("redshift z", fontsize=12)
-ax.set_ylabel("Average mass", fontsize=12)
-ax.set_title("Average mass at redshift z", fontsize=18)
-
-
 """
-Following segment can be deleted when trendlines code is updated for all bins
-"""
-# plot(z, log10(mass))
-#Define redshift intervals for the SFRS
-SFR = data['sfr'][0,:]
-# 0 < z < 0.5
-SFR_cat1 = SFR[idUVJ_cat1[0,:]]
-SFR_nSF_cat1 = SFR_cat1[~IDS_cat1]
-SFR_nQ_cat1 = SFR_cat1[IDS_cat1]
-MASS_nSF_cat1 = m1[~IDS_cat1]
-MASS_nQ_cat1 = m1[IDS_cat1]
-
-# 0.5 < z < 1
-SFR_cat2 = SFR[idUVJ_cat3[0,:]]
-SFR_nSF_cat2 = SFR_cat2[~IDS_cat3]
-SFR_nQ_cat2 = SFR_cat2[IDS_cat3]
-MASS_nSF_cat2 = m3[~IDS_cat3]
-MASS_nQ_cat2 = m3[IDS_cat3]
-
-# 1 < z < 1.5
-SFR_cat3 = SFR[idUVJ_cat5[0,:]]
-SFR_nSF_cat3 = SFR_cat3[~IDS_cat5]
-SFR_nQ_cat3 = SFR_cat3[IDS_cat5]
-MASS_nSF_cat3 = m5[~IDS_cat5]
-MASS_nQ_cat3 = m5[IDS_cat5]
-
-# 1.5 < z < 2
-SFR_cat4 = SFR[idUVJ_cat7[0,:]]
-SFR_nSF_cat4 = SFR_cat4[~IDS_cat7]
-SFR_nQ_cat4 = SFR_cat4[IDS_cat7]
-MASS_nSF_cat4 = m7[~IDS_cat7]
-MASS_nQ_cat4 = m7[IDS_cat7]
-
-# 2 < z < 2.5
-SFR_cat5 = SFR[idUVJ_cat9[0,:]]
-SFR_nSF_cat5 = SFR_cat5[~IDS_cat9]
-SFR_nQ_cat5 = SFR_cat5[IDS_cat9]
-MASS_nSF_cat5 = m9[~IDS_cat9]
-MASS_nQ_cat5 = m9[IDS_cat9]
-
-# 2.5 < z < 3
-SFR_cat6 = SFR[idUVJ_cat11[0,:]]
-SFR_nSF_cat6 = SFR_cat6[~IDS_cat11]
-SFR_nQ_cat6 = SFR_cat6[IDS_cat11]
-MASS_nSF_cat6 = m11[~IDS_cat11]
-MASS_nQ_cat6 = m11[IDS_cat11]
-
-# 3 < z < 3.5
-SFR_cat7 = SFR[idUVJ_cat13[0,:]]
-SFR_nSF_cat7 = SFR_cat7[~IDS_cat13]
-SFR_nQ_cat7 = SFR_cat7[IDS_cat13]
-MASS_nSF_cat7 = m13[~IDS_cat13]
-MASS_nQ_cat7 = m13[IDS_cat13]
-
-# 3.5 < z < 4
-SFR_cat8 = SFR[idUVJ_cat15[0,:]]
-SFR_nSF_cat8 = SFR_cat8[~IDS_cat15]
-SFR_nQ_cat8 = SFR_cat8[IDS_cat15]
-MASS_nSF_cat8 = m15[~IDS_cat15]
-MASS_nQ_cat8 = m15[IDS_cat15]
-
-SFR_nSF_all = [*SFR_nSF_cat1, *SFR_nSF_cat2, *SFR_nSF_cat3, *SFR_nSF_cat4, *SFR_nSF_cat5, *SFR_nSF_cat6, *SFR_nSF_cat7, *SFR_nSF_cat8]
-SFR_nQ_all = [*SFR_nQ_cat1, *SFR_nQ_cat2, *SFR_nQ_cat3, *SFR_nQ_cat4, *SFR_nQ_cat5, *SFR_nQ_cat6, *SFR_nQ_cat7, *SFR_nQ_cat8]
-MASS_nSF_all = [*MASS_nSF_cat1, *MASS_nSF_cat2, *MASS_nSF_cat3, *MASS_nSF_cat4, *MASS_nSF_cat5, *MASS_nSF_cat6, *MASS_nSF_cat7, *MASS_nSF_cat8]
-MASS_nQ_all = [*MASS_nQ_cat1, *MASS_nQ_cat2, *MASS_nQ_cat3, *MASS_nQ_cat4, *MASS_nQ_cat5, *MASS_nQ_cat6, *MASS_nQ_cat7, *MASS_nQ_cat8]
-"""
-end of segment to be deleted
-"""
-
-
-#and the redshift vs stellar mass plot as a hexbin
+Mass vs redshift plot, showing observational bias
+the redshift vs stellar mass plot as a hexbin
 #### 
-mass_all = np.hstack((mean_mass_cat1,mean_mass_cat3,mean_mass_cat5,mean_mass_cat7,mean_mass_cat9,mean_mass_cat11,mean_mass_cat13,mean_mass_cat15))
+the data file we have doesnt work to display the full 
+range of masses bc the mass boundaries have already been set 
+with topcat when reading the file
+- therefore get new file 
+load the new data as follows 
+loading data as recarrays
+"""
+hdu_1 = fits.open('All_mass_filtered.fits',memmap=True)
+data_1 = hdu_1[1].data
 
-z = data['z_phot'][0,:][selection_all[0,:]]
+#Sort out the unvalid data 
+selection_all = np.logical_and((data_1['z_phot'] > 0), (data_1['z_phot'] < 4))
+id_positive_mass = np.logical_and((data_1['mass'][0,:]>0), (data_1['CFHT_u_MAG'] < 50))
+
+id_all_and_mass = selection_all[0,:] & id_positive_mass
+
+z_1 = data_1['z_phot'][0,:][id_all_and_mass[0,:]]
+
+
+mass_1 = (data_1['mass'][0,:])[id_all_and_mass[0,:]]
+
 plt.clf()
 fig, ax = plt.subplots()
 #alpha = 1
-SF_and_Q_MASS = ax.hexbin(x = z, y = mass_all, 
-                          vmax = 500, gridsize=100, 
+SF_and_Q_MASS = ax.hexbin(x = z_1, y = mass_1, 
+                          vmax = 100, gridsize=(346,200), 
                           cmap='Greys',mincnt=2,yscale = 'log', bins = 'log')
 
 SF = ax.errorbar(mass_QSF[0,:],mass_QSF[2,:], 
@@ -1268,11 +1135,15 @@ ax.set_ylim(10**6,10**13)
 ax.set_yscale('log')
 #ax.set_xscale('log')
 ax.set_xlabel("z", fontsize=14, font = "CAMBRIA", style = 'italic')
-ax.set_ylabel("$M_{\odot}$", fontsize=12)
+ax.set_ylabel("$M_{\odot}$", fontsize=14)
 
-ax.set_title("Average mass at redshift z", fontsize=18)
+ax.set_title("Average Stellar Mass at Redshift z \n", fontsize=14)
 plt.show()
 #####
+"""
+End of mass vs redshift plot
+"""
+
 
 
 
@@ -1280,6 +1151,7 @@ plt.show()
 09-05-2023
 Next, we wish to output plots of the Star Formation Rate as a function of the galaxy's solar mass
 It is of interest to distinguish between the star forming, denoted SF, and the Quiscent, denoted Q, which are categorized based on the boundaries in the Williams paper.
+note 1/6 2023: if we want previous method of simple regression, acces file title mastercode_24_05_2023 on github and insert code from there
 """
 #PLOTTE SFR vs SOLAR MASS
 
@@ -1303,14 +1175,11 @@ SFR_cat4_lower = SFR[idUVJ_cat7[0,:]]
 SFR_cat4_upper = SFR[idUVJ_cat9[0,:]]
 SFR_cat4 = np.hstack((SFR_cat4_lower,SFR_cat4_upper))
 
-
 # 2.5 < z < 4
 SFR_cat5_lower = SFR[idUVJ_cat11[0,:]]
 SFR_cat5_mid = SFR[idUVJ_cat13[0,:]]
 SFR_cat5_upper = SFR[idUVJ_cat15[0,:]]
 SFR_cat5 = np.hstack((SFR_cat5_lower, SFR_cat5_mid, SFR_cat5_upper))
-
-
 
 ###
 #We need intervals of approx same number of galaxies so the linear regression will be "weighted" correctly
@@ -1319,58 +1188,114 @@ def split(a, n):
     k, m = divmod(len(a), n)
     return (a[i*k+min(i, m):(i+1)*k+min(i+1, m)] for i in range(n))
 
-########################################################
+
+
+
+
+
+
+######################### SFR BIN 1 ###############################
 # #SFR BIN 1 - redshift 0-0.5 
-# SFR_nSF_cat1
+#define needed arrays
+SFR_SF_cat1 = SFR_cat1[~IDS_cat1]
+SFR_SF_cat1_id = np.logical_and(np.log10(SFR_SF_cat1)<2,np.log10(SFR_SF_cat1)>-3)
+SFR_SF_cat1 = SFR_SF_cat1[SFR_SF_cat1_id] #we filter so outliervalues of SFR are sorted out
 
-#make SFR averages for broad intervals of masses for SF for 0<z<0.5
-z_bin1_SFR_Mass = np.vstack((np.log10(mean_mass_cat1[~IDS_cat1]),np.log10(SFR_nSF_cat1)))
-#z_bin1_ave = np.average(xx,axis=1)
+SFR_Q_cat1 = SFR_cat1[IDS_cat1]
+
+mass_SF_cat1 = np.log10(mean_mass_cat1[~IDS_cat1])
+mass_SF_cat1 = mass_SF_cat1[SFR_SF_cat1_id] #we make sure to sort out masses corresponding to  galaxies with non valid SFR values
+
+mass_Q_cat1 = np.log10(mean_mass_cat1[IDS_cat1])
+
+#combine needed SF data into one variable
+SFR_mass_stacked_cat1 = np.transpose(np.vstack((np.log10(SFR_SF_cat1), mass_SF_cat1))) #mass_sf_cat1 is already logged
+
+#sort rows by mass
+ind_1 = np.lexsort((SFR_mass_stacked_cat1[:,1], SFR_mass_stacked_cat1[:,0]))  #so it will go from least to largest mass
+SFR_mass_stacked_cat1 = SFR_mass_stacked_cat1[ind_1] #sorts the entire 2 column matrix
 
 
+#use the split command to make 10 approx equally long arrays with galaxies
+SFR_segments_cat1 = list(split(SFR_mass_stacked_cat1[:,0],10))
+Mass_segments_cat1 = list(split(SFR_mass_stacked_cat1[:,1],10))
 
-## for these plots we need to seperate out the outliers - ie the ones for which log10(SFR)>4 and <-4 
-#otherwise our regression is gonna be skewed
 
-#mass 8-8.5
+#compute average SFR and mass values for each of 10 segments in redshift bin
+SFR_ave_cat1 = np.array([
+    np.average(SFR_segments_cat1[0]),
+    np.average(SFR_segments_cat1[1]),
+    np.average(SFR_segments_cat1[2]),
+    np.average(SFR_segments_cat1[3]),
+    np.average(SFR_segments_cat1[4]),
+    np.average(SFR_segments_cat1[5]),
+    np.average(SFR_segments_cat1[6]),
+    np.average(SFR_segments_cat1[7]),
+    np.average(SFR_segments_cat1[8]),
+    np.average(SFR_segments_cat1[9])
+    ])
 
-ID_BIN1_cat1 = np.logical_and(z_bin1_SFR_Mass[0,:]>=8,z_bin1_SFR_Mass[0,:]<8.5)
-INT1_sfr_cat1 = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN1_cat1],z_bin1_SFR_Mass[1,:][ID_BIN1_cat1]))
-
-#mass 8.5-9
-ID_BIN2_cat1 = np.logical_and(z_bin1_SFR_Mass[0,:]>=8.5,z_bin1_SFR_Mass[0,:]<9)
-INT2_sfr_cat1 = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN2_cat1],z_bin1_SFR_Mass[1,:][ID_BIN2_cat1]))
-
-#mass 9-9.5
-ID_BIN3_cat1 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9,z_bin1_SFR_Mass[0,:]<9.5)
-INT3_sfr_cat1 = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN3_cat1],z_bin1_SFR_Mass[1,:][ID_BIN3_cat1]))
-
-#mass 9.5-10.5
-ID_BIN4_cat1 = np.logical_and(z_bin1_SFR_Mass[0,:]>=9.5,z_bin1_SFR_Mass[0,:]<10.5)
-INT4_sfr_cat1 = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN4_cat1],z_bin1_SFR_Mass[1,:][ID_BIN4_cat1]))
-
-#mass 10.5-12
-ID_BIN5_cat1 = np.logical_and(z_bin1_SFR_Mass[0,:]>=10.5,z_bin1_SFR_Mass[0,:]<12)
-INT5_sfr_cat1 = np.vstack((z_bin1_SFR_Mass[0,:][ID_BIN5_cat1],z_bin1_SFR_Mass[1,:][ID_BIN5_cat1]))
-
-INT_mass_cat1 = np.array([np.mean(INT1_sfr_cat1[0,:]),np.mean(INT2_sfr_cat1[0,:]),np.mean(INT3_sfr_cat1[0,:]),np.mean(INT4_sfr_cat1[0,:]),np.mean(INT5_sfr_cat1[0,:])])
-INT_SFR_cat1 = np.array([np.mean(INT1_sfr_cat1[1,:]),np.mean(INT2_sfr_cat1[1,:]),np.mean(INT3_sfr_cat1[1,:]),np.mean(INT4_sfr_cat1[1,:]),np.mean(INT5_sfr_cat1[1,:])])
+Mass_ave_cat1 = np.array([
+    np.average(Mass_segments_cat1[0]),
+    np.average(Mass_segments_cat1[1]),
+    np.average(Mass_segments_cat1[2]),
+    np.average(Mass_segments_cat1[3]),
+    np.average(Mass_segments_cat1[4]),
+    np.average(Mass_segments_cat1[5]),
+    np.average(Mass_segments_cat1[6]),
+    np.average(Mass_segments_cat1[7]),
+    np.average(Mass_segments_cat1[8]),
+    np.average(Mass_segments_cat1[9])
+    ])
 
 #calculate equation for trendline
-zINT1 = np.polyfit(INT_mass_cat1, INT_SFR_cat1, 1)
+zINT1 = np.polyfit(Mass_ave_cat1, SFR_ave_cat1, 1) #1 means poly of 1st order ie linear
 pINT1 = np.poly1d(zINT1)
 
+# # PLOTS FOR  SFR BIN 1, redshift 0-0.5 # #
+plt.clf()
+fig, ax1 = plt.subplots()
+
+mass_array = range(10**7, 10**12, 10000000)
+logmass = np.log10(mass_array)
+lookback1 = 10.754
+logSF1 = (0.84 - 0.026*lookback1)*np.log10(mass_array) - (6.51 - 0.11*lookback1)
+
+SFR_SF_cat1_p = ax1.hexbin(mass_SF_cat1, np.log10(SFR_SF_cat1),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
+SFR_Q_cat1_p = ax1.hexbin(mass_Q_cat1, np.log10(SFR_Q_cat1),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+trendpoints_our_cat1 = ax1.scatter(Mass_ave_cat1,SFR_ave_cat1, c='gold', s = 60, marker = 'x')
+
+trend_our_cat1 = ax1.plot(Mass_ave_cat1,pINT1(Mass_ave_cat1),color="limegreen", linewidth=2, linestyle="-",label='Simple regression',zorder=100)
+trend_paper_cat1 = ax1.plot(logmass,logSF1,c="crimson",ls="-.",lw=2, label= 'Speagle et al')
+
+cb1 = fig.colorbar(SFR_SF_cat1_p)
+cb2 = fig.colorbar(SFR_Q_cat1_p)
+
+cb1.set_label("Number of SF galaxies", fontsize=10)
+cb2.set_label("Number of Q galaxies", fontsize=10)
+ax1.set_title('SFR as related to mass for 0 < z < 0.5 \n',fontsize = 14,loc = 'left')
+ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
+ax1.set_ylabel('$log_{10}$(SFR)')
+ax1.set_ylim(-4,4)  
+ax1.set_xlim(8,12)
+plt.legend()
+plt.show()
+# end of SFR Bin 1 #
 
 
 
-
-
-################################################################
+############################# SFR BIN 2 ###################################
 #SFR BIN 2 - redshift 0.5-1 
 
 SFR_SF_cat2 = SFR_cat2[~IDS_cat3]
+SFR_SF_cat2_id = np.logical_and(np.log10(SFR_SF_cat2)<4,np.log10(SFR_SF_cat2)>-4)
+SFR_SF_cat2 = SFR_SF_cat2[SFR_SF_cat2_id] #we filter so outliervalues of SFR are sorted out
+
 SFR_Q_cat2 = SFR_cat2[IDS_cat3]
+
 mass_SF_cat2 = np.log10(mean_mass_cat3[~IDS_cat3])
+mass_SF_cat2 = mass_SF_cat2[SFR_SF_cat2_id] #we make sure to sort out masses corresponding to  galaxies with non valid SFR values
+
 mass_Q_cat2 = np.log10(mean_mass_cat3[IDS_cat3])
 
 #combine needed SF data into one variable
@@ -1385,7 +1310,7 @@ SFR_segments_cat2 = list(split(SFR_mass_stacked_cat2[:,0],10))
 Mass_segments_cat2 = list(split(SFR_mass_stacked_cat2[:,1],10))
 
 
-#compute average values for each segment
+#compute average SFR and mass values for each of 10 segments in redshift bin
 SFR_ave_cat2 = np.array([
     np.average(SFR_segments_cat2[0]),
     np.average(SFR_segments_cat2[1]),
@@ -1416,155 +1341,14 @@ Mass_ave_cat2 = np.array([
 zINT2 = np.polyfit(Mass_ave_cat2, SFR_ave_cat2, 1) #1 means poly of 1st order ie linear
 pINT2 = np.poly1d(zINT2)
 
-################################################################
-#SFR BIN 3 - redshift 1-1.5 
-# SFR_nSF_cat3
-z_bin3_SFR_Mass = np.vstack((np.log10(mean_mass_cat5[~IDS_cat5]),np.log10(SFR_nSF_cat3)))
-
-#mass 8-8.5
-ID_BIN1_cat3 = np.logical_and(z_bin3_SFR_Mass[0,:]>=8,z_bin3_SFR_Mass[0,:]<8.5)
-INT1_sfr_cat3 = np.vstack((z_bin3_SFR_Mass[0,:][ID_BIN1_cat3],z_bin3_SFR_Mass[1,:][ID_BIN1_cat3]))
-
-#mass 8.5-9
-ID_BIN2_cat3 = np.logical_and(z_bin3_SFR_Mass[0,:]>=8.5,z_bin3_SFR_Mass[0,:]<9)
-INT2_sfr_cat3 = np.vstack((z_bin3_SFR_Mass[0,:][ID_BIN2_cat3],z_bin3_SFR_Mass[1,:][ID_BIN2_cat3]))
-
-#mass 9-9.5
-ID_BIN3_cat3 = np.logical_and(z_bin3_SFR_Mass[0,:]>=9,z_bin3_SFR_Mass[0,:]<9.5)
-INT3_sfr_cat3 = np.vstack((z_bin3_SFR_Mass[0,:][ID_BIN3_cat3],z_bin3_SFR_Mass[1,:][ID_BIN3_cat3]))
-
-#mass 9.5-10.5
-ID_BIN4_cat3 = np.logical_and(z_bin3_SFR_Mass[0,:]>=9.5,z_bin3_SFR_Mass[0,:]<10.5)
-INT4_sfr_cat3 = np.vstack((z_bin3_SFR_Mass[0,:][ID_BIN4_cat3],z_bin3_SFR_Mass[1,:][ID_BIN4_cat3]))
-
-#mass 10.5-12
-ID_BIN5_cat3 = np.logical_and(z_bin3_SFR_Mass[0,:]>=10.5,z_bin3_SFR_Mass[0,:]<12)
-INT5_sfr_cat3 = np.vstack((z_bin3_SFR_Mass[0,:][ID_BIN5_cat3],z_bin3_SFR_Mass[1,:][ID_BIN5_cat3]))
-
-INT_mass_cat3 = np.array([np.mean(INT1_sfr_cat3[0,:]),np.mean(INT2_sfr_cat3[0,:]),np.mean(INT3_sfr_cat3[0,:]),np.mean(INT4_sfr_cat3[0,:]),np.mean(INT5_sfr_cat3[0,:])])
-INT_SFR_cat3 = np.array([np.mean(INT1_sfr_cat3[1,:]),np.mean(INT2_sfr_cat3[1,:]),np.mean(INT3_sfr_cat3[1,:]),np.mean(INT4_sfr_cat3[1,:]),np.mean(INT5_sfr_cat3[1,:])])
-
-
-#calculate equation for trendline
-zINT3 = np.polyfit(INT_mass_cat3, INT_SFR_cat3, 1)
-pINT3 = np.poly1d(zINT3)
-
-################################################################
-#SFR BIN 4 - redshift 1.5-2.5 
-# SFR_nSF_cat4
-mass_of_z1525 =  [*np.log10(mean_mass_cat7[~IDS_cat7]),*np.log10(mean_mass_cat9[~IDS_cat9])]
-sfr_of_z1525 = [*np.log10(SFR_nSF_cat4),*np.log10(SFR_nSF_cat5)]
-z_bin4_SFR_Mass = np.vstack((mass_of_z1525,sfr_of_z1525))
-
-#mass 8-8.5
-ID_BIN1_cat4 = np.logical_and(z_bin4_SFR_Mass[0,:]>=8,z_bin4_SFR_Mass[0,:]<8.5)
-INT1_sfr_cat4 = np.vstack((z_bin4_SFR_Mass[0,:][ID_BIN1_cat4],z_bin4_SFR_Mass[1,:][ID_BIN1_cat4]))
-
-#mass 8.5-9
-ID_BIN2_cat4 = np.logical_and(z_bin4_SFR_Mass[0,:]>=8.5,z_bin4_SFR_Mass[0,:]<9)
-INT2_sfr_cat4 = np.vstack((z_bin4_SFR_Mass[0,:][ID_BIN2_cat4],z_bin4_SFR_Mass[1,:][ID_BIN2_cat4]))
-
-#mass 9-9.5
-ID_BIN3_cat4 = np.logical_and(z_bin4_SFR_Mass[0,:]>=9,z_bin4_SFR_Mass[0,:]<9.5)
-INT3_sfr_cat4 = np.vstack((z_bin4_SFR_Mass[0,:][ID_BIN3_cat4],z_bin4_SFR_Mass[1,:][ID_BIN3_cat4]))
-
-#mass 9.5-10.5
-ID_BIN4_cat4 = np.logical_and(z_bin4_SFR_Mass[0,:]>=9.5,z_bin4_SFR_Mass[0,:]<10.5)
-INT4_sfr_cat4 = np.vstack((z_bin4_SFR_Mass[0,:][ID_BIN4_cat4],z_bin4_SFR_Mass[1,:][ID_BIN4_cat4]))
-
-#mass 10.5-12
-ID_BIN5_cat4 = np.logical_and(z_bin4_SFR_Mass[0,:]>=10.5,z_bin4_SFR_Mass[0,:]<12)
-INT5_sfr_cat4 = np.vstack((z_bin4_SFR_Mass[0,:][ID_BIN5_cat4],z_bin4_SFR_Mass[1,:][ID_BIN5_cat4]))
-
-INT_mass_cat4 = np.array([np.mean(INT1_sfr_cat4[0,:]),np.mean(INT2_sfr_cat4[0,:]),np.mean(INT3_sfr_cat4[0,:]),np.mean(INT4_sfr_cat4[0,:]),np.mean(INT5_sfr_cat4[0,:])])
-INT_SFR_cat4 = np.array([np.mean(INT1_sfr_cat4[1,:]),np.mean(INT2_sfr_cat4[1,:]),np.mean(INT3_sfr_cat4[1,:]),np.mean(INT4_sfr_cat4[1,:]),np.mean(INT5_sfr_cat4[1,:])])
-#calculate equation for trendline
-zINT4 = np.polyfit(INT_mass_cat4, INT_SFR_cat4, 1)
-pINT4 = np.poly1d(zINT4)
-
-################################################################
-#SFR BIN 5 - redshift 2.5 - 4 
-
-mass_of_z2540 =  [*np.log10(mean_mass_cat11[~IDS_cat11]),*np.log10(mean_mass_cat13[~IDS_cat13]),*np.log10(mean_mass_cat15[~IDS_cat15])]
-sfr_of_z2540 = [*np.log10(SFR_nSF_cat6),*np.log10(SFR_nSF_cat7),*np.log10(SFR_nSF_cat8)]
-z_bin5_SFR_Mass = np.vstack((mass_of_z2540,sfr_of_z2540))
-
-#mass 8-8.5
-ID_BIN1_cat5 = np.logical_and(z_bin5_SFR_Mass[0,:]>=8,z_bin5_SFR_Mass[0,:]<8.5)
-INT1_sfr_cat5 = np.vstack((z_bin5_SFR_Mass[0,:][ID_BIN1_cat5],z_bin5_SFR_Mass[1,:][ID_BIN1_cat5]))
-
-#mass 8.5-9
-ID_BIN2_cat5 = np.logical_and(z_bin5_SFR_Mass[0,:]>=8.5,z_bin5_SFR_Mass[0,:]<9)
-INT2_sfr_cat5 = np.vstack((z_bin5_SFR_Mass[0,:][ID_BIN2_cat5],z_bin5_SFR_Mass[1,:][ID_BIN2_cat5]))
-
-#mass 9-9.5
-ID_BIN3_cat5 = np.logical_and(z_bin5_SFR_Mass[0,:]>=9,z_bin5_SFR_Mass[0,:]<9.5)
-INT3_sfr_cat5 = np.vstack((z_bin5_SFR_Mass[0,:][ID_BIN3_cat5],z_bin5_SFR_Mass[1,:][ID_BIN3_cat5]))
-
-#mass 9.5-10.5
-ID_BIN4_cat5 = np.logical_and(z_bin5_SFR_Mass[0,:]>=9.5,z_bin5_SFR_Mass[0,:]<10.5)
-INT4_sfr_cat5 = np.vstack((z_bin5_SFR_Mass[0,:][ID_BIN4_cat5],z_bin5_SFR_Mass[1,:][ID_BIN4_cat5]))
-
-#mass 10.5-12
-ID_BIN5_cat5 = np.logical_and(z_bin5_SFR_Mass[0,:]>=10.5,z_bin5_SFR_Mass[0,:]<12)
-INT5_sfr_cat5 = np.vstack((z_bin5_SFR_Mass[0,:][ID_BIN5_cat5],z_bin5_SFR_Mass[1,:][ID_BIN5_cat5]))
-
-INT_mass_cat5 = np.array([np.mean(INT1_sfr_cat5[0,:]),np.mean(INT2_sfr_cat5[0,:]),np.mean(INT3_sfr_cat5[0,:]),np.mean(INT4_sfr_cat5[0,:]),np.mean(INT5_sfr_cat5[0,:])])
-INT_SFR_cat5 = np.array([np.mean(INT1_sfr_cat5[1,:]),np.mean(INT2_sfr_cat5[1,:]),np.mean(INT3_sfr_cat5[1,:]),np.mean(INT4_sfr_cat5[1,:]),np.mean(INT5_sfr_cat5[1,:])])
-#calculate equation for trendline
-zINT5 = np.polyfit(INT_mass_cat5, INT_SFR_cat5, 1)
-pINT5 = np.poly1d(zINT5)
-
-
-
-#######
-
-#commence plot
-plt.clf()
-fig, ax1 = plt.subplots()
-
-mass_array = range(10**7, 10**12, 10000000)
-logmass = np.log10(mass_array)
-lookback1 = 10.754
-logSF1 = (0.84 - 0.026*lookback1)*np.log10(mass_array) - (6.51 - 0.011*lookback1)
-
-#all the data points for the redshift bin
-SFR_SF_cat1_p = ax1.hexbin(np.log10(mean_mass_cat1[~IDS_cat1]), np.log10(SFR_nSF_cat1),vmax = 3, cmap = "Blues", mincnt = 1, gridsize=(346,200))
-SFR_Q_cat1_p = ax1.hexbin(np.log10(mean_mass_cat1[IDS_cat1]), np.log10(SFR_nQ_cat1),vmax = 3, cmap = "Reds", mincnt = 1, gridsize=(346,200))
-
-trend_our_cat1 = ax1.plot(INT_mass_cat1,pINT1(INT_mass_cat1),color="limegreen", linewidth=2, linestyle="-", label = 'Simple regression')
-trend_paper_cat1 = ax1.plot(logmass,logSF1,c="crimson",ls="-.",lw=2,label= 'Speagle et al')
-
-trend_points_cat1 = ax1.scatter(INT_mass_cat1,INT_SFR_cat1, c='orange', s = 100, marker = 'x')
-
-cb1 = fig.colorbar(SFR_SF_cat1_p)
-cb2 = fig.colorbar(SFR_Q_cat1_p)
-cb1.set_label("Number of SF galaxies", fontsize=10)
-cb2.set_label("Number of Q galaxies", fontsize=10)
-ax1.set_title('SFR as related to mass for 0 < z < 0.5 \n', fontsize = 14, loc = 'left')
-ax1.set_xlabel('$log_{10}$ ($M_{\odot}$)')
-ax1.set_ylabel('$log_{10}$(SFR)')
-ax1.set_ylim(-4,2) # cut v -4 fordi der kommer linjer fra SED- fitting modellerne v lavere SFR
-ax1.set_xlim(8,12)
-
-plt.legend()
-plt.show()
-
-####
-#SFR BIN 2 - corresponding to redshift interval earlier called cat3 
-SFR_SF_cat2 = SFR_cat2[~IDS_cat3]
-SFR_Q_cat2 = SFR_cat2[IDS_cat3]
-mass_SF_cat2 = np.log10(mean_mass_cat3[~IDS_cat3])
-mass_Q_cat2 = np.log10(mean_mass_cat3[IDS_cat3])
-
-#commence plot
+# # PLOTS FOR  SFR BIN 2, redshift 0.5-1 # #
 plt.clf()
 fig, ax2 = plt.subplots()
 
 mass_array = range(10**7, 10**12, 10000000)
 logmass = np.log10(mass_array)
 lookback2 = 7.069
-logSF2 = (0.84 - 0.026*lookback2)*np.log10(mass_array) - (6.51 - 0.011*lookback2)
+logSF2 = (0.84 - 0.026*lookback2)*np.log10(mass_array) - (6.51 - 0.11*lookback2)
 
 SFR_SF_cat2_p = ax2.hexbin(mass_SF_cat2, np.log10(SFR_SF_cat2),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
 SFR_Q_cat2_p = ax2.hexbin(mass_Q_cat2, np.log10(SFR_Q_cat2),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
@@ -1591,89 +1375,244 @@ plt.show() #Once again it is seen how theres a significant increase in the avera
 #expect higher cross section value  as z increase
 #bin logmass 0.3 ish - show trend. fit ave
 #compare w relation from paper
+#
+# end of SFR Bin 2 #
 
-####
-#SFR BIN 3 - redshift 1-1.5
+
+
+############################## SFR BIN 3 ##################################
+#SFR BIN 3 - redshift 1-1.5 
+#
 SFR_SF_cat3 = SFR_cat3[~IDS_cat5]
+SFR_SF_cat3_id = np.logical_and(np.log10(SFR_SF_cat3)<4,np.log10(SFR_SF_cat3)>-4)
+SFR_SF_cat3 = SFR_SF_cat3[SFR_SF_cat3_id] #we filter so outliervalues of SFR are sorted out
 SFR_Q_cat3 = SFR_cat3[IDS_cat5]
+
 mass_SF_cat3 = np.log10(mean_mass_cat5[~IDS_cat5])
+mass_SF_cat3 = mass_SF_cat3[SFR_SF_cat3_id] #we make sure to sort out masses corresponding to  galaxies with non valid SFR values
 mass_Q_cat3 = np.log10(mean_mass_cat5[IDS_cat5])
 
-#commence plot
-plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of previous
+#combine needed SF data into one variable
+SFR_mass_stacked_cat3 = np.transpose(np.vstack((np.log10(SFR_SF_cat3), mass_SF_cat3))) #mass_sf_cat2 is already logged
+
+#sort rows by mass
+ind_3 = np.lexsort((SFR_mass_stacked_cat3[:,1], SFR_mass_stacked_cat3[:,0]))  #so it will go from least to largest mass
+SFR_mass_stacked_cat3 = SFR_mass_stacked_cat3[ind_3] #sorts the entire 2 column matrix
+
+#use the split command to make 10 approx equally long arrays with galaxies
+SFR_segments_cat3 = list(split(SFR_mass_stacked_cat3[:,0],10))
+Mass_segments_cat3 = list(split(SFR_mass_stacked_cat3[:,1],10))
+
+#compute average SFR and mass values for each of 10 segments in redshift bin
+SFR_ave_cat3 = np.array([
+    np.average(SFR_segments_cat3[0]),
+    np.average(SFR_segments_cat3[1]),
+    np.average(SFR_segments_cat3[2]),
+    np.average(SFR_segments_cat3[3]),
+    np.average(SFR_segments_cat3[4]),
+    np.average(SFR_segments_cat3[5]),
+    np.average(SFR_segments_cat3[6]),
+    np.average(SFR_segments_cat3[7]),
+    np.average(SFR_segments_cat3[8]),
+    np.average(SFR_segments_cat3[9])
+    ])
+
+Mass_ave_cat3 = np.array([
+    np.average(Mass_segments_cat3[0]),
+    np.average(Mass_segments_cat3[1]),
+    np.average(Mass_segments_cat3[2]),
+    np.average(Mass_segments_cat3[3]),
+    np.average(Mass_segments_cat3[4]),
+    np.average(Mass_segments_cat3[5]),
+    np.average(Mass_segments_cat3[6]),
+    np.average(Mass_segments_cat3[7]),
+    np.average(Mass_segments_cat3[8]),
+    np.average(Mass_segments_cat3[9])
+    ])
+
+#calculate equation for trendline
+zINT3 = np.polyfit(Mass_ave_cat3, SFR_ave_cat3, 1) #1 means poly of 1st order ie linear
+pINT3 = np.poly1d(zINT3)
+
+# # PLOTS FOR  SFR BIN 3, redshift 1.0-1.5 # #
+plt.clf()
 fig, ax3 = plt.subplots()
 
 mass_array = range(10**7, 10**12, 10000000)
 logmass = np.log10(mass_array)
 lookback3 = 5.011
-logSF3 = (0.84 - 0.026*lookback3)*np.log10(mass_array) - (6.51 - 0.011*lookback3)
+logSF3 = (0.84 - 0.026*lookback3)*np.log10(mass_array) - (6.51 - 0.11*lookback3)
 
-SFR_SF_cat3_p = ax3.hexbin(mass_SF_cat3, np.log10(SFR_SF_cat3), vmax = 10, cmap = "Blues", mincnt = 1, gridsize=(346,200))
-SFR_Q_cat3_p = ax3.hexbin(mass_Q_cat3, np.log10(SFR_Q_cat3), vmax = 2, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+SFR_SF_cat3_p = ax3.hexbin(mass_SF_cat3, np.log10(SFR_SF_cat3),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
+SFR_Q_cat3_p = ax3.hexbin(mass_Q_cat3, np.log10(SFR_Q_cat3),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+trendpoints_our_cat3 = ax3.scatter(Mass_ave_cat3, SFR_ave_cat3, c='gold', s = 60, marker = 'x')
 
-trend_our_cat3 = ax3.plot(INT_mass_cat3,pINT3(INT_mass_cat3),color="limegreen", linewidth=2, linestyle="-", label = 'Simple regression')
-trend_paper_cat3 = ax3.plot(logmass,logSF3,c="crimson",ls="-.",lw=2, label = 'Speagle et al')
-trend_points_cat3 = ax3.scatter(INT_mass_cat3,INT_SFR_cat3, c='orange', s = 100, marker = 'x')
+trend_our_cat3 = ax3.plot(Mass_ave_cat3,pINT3(Mass_ave_cat3),color="limegreen", linewidth=2, linestyle="-",label='Simple regression',zorder=100)
+trend_paper_cat3 = ax3.plot(logmass,logSF3,c="crimson",ls="-.",lw=2, label= 'Speagle et al')
 
 cb1 = fig.colorbar(SFR_SF_cat3_p)
 cb2 = fig.colorbar(SFR_Q_cat3_p)
+
 cb1.set_label("Number of SF galaxies", fontsize=10)
 cb2.set_label("Number of Q galaxies", fontsize=10)
-ax3.set_title('SFR as related to mass for 1 < z < 1.5 \n',fontsize = 14, loc = 'left')
+ax3.set_title('SFR as related to mass for 1 < z < 1.5 \n',fontsize = 14,loc = 'left')
 ax3.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax3.set_ylabel('$log_{10}$(SFR)')
-ax3.set_ylim(-6,4)
+ax3.set_ylim(-4,4)  
 ax3.set_xlim(8,12)
-
 plt.legend()
-plt.show()  #only every 10th point is plotted bc otherwise it is difficult to discern tendency
+plt.show()
+# end of SFR bin 3 #
 
-####
-#SFR BIN 4 - redshift 1.5-2.5
+
+
+############################### SFR BIN 4 #################################
+#SFR BIN 4 - redshift 1.5-2.5 
+
 newIDS_cat4 = np.hstack((IDS_cat7,IDS_cat9)) #combining 2 redshift bins into 1 
 SFR_SF_cat4 = SFR_cat4[~newIDS_cat4]
+SFR_SF_cat4_id = np.logical_and(np.log10(SFR_SF_cat4)<4,np.log10(SFR_SF_cat4)>-4)
+SFR_SF_cat4 = SFR_SF_cat4[SFR_SF_cat4_id]
+
 SFR_Q_cat4 = SFR_cat4[newIDS_cat4]
+
 mass_SF_cat4 = np.log10(np.hstack((mean_mass_cat7[~IDS_cat7],mean_mass_cat9[~IDS_cat9])))
+mass_SF_cat4 = mass_SF_cat4[SFR_SF_cat4_id] #we make sure to sort out masses corresponding to  galaxies with non valid SFR values
 mass_Q_cat4 = np.log10(np.hstack((mean_mass_cat7[IDS_cat7],mean_mass_cat9[IDS_cat9])))
 
-#commence plot
-plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
-fig, ax4 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
+#combine needed SF data into one variable
+SFR_mass_stacked_cat4 = np.transpose(np.vstack((np.log10(SFR_SF_cat4), mass_SF_cat4))) #mass_sf_cat4 is already logged
+
+#sort rows by mass
+ind_4 = np.lexsort((SFR_mass_stacked_cat4[:,1], SFR_mass_stacked_cat4[:,0]))  #so it will go from least to largest mass
+SFR_mass_stacked_cat4 = SFR_mass_stacked_cat4[ind_4] #sorts the entire 2 column matrix
+
+#use the split command to make 10 approx equally long arrays with galaxies
+SFR_segments_cat4 = list(split(SFR_mass_stacked_cat4[:,0],10))
+Mass_segments_cat4 = list(split(SFR_mass_stacked_cat4[:,1],10))
+
+#compute average SFR and mass values for each of 10 segments in redshift bin
+SFR_ave_cat4 = np.array([
+    np.average(SFR_segments_cat4[0]),
+    np.average(SFR_segments_cat4[1]),
+    np.average(SFR_segments_cat4[2]),
+    np.average(SFR_segments_cat4[3]),
+    np.average(SFR_segments_cat4[4]),
+    np.average(SFR_segments_cat4[5]),
+    np.average(SFR_segments_cat4[6]),
+    np.average(SFR_segments_cat4[7]),
+    np.average(SFR_segments_cat4[8]),
+    np.average(SFR_segments_cat4[9])
+    ])
+
+Mass_ave_cat4 = np.array([
+    np.average(Mass_segments_cat4[0]),
+    np.average(Mass_segments_cat4[1]),
+    np.average(Mass_segments_cat4[2]),
+    np.average(Mass_segments_cat4[3]),
+    np.average(Mass_segments_cat4[4]),
+    np.average(Mass_segments_cat4[5]),
+    np.average(Mass_segments_cat4[6]),
+    np.average(Mass_segments_cat4[7]),
+    np.average(Mass_segments_cat4[8]),
+    np.average(Mass_segments_cat4[9])
+    ])
+
+#calculate equation for trendline
+zINT4 = np.polyfit(Mass_ave_cat4, SFR_ave_cat4, 1) #1 means poly of 1st order ie linear
+pINT4 = np.poly1d(zINT4)
+
+# # PLOTS FOR  SFR BIN 4, redshift 1.5-2.5 # #
+plt.clf()
+fig, ax4 = plt.subplots()
 
 mass_array = range(10**7, 10**12, 10000000)
 logmass = np.log10(mass_array)
 lookback4 = 3.316
-logSF4 = (0.84 - 0.026*lookback4)*np.log10(mass_array) - (6.51 - 0.011*lookback4)
+logSF4 = (0.84 - 0.026*lookback4)*np.log10(mass_array) - (6.51 - 0.11*lookback4)
 
-SFR_SF_cat4_p = ax4.hexbin(mass_SF_cat4, np.log10(SFR_SF_cat4), vmax = 15, cmap = "Blues", mincnt = 1, gridsize=(346,200)) #only every 10 point is plotted
-SFR_Q_cat4_p = ax4.hexbin(mass_Q_cat4, np.log10(SFR_Q_cat4), vmax = 2, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+SFR_SF_cat4_p = ax4.hexbin(mass_SF_cat4, np.log10(SFR_SF_cat4),vmax = 8, cmap = "Blues", mincnt = 0.5, gridsize=(346,200))
+SFR_Q_cat4_p = ax4.hexbin(mass_Q_cat4, np.log10(SFR_Q_cat4),vmax = 3, cmap = "Reds", mincnt = 0.5, gridsize=(346,200))
+trendpoints_our_cat4 = ax4.scatter(Mass_ave_cat4, SFR_ave_cat4, c='gold', s = 60, marker = 'x')
 
-trend_our_cat4 = ax4.plot(INT_mass_cat4,pINT4(INT_mass_cat4),color="limegreen", linewidth=2, linestyle="-", label = 'Simple regression')
-trend_paper_cat4 = ax4.plot(logmass,logSF4,c="crimson",ls="-.",lw=2, label = 'Speagle et al')
-trend_points_cat4 = ax4.scatter(INT_mass_cat4,INT_SFR_cat4, c='orange', s = 100, marker = 'x')
+trend_our_cat4 = ax4.plot(Mass_ave_cat4,pINT4(Mass_ave_cat4),color="limegreen", linewidth=2, linestyle="-",label='Simple regression',zorder=100)
+trend_paper_cat4 = ax4.plot(logmass,logSF4,c="crimson",ls="-.",lw=2, label= 'Speagle et al')
 
 cb1 = fig.colorbar(SFR_SF_cat4_p)
 cb2 = fig.colorbar(SFR_Q_cat4_p)
+
 cb1.set_label("Number of SF galaxies", fontsize=10)
 cb2.set_label("Number of Q galaxies", fontsize=10)
-ax4.set_title('SFR as related to mass for 1.5 < z < 2.5 \n', loc = 'left')
+ax4.set_title('SFR as related to mass for 1.5 < z < 2.5 \n',fontsize = 14,loc = 'left')
 ax4.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax4.set_ylabel('$log_{10}$(SFR)')
-ax4.set_ylim(-6,4)
+ax4.set_ylim(-4,4)  
 ax4.set_xlim(8,12)
-
 plt.legend()
 plt.show()
+# end of SFR bin 4 #
 
-####
-#SFR B IN 5 - redshift 2.5-4
+
+
+
+############################# SFR BIN 5 ###################################
+#SFR BIN 5 - redshift 2.5 - 4 
+
 newIDS_cat5 = np.hstack((IDS_cat11,IDS_cat13,IDS_cat15)) #combining 2 redshift bins into 1 
 SFR_SF_cat5 = SFR_cat5[~newIDS_cat5]
+SFR_SF_cat5_id = np.logical_and(np.log10(SFR_SF_cat5)<4,np.log10(SFR_SF_cat5)>-4)
+
+
 SFR_Q_cat5 = SFR_cat5[newIDS_cat5]
 mass_SF_cat5 = np.log10(np.hstack((mean_mass_cat11[~IDS_cat11],mean_mass_cat13[~IDS_cat13],mean_mass_cat15[~IDS_cat15])))
+mass_SF_cat5 = mass_SF_cat5[SFR_SF_cat5_id] #we make sure to sort out masses corresponding to  galaxies with non valid SFR values
+
 mass_Q_cat5 = np.log10(np.hstack((mean_mass_cat11[IDS_cat11],mean_mass_cat13[IDS_cat13],mean_mass_cat15[IDS_cat15])))
 
-#commence plot
+#combine needed SF data into one variable
+SFR_mass_stacked_cat5 = np.transpose(np.vstack((np.log10(SFR_SF_cat5), mass_SF_cat5))) #mass_sf_cat4 is already logged
+
+#sort rows by mass
+ind_5 = np.lexsort((SFR_mass_stacked_cat5[:,1], SFR_mass_stacked_cat5[:,0]))  #so it will go from least to largest mass
+SFR_mass_stacked_cat5 = SFR_mass_stacked_cat5[ind_5] #sorts the entire 2 column matrix
+
+#use the split command to make 10 approx equally long arrays with galaxies
+SFR_segments_cat5 = list(split(SFR_mass_stacked_cat5[:,0],10))
+Mass_segments_cat5 = list(split(SFR_mass_stacked_cat5[:,1],10))
+
+#compute average SFR and mass values for each of 10 segments in redshift bin
+SFR_ave_cat5 = np.array([
+    np.average(SFR_segments_cat5[0]),
+    np.average(SFR_segments_cat5[1]),
+    np.average(SFR_segments_cat5[2]),
+    np.average(SFR_segments_cat5[3]),
+    np.average(SFR_segments_cat5[4]),
+    np.average(SFR_segments_cat5[5]),
+    np.average(SFR_segments_cat5[6]),
+    np.average(SFR_segments_cat5[7]),
+    np.average(SFR_segments_cat5[8]),
+    np.average(SFR_segments_cat5[9])
+    ])
+
+Mass_ave_cat5 = np.array([
+    np.average(Mass_segments_cat5[0]),
+    np.average(Mass_segments_cat5[1]),
+    np.average(Mass_segments_cat5[2]),
+    np.average(Mass_segments_cat5[3]),
+    np.average(Mass_segments_cat5[4]),
+    np.average(Mass_segments_cat5[5]),
+    np.average(Mass_segments_cat5[6]),
+    np.average(Mass_segments_cat5[7]),
+    np.average(Mass_segments_cat5[8]),
+    np.average(Mass_segments_cat5[9])
+    ])
+
+#calculate equation for trendline
+zINT5 = np.polyfit(Mass_ave_cat5, SFR_ave_cat5, 1) #1 means poly of 1st order ie linear
+pINT5 = np.poly1d(zINT5)
+
+# # PLOTS FOR  SFR BIN 5, redshift 2.5-4 # #
+
 plt.clf() #we clear the plot so matplotlib doesnt accidentlly plot on top of prev
 fig, ax5 = plt.subplots() #there's no pythonic reason for calling the figure ax"number" - its solely for readability
 
@@ -1682,26 +1621,26 @@ logmass = np.log10(mass_array)
 lookback5 = 1.985
 logSF5 = (0.84 - 0.026*lookback5)*np.log10(mass_array) - (6.51 - 0.011*lookback5)
 
-SFR_SF_cat5_p = ax5.hexbin(mass_SF_cat5, np.log10(SFR_SF_cat5), vmax = 15, cmap = "Blues", mincnt = 1, gridsize=(346,200)) #only every 10 point is plotted
-SFR_Q_cat5_p = ax5.hexbin(mass_Q_cat5, np.log10(SFR_Q_cat5), vmax = 2, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+SFR_SF_cat5_p = ax5.hexbin(mass_SF_cat5, np.log10(SFR_SF_cat5),vmax = 8, cmap = "Blues", mincnt = 0.5, gridsize=(346,200))
+SFR_Q_cat5_p = ax5.hexbin(mass_Q_cat5, np.log10(SFR_Q_cat5),vmax = 3, cmap = "Reds", mincnt = 0.5, gridsize=(346,200))
+trendpoints_our_cat5 = ax5.scatter(Mass_ave_cat5, SFR_ave_cat5, c='gold', s = 60, marker = 'x')
 
-trend_our_cat5 = ax5.plot(INT_mass_cat5,pINT5(INT_mass_cat5),color="limegreen", linewidth=2, linestyle="-", label = 'Simple regression')
-trend_paper_cat5 = ax5.plot(logmass,logSF5,c="crimson",ls="-.",lw=2, label = 'Speagle et al')
-trend_points_cat5 = ax5.scatter(INT_mass_cat5,INT_SFR_cat5, c='orange', s = 100, marker = 'x')
+trend_our_cat5 = ax5.plot(Mass_ave_cat5,pINT5(Mass_ave_cat5),color="limegreen", linewidth=2, linestyle="-",label='Simple regression',zorder=100)
+trend_paper_cat5 = ax5.plot(logmass,logSF5,c="crimson",ls="-.",lw=2, label= 'Speagle et al')
 
 cb1 = fig.colorbar(SFR_SF_cat5_p)
 cb2 = fig.colorbar(SFR_Q_cat5_p)
+
 cb1.set_label("Number of SF galaxies", fontsize=10)
 cb2.set_label("Number of Q galaxies", fontsize=10)
-ax5.set_title('SFR as related to mass for 2.5 < z < 4 \n', fontsize = 14, loc = 'left')
+ax5.set_title('SFR as related to mass for 2.5 < z < 4 \n',fontsize = 14,loc = 'left')
 ax5.set_xlabel('$log_{10}$ ($M_{\odot}$)')
 ax5.set_ylabel('$log_{10}$(SFR)')
-ax5.set_ylim(-6,4)
+ax5.set_ylim(-4,4)  
 ax5.set_xlim(8,12)
-
 plt.legend()
 plt.show()
-
+# End of SFR Bin 5 #
 
 # Close FITS file so it won't use up excess memory
 hdu.close()

@@ -1261,12 +1261,12 @@ logmass = np.log10(mass_array)
 lookback1 = 10.754
 logSF1 = (0.84 - 0.026*lookback1)*np.log10(mass_array) - (6.51 - 0.11*lookback1)
 
-SFR_SF_cat1_p = ax1.hexbin(mass_SF_cat1, np.log10(SFR_SF_cat1),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
-SFR_Q_cat1_p = ax1.hexbin(mass_Q_cat1, np.log10(SFR_Q_cat1),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+SFR_SF_cat1_p = ax1.hexbin(mass_SF_cat1, np.log10(SFR_SF_cat1),vmax = 1, cmap = "Blues", mincnt = 1, gridsize=(346,200))
+SFR_Q_cat1_p = ax1.hexbin(mass_Q_cat1, np.log10(SFR_Q_cat1),vmax = 1, cmap = "Reds", mincnt = 1, gridsize=(346,200))
 trendpoints_our_cat1 = ax1.scatter(Mass_ave_cat1,SFR_ave_cat1, c='gold', s = 60, marker = 'x')
 
 trend_our_cat1 = ax1.plot(Mass_ave_cat1,pINT1(Mass_ave_cat1),color="limegreen", linewidth=2, linestyle="-",label='Simple regression',zorder=100)
-trend_paper_cat1 = ax1.plot(logmass,logSF1,c="crimson",ls="-.",lw=2, label= 'Speagle et al')
+trend_paper_cat1 = ax1.plot(logmass,logSF1,c="magenta",ls="-.",lw=2, label= 'Speagle et al')
 
 cb1 = fig.colorbar(SFR_SF_cat1_p)
 cb2 = fig.colorbar(SFR_Q_cat1_p)
@@ -1350,12 +1350,12 @@ logmass = np.log10(mass_array)
 lookback2 = 7.069
 logSF2 = (0.84 - 0.026*lookback2)*np.log10(mass_array) - (6.51 - 0.11*lookback2)
 
-SFR_SF_cat2_p = ax2.hexbin(mass_SF_cat2, np.log10(SFR_SF_cat2),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
-SFR_Q_cat2_p = ax2.hexbin(mass_Q_cat2, np.log10(SFR_Q_cat2),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+SFR_SF_cat2_p = ax2.hexbin(mass_SF_cat2, np.log10(SFR_SF_cat2),vmax = 1, cmap = "Blues", mincnt = 1, gridsize=(346,200))
+SFR_Q_cat2_p = ax2.hexbin(mass_Q_cat2, np.log10(SFR_Q_cat2),vmax = 1, cmap = "Reds", mincnt = 1, gridsize=(346,200))
 trendpoints_our_cat2 = ax2.scatter(Mass_ave_cat2,SFR_ave_cat2, c='gold', s = 60, marker = 'x')
 
 trend_our_cat2 = ax2.plot(Mass_ave_cat2,pINT2(Mass_ave_cat2),color="limegreen", linewidth=2, linestyle="-",label='Simple regression',zorder=100)
-trend_paper_cat2 = ax2.plot(logmass,logSF2,c="crimson",ls="-.",lw=2, label= 'Speagle et al')
+trend_paper_cat2 = ax2.plot(logmass,logSF2,c="magenta",ls="-.",lw=2, label= 'Speagle et al')
 
 cb1 = fig.colorbar(SFR_SF_cat2_p)
 cb2 = fig.colorbar(SFR_Q_cat2_p)
@@ -1443,12 +1443,12 @@ logmass = np.log10(mass_array)
 lookback3 = 5.011
 logSF3 = (0.84 - 0.026*lookback3)*np.log10(mass_array) - (6.51 - 0.11*lookback3)
 
-SFR_SF_cat3_p = ax3.hexbin(mass_SF_cat3, np.log10(SFR_SF_cat3),vmax = 5, cmap = "Blues", mincnt = 1, gridsize=(346,200))
-SFR_Q_cat3_p = ax3.hexbin(mass_Q_cat3, np.log10(SFR_Q_cat3),vmax = 5, cmap = "Reds", mincnt = 1, gridsize=(346,200))
+SFR_SF_cat3_p = ax3.hexbin(mass_SF_cat3, np.log10(SFR_SF_cat3),vmax = 1, cmap = "Blues", mincnt = 1, gridsize=(346,200))
+SFR_Q_cat3_p = ax3.hexbin(mass_Q_cat3, np.log10(SFR_Q_cat3),vmax = 1, cmap = "Reds", mincnt = 1, gridsize=(346,200))
 trendpoints_our_cat3 = ax3.scatter(Mass_ave_cat3, SFR_ave_cat3, c='gold', s = 60, marker = 'x')
 
 trend_our_cat3 = ax3.plot(Mass_ave_cat3,pINT3(Mass_ave_cat3),color="limegreen", linewidth=2, linestyle="-",label='Simple regression',zorder=100)
-trend_paper_cat3 = ax3.plot(logmass,logSF3,c="crimson",ls="-.",lw=2, label= 'Speagle et al')
+trend_paper_cat3 = ax3.plot(logmass,logSF3,c="magenta",ls="-.",lw=2, label= 'Speagle et al')
 
 cb1 = fig.colorbar(SFR_SF_cat3_p)
 cb2 = fig.colorbar(SFR_Q_cat3_p)
@@ -1531,12 +1531,12 @@ logmass = np.log10(mass_array)
 lookback4 = 3.316
 logSF4 = (0.84 - 0.026*lookback4)*np.log10(mass_array) - (6.51 - 0.11*lookback4)
 
-SFR_SF_cat4_p = ax4.hexbin(mass_SF_cat4, np.log10(SFR_SF_cat4),vmax = 8, cmap = "Blues", mincnt = 0.5, gridsize=(346,200))
-SFR_Q_cat4_p = ax4.hexbin(mass_Q_cat4, np.log10(SFR_Q_cat4),vmax = 3, cmap = "Reds", mincnt = 0.5, gridsize=(346,200))
+SFR_SF_cat4_p = ax4.hexbin(mass_SF_cat4, np.log10(SFR_SF_cat4),vmax = 1, cmap = "Blues", mincnt = 0.5, gridsize=(346,200))
+SFR_Q_cat4_p = ax4.hexbin(mass_Q_cat4, np.log10(SFR_Q_cat4),vmax = 1, cmap = "Reds", mincnt = 0.5, gridsize=(346,200))
 trendpoints_our_cat4 = ax4.scatter(Mass_ave_cat4, SFR_ave_cat4, c='gold', s = 60, marker = 'x')
 
 trend_our_cat4 = ax4.plot(Mass_ave_cat4,pINT4(Mass_ave_cat4),color="limegreen", linewidth=2, linestyle="-",label='Simple regression',zorder=100)
-trend_paper_cat4 = ax4.plot(logmass,logSF4,c="crimson",ls="-.",lw=2, label= 'Speagle et al')
+trend_paper_cat4 = ax4.plot(logmass,logSF4,c="magenta",ls="-.",lw=2, label= 'Speagle et al')
 
 cb1 = fig.colorbar(SFR_SF_cat4_p)
 cb2 = fig.colorbar(SFR_Q_cat4_p)
@@ -1621,12 +1621,12 @@ logmass = np.log10(mass_array)
 lookback5 = 1.985
 logSF5 = (0.84 - 0.026*lookback5)*np.log10(mass_array) - (6.51 - 0.11*lookback5)
 
-SFR_SF_cat5_p = ax5.hexbin(mass_SF_cat5, np.log10(SFR_SF_cat5),vmax = 8, cmap = "Blues", mincnt = 0.5, gridsize=(346,200))
-SFR_Q_cat5_p = ax5.hexbin(mass_Q_cat5, np.log10(SFR_Q_cat5),vmax = 3, cmap = "Reds", mincnt = 0.5, gridsize=(346,200))
+SFR_SF_cat5_p = ax5.hexbin(mass_SF_cat5, np.log10(SFR_SF_cat5),vmax = 1, cmap = "Blues", mincnt = 0.5, gridsize=(346,200))
+SFR_Q_cat5_p = ax5.hexbin(mass_Q_cat5, np.log10(SFR_Q_cat5),vmax = 1, cmap = "Reds", mincnt = 0.5, gridsize=(346,200))
 trendpoints_our_cat5 = ax5.scatter(Mass_ave_cat5, SFR_ave_cat5, c='gold', s = 60, marker = 'x')
 
 trend_our_cat5 = ax5.plot(Mass_ave_cat5,pINT5(Mass_ave_cat5),color="limegreen", linewidth=2, linestyle="-",label='Simple regression',zorder=100)
-trend_paper_cat5 = ax5.plot(logmass,logSF5,c="crimson",ls="-.",lw=2, label= 'Speagle et al')
+trend_paper_cat5 = ax5.plot(logmass,logSF5,c="magenta",ls="-.",lw=2, label= 'Speagle et al')
 
 cb1 = fig.colorbar(SFR_SF_cat5_p)
 cb2 = fig.colorbar(SFR_Q_cat5_p)
@@ -1641,6 +1641,29 @@ ax5.set_xlim(8,12)
 plt.legend()
 plt.show()
 # End of SFR Bin 5 #
+
+#making the code of shaded areas
+
+dy = 0.2
+
+fig, ax = plt.subplots()
+
+speagle1 = ax.plot(logmass,logSF1,c="red",ls="-",lw=2,label= 'z = 0.25')
+shade1 = ax.fill_between(logmass, logSF1 - dy, logSF1 + dy, color = "red", alpha = 0.3)
+speagle2 = ax.plot(logmass,logSF2,c="green",ls="-",lw=2, label= 'z = 0.75')
+shade2 = ax.fill_between(logmass, logSF2 - dy, logSF2 + dy, color = "green", alpha = 0.3)
+speagle3 = ax.plot(logmass,logSF3,c="blue",ls="-",lw=2,label= 'z = 1.25')
+shade3 = ax.fill_between(logmass, logSF3 - dy, logSF3 + dy, color = "blue", alpha = 0.3)
+speagle4 = ax.plot(logmass,logSF4,c="brown",ls="-",lw=2, label= 'z = 2')
+shade4 = ax.fill_between(logmass, logSF4 - dy, logSF4 + dy, color = "brown", alpha = 0.3)
+speagle5 = ax.plot(logmass,logSF5,c="black",ls="-",lw=2,label= 'z = 3.25')
+shade5 = ax.fill_between(logmass, logSF5 - dy, logSF5 + dy, color = "black", alpha = 0.3)
+ax.set_xlabel('$log{10}$ ($M_{\odot}$)')
+ax.set_ylabel('$log{10}$(SFR)')
+ax.set_ylim(-2,4)
+ax.set_xlim(7,12)
+
+plt.legend()
 
 # Close FITS file so it won't use up excess memory
 hdu.close()

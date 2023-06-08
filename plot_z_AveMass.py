@@ -18,10 +18,10 @@ loading data as recarrays
 import numpy as np
 from astropy.io import fits
 import matplotlib.pyplot as plt
-import os
+# import os
 
-# Set directory
-os.chdir('C://Users//Nikolaj Lange Dons/OneDrive - Danmarks Tekniske Universitet\Dokumenter/4 semester/Fagprojekt/Data behandling')
+# # Set directory
+# os.chdir('C://Users//Nikolaj Lange Dons/OneDrive - Danmarks Tekniske Universitet\Dokumenter/4 semester/Fagprojekt/Data behandling')
 
 # Load data
 hdu = fits.open('All_mass_filtered.fits',memmap=True)
@@ -44,8 +44,8 @@ UVz = U - V
 VJz = V - J
 
 # Define mass, redshift and SFR array
-SFR = data['sfr'][0,:]
 mass = data['mass'][0,:]
+SFR = data['sfr'][0,:]
 z = data['z_phot'][0,:]
 
 ##################
@@ -293,12 +293,13 @@ QSF = np.array([[0.25,0.5,0.75,1,1.25,1.5,1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75],
 # QSF = [z, num quiesent, num starforming, total]
 # QSF = [0,       1     ,       2        ,  3   ]
 
+
 ##################
 # plot(z, log10(mass))
 
 # 0 < z < 0.5
-mean_mass_nSF_cat1 = np.average(m1[~IDS_cat1])
-mean_mass_nQ_cat1 = np.average(m1[IDS_cat1])
+mean_mass_nSF_cat1 = np.average(np.log10(m1[~IDS_cat1]))
+mean_mass_nQ_cat1 = np.average(np.log10(m1[IDS_cat1]))
 nSF_error1 = (mean_mass_nSF_cat1/cat1_total)*np.sqrt(1/mean_mass_nSF_cat1 + 1/cat1_total)
 NQ_error1 = (mean_mass_nQ_cat1/cat1_total)*np.sqrt(1/mean_mass_nQ_cat1 + 1/cat1_total)
 
@@ -306,15 +307,15 @@ NQ_error1 = (mean_mass_nQ_cat1/cat1_total)*np.sqrt(1/mean_mass_nQ_cat1 + 1/cat1_
 mean_mass_cat2_lower = mass[idUVJ_cat2_lower]
 mean_mass_cat2_upper = mass[idUVJ_cat2_upper]
 
-mean_mass_nSF_cat2 = (np.average(mean_mass_cat2_lower[~IDS_cat2_lower])+np.average(mean_mass_cat2_upper[~IDS_cat2_upper]))/2
-mean_mass_nQ_cat2 = (np.average(mean_mass_cat2_lower[IDS_cat2_lower])+np.average(mean_mass_cat2_upper[IDS_cat2_upper]))/2
+mean_mass_nSF_cat2 = (np.average(np.log10(mean_mass_cat2_lower[~IDS_cat2_lower]))+np.average(np.log10(mean_mass_cat2_upper[~IDS_cat2_upper])))/2
+mean_mass_nQ_cat2 = (np.average(np.log10(mean_mass_cat2_lower[IDS_cat2_lower]))+np.average(np.log10(mean_mass_cat2_upper[IDS_cat2_upper])))/2
 nSF_error2 = (mean_mass_nSF_cat2/cat2_total)*np.sqrt(1/mean_mass_nSF_cat2 + 1/cat2_total)
 NQ_error2 = (mean_mass_nQ_cat2/cat2_total)*np.sqrt(1/mean_mass_nQ_cat2 + 1/cat2_total)
 
 # 0.5 < z < 1
 mean_mass_cat3 = mass[idUVJ_cat3]
-mean_mass_nSF_cat3 = np.average(mean_mass_cat3[~IDS_cat3])
-mean_mass_nQ_cat3 = np.average(mean_mass_cat3[IDS_cat3])
+mean_mass_nSF_cat3 = np.average(np.log10(mean_mass_cat3[~IDS_cat3]))
+mean_mass_nQ_cat3 = np.average(np.log10(mean_mass_cat3[IDS_cat3]))
 nSF_error3 = (mean_mass_nSF_cat3/cat3_total)*np.sqrt(1/mean_mass_nSF_cat3 + 1/cat3_total)
 NQ_error3 = (mean_mass_nQ_cat3/cat3_total)*np.sqrt(1/mean_mass_nQ_cat3 + 1/cat3_total)
 
@@ -322,29 +323,29 @@ NQ_error3 = (mean_mass_nQ_cat3/cat3_total)*np.sqrt(1/mean_mass_nQ_cat3 + 1/cat3_
 mean_mass_cat4_lower = mass[idUVJ_cat4_lower]
 mean_mass_cat4_upper = mass[idUVJ_cat4_upper]
 
-mean_mass_nSF_cat4 = (np.average(mean_mass_cat4_lower[~IDS_cat4_lower])+np.average(mean_mass_cat4_upper[~IDS_cat4_upper]))/2
-mean_mass_nQ_cat4 = (np.average(mean_mass_cat4_lower[IDS_cat4_lower])+np.average(mean_mass_cat4_upper[IDS_cat4_upper]))/2
+mean_mass_nSF_cat4 = (np.average(np.log10(mean_mass_cat4_lower[~IDS_cat4_lower]))+np.average(np.log10(mean_mass_cat4_upper[~IDS_cat4_upper])))/2
+mean_mass_nQ_cat4 = (np.average(np.log10(mean_mass_cat4_lower[IDS_cat4_lower]))+np.average(np.log10(mean_mass_cat4_upper[IDS_cat4_upper])))/2
 nSF_error4 = (mean_mass_nSF_cat4/cat4_total)*np.sqrt(1/mean_mass_nSF_cat4 + 1/cat4_total)
 NQ_error4 = (mean_mass_nQ_cat4/cat4_total)*np.sqrt(1/mean_mass_nQ_cat4 + 1/cat4_total)
 
 # 1 < z < 1.5
 mean_mass_cat5 = mass[idUVJ_cat5]
-mean_mass_nSF_cat5 = np.average(mean_mass_cat5[~IDS_cat5])
-mean_mass_nQ_cat5 = np.average(mean_mass_cat5[IDS_cat5])
+mean_mass_nSF_cat5 = np.average(np.log10(mean_mass_cat5[~IDS_cat5]))
+mean_mass_nQ_cat5 = np.average(np.log10(mean_mass_cat5[IDS_cat5]))
 nSF_error5 = (mean_mass_nSF_cat5/cat5_total)*np.sqrt(1/mean_mass_nSF_cat5 + 1/cat5_total)
 NQ_error5 = (mean_mass_nQ_cat5/cat5_total)*np.sqrt(1/mean_mass_nQ_cat5 + 1/cat5_total)
 
 # 1.25 < z < 1.75
 mean_mass_cat6 = mass[idUVJ_cat6]
-mean_mass_nSF_cat6 = np.average(mean_mass_cat6[~IDS_cat6])
-mean_mass_nQ_cat6 = np.average(mean_mass_cat6[IDS_cat6])
+mean_mass_nSF_cat6 = np.average(np.log10(mean_mass_cat6[~IDS_cat6]))
+mean_mass_nQ_cat6 = np.average(np.log10(mean_mass_cat6[IDS_cat6]))
 nSF_error6 = (mean_mass_nSF_cat6/cat6_total)*np.sqrt(1/mean_mass_nSF_cat6 + 1/cat6_total)
 NQ_error6 = (mean_mass_nQ_cat6/cat6_total)*np.sqrt(1/mean_mass_nQ_cat6 + 1/cat6_total)
 
 # 1.5 < z < 2
 mean_mass_cat7 = mass[idUVJ_cat7]
-mean_mass_nSF_cat7 = np.average(mean_mass_cat7[~IDS_cat7])
-mean_mass_nQ_cat7 = np.average(mean_mass_cat7[IDS_cat7])
+mean_mass_nSF_cat7 = np.average(np.log10(mean_mass_cat7[~IDS_cat7]))
+mean_mass_nQ_cat7 = np.average(np.log10(mean_mass_cat7[IDS_cat7]))
 nSF_error7 = (mean_mass_nSF_cat7/cat7_total)*np.sqrt(1/mean_mass_nSF_cat7 + 1/cat7_total)
 NQ_error7 = (mean_mass_nQ_cat7/cat7_total)*np.sqrt(1/mean_mass_nQ_cat7 + 1/cat7_total)
 
@@ -352,57 +353,57 @@ NQ_error7 = (mean_mass_nQ_cat7/cat7_total)*np.sqrt(1/mean_mass_nQ_cat7 + 1/cat7_
 mean_mass_cat8_lower = mass[idUVJ_cat8_lower]
 mean_mass_cat8_upper = mass[idUVJ_cat8_upper]
 
-mean_mass_nSF_cat8 = (np.average(mean_mass_cat8_lower[~IDS_cat8_lower])+np.average(mean_mass_cat8_upper[~IDS_cat8_upper]))/2
-mean_mass_nQ_cat8 = (np.average(mean_mass_cat8_lower[IDS_cat8_lower])+np.average(mean_mass_cat8_upper[IDS_cat8_upper]))/2
+mean_mass_nSF_cat8 = (np.average(np.log10(mean_mass_cat8_lower[~IDS_cat8_lower]))+np.average(np.log10(mean_mass_cat8_upper[~IDS_cat8_upper])))/2
+mean_mass_nQ_cat8 = (np.average(np.log10(mean_mass_cat8_lower[IDS_cat8_lower]))+np.average(np.log10(mean_mass_cat8_upper[IDS_cat8_upper])))/2
 nSF_error8 = (mean_mass_nSF_cat8/cat8_total)*np.sqrt(1/mean_mass_nSF_cat8 + 1/cat8_total)
 NQ_error8 = (mean_mass_nQ_cat8/cat8_total)*np.sqrt(1/mean_mass_nQ_cat8 + 1/cat8_total)
 
 # 2 < z < 2.5
 mean_mass_cat9 = mass[idUVJ_cat9]
-mean_mass_nSF_cat9 = np.average(mean_mass_cat9[~IDS_cat9])
-mean_mass_nQ_cat9 = np.average(mean_mass_cat9[IDS_cat9])
+mean_mass_nSF_cat9 = np.average(np.log10(mean_mass_cat9[~IDS_cat9]))
+mean_mass_nQ_cat9 = np.average(np.log10(mean_mass_cat9[IDS_cat9]))
 nSF_error9 = (mean_mass_nSF_cat9/cat9_total)*np.sqrt(1/mean_mass_nSF_cat9 + 1/cat9_total)
 NQ_error9 = (mean_mass_nQ_cat9/cat9_total)*np.sqrt(1/mean_mass_nQ_cat9 + 1/cat9_total)
 
 # 2.25 < z < 2.75
 mean_mass_cat10 = mass[idUVJ_cat10]
-mean_mass_nSF_cat10 = np.average(mean_mass_cat10[~IDS_cat10])
-mean_mass_nQ_cat10 = np.average(mean_mass_cat10[IDS_cat10])
+mean_mass_nSF_cat10 = np.average(np.log10(mean_mass_cat10[~IDS_cat10]))
+mean_mass_nQ_cat10 = np.average(np.log10(mean_mass_cat10[IDS_cat10]))
 nSF_error10 = (mean_mass_nSF_cat10/cat10_total)*np.sqrt(1/mean_mass_nSF_cat10 + 1/cat10_total)
 NQ_error10 = (mean_mass_nQ_cat10/cat10_total)*np.sqrt(1/mean_mass_nQ_cat10 + 1/cat10_total)
 
 # 2.5 < z < 3
 mean_mass_cat11 = mass[idUVJ_cat11]
-mean_mass_nSF_cat11 = np.average(mean_mass_cat11[~IDS_cat11])
-mean_mass_nQ_cat11 = np.average(mean_mass_cat11[IDS_cat11])
+mean_mass_nSF_cat11 = np.average(np.log10(mean_mass_cat11[~IDS_cat11]))
+mean_mass_nQ_cat11 = np.average(np.log10(mean_mass_cat11[IDS_cat11]))
 nSF_error11 = (mean_mass_nSF_cat11/cat11_total)*np.sqrt(1/mean_mass_nSF_cat11 + 1/cat11_total)
 NQ_error11 = (mean_mass_nQ_cat11/cat11_total)*np.sqrt(1/mean_mass_nQ_cat11 + 1/cat11_total)
 
 # 2.75 < z < 3.25
 mean_mass_cat12 = mass[idUVJ_cat12]
-mean_mass_nSF_cat12 = np.average(mean_mass_cat12[~IDS_cat12])
-mean_mass_nQ_cat12 = np.average(mean_mass_cat12[IDS_cat12])
+mean_mass_nSF_cat12 = np.average(np.log10(mean_mass_cat12[~IDS_cat12]))
+mean_mass_nQ_cat12 = np.average(np.log10(mean_mass_cat12[IDS_cat12]))
 nSF_error12 = (mean_mass_nSF_cat12/cat12_total)*np.sqrt(1/mean_mass_nSF_cat12 + 1/cat12_total)
 NQ_error12 = (mean_mass_nQ_cat12/cat12_total)*np.sqrt(1/mean_mass_nQ_cat12 + 1/cat12_total)
 
 # 3 < z < 3.5
 mean_mass_cat13 = mass[idUVJ_cat13]
-mean_mass_nSF_cat13 = np.average(mean_mass_cat13[~IDS_cat13])
-mean_mass_nQ_cat13 = np.average(mean_mass_cat13[IDS_cat13])
+mean_mass_nSF_cat13 = np.average(np.log10(mean_mass_cat13[~IDS_cat13]))
+mean_mass_nQ_cat13 = np.average(np.log10(mean_mass_cat13[IDS_cat13]))
 nSF_error13 = (mean_mass_nSF_cat13/cat13_total)*np.sqrt(1/mean_mass_nSF_cat13 + 1/cat13_total)
 NQ_error13 = (mean_mass_nQ_cat13/cat13_total)*np.sqrt(1/mean_mass_nQ_cat13 + 1/cat13_total)
 
 # 3.25 < z < 3.75
 mean_mass_cat14 = mass[idUVJ_cat14]
-mean_mass_nSF_cat14 = np.average(mean_mass_cat14[~IDS_cat14])
-mean_mass_nQ_cat14 = np.average(mean_mass_cat14[IDS_cat14])
+mean_mass_nSF_cat14 = np.average(np.log10(mean_mass_cat14[~IDS_cat14]))
+mean_mass_nQ_cat14 = np.average(np.log10(mean_mass_cat14[IDS_cat14]))
 nSF_error14 = (mean_mass_nSF_cat14/cat14_total)*np.sqrt(1/mean_mass_nSF_cat14 + 1/cat14_total)
 NQ_error14 = (mean_mass_nQ_cat14/cat14_total)*np.sqrt(1/mean_mass_nQ_cat14 + 1/cat14_total)
 
 # 3.5 < z < 4
 mean_mass_cat15 = mass[idUVJ_cat15]
-mean_mass_nSF_cat15 = np.average(mean_mass_cat15[~IDS_cat15])
-mean_mass_nQ_cat15 = np.average(mean_mass_cat15[IDS_cat15])
+mean_mass_nSF_cat15 = np.average(np.log10(mean_mass_cat15[~IDS_cat15]))
+mean_mass_nQ_cat15 = np.average(np.log10(mean_mass_cat15[IDS_cat15]))
 nSF_error15 = (mean_mass_nSF_cat15/cat15_total)*np.sqrt(1/mean_mass_nSF_cat15 + 1/cat15_total)
 NQ_error15 = (mean_mass_nQ_cat15/cat15_total)*np.sqrt(1/mean_mass_nQ_cat15 + 1/cat15_total)
 
@@ -421,13 +422,13 @@ id_positive_mass = mass > 0
 id_all_and_mass = selection_all[0,:] & id_positive_mass
 
 z_all = z[id_all_and_mass]
-mass_all = mass[id_all_and_mass]
+mass_all = np.log10(mass[id_all_and_mass])
 
 fig, ax = plt.subplots()
 
 SF_and_Q_MASS = ax.hexbin(x = z_all, y = mass_all,
                           vmax = 100, gridsize=(346,200), 
-                          cmap='Greys',mincnt=2,yscale = 'log', bins = 'log')
+                          cmap='Greys',mincnt=2, bins = 'log')
 
 SF = ax.errorbar(mass_QSF[0,:],mass_QSF[2,:], 
                  yerr = mass_QSF[3,:], fmt = "o", elinewidth = 1.7, 
@@ -439,17 +440,15 @@ nQ = ax.errorbar(mass_QSF[0,:],mass_QSF[1,:],
                  capsize = 6, markeredgecolor = "r", 
                  markersize = 4, label='nQ')
 
-# cb_SF = fig.colorbar(SF_and_Q_MASS)
-# cb_SF.set_label("Number of galaxies", fontsize=12)
+cb_SF = fig.colorbar(SF_and_Q_MASS)
+cb_SF.set_label("Number of galaxies", fontsize=10)
 ax.set_xlim(0,4)
-ax.legend([SF,nQ],['av. SF','av. Q'],loc="upper right")
-ax.set_ylim(10**6,10**13)
-ax.set_yscale('log')
-ax.set_xlabel("z", fontsize=14, font = "CAMBRIA", style = 'italic')
-ax.set_ylabel("$M_{\odot}$", fontsize=14)
+ax.legend([SF,nQ],['avg. SFGs','avg. QGs'],loc="lower right")
+ax.set_ylim(4,12)
+ax.set_xlabel("z", fontsize=12, font = "CAMBRIA", style = 'italic')
+ax.set_ylabel("$log_{10}(M_{\odot})$", fontsize=12)
 ax.set_title("Average Stellar Mass at Redshift z \n", fontsize=14)
 plt.show()
-
 
 
 # Close FITS file so it won't use up excess memory

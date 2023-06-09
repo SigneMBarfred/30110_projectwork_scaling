@@ -426,6 +426,14 @@ id_all_and_mass = selection_all[0,:] & id_positive_mass
 z_all = z[id_all_and_mass]
 mass_all = np.log10(mass[id_all_and_mass])
 
+# poly regression
+poly_SFGs = np.poly1d(np.polyfit(np.log(mass_QSF[0,:]),mass_QSF[2,:], 1))
+poly_SFGs_line = np.linspace(0, 4, 100)
+
+poly_QGs = np.poly1d(np.polyfit(np.log(mass_QSF[0,:]),mass_QSF[1,:], 1))
+poly_QGs_line = np.linspace(0, 4, 100)
+
+
 fig, ax = plt.subplots()
 
 SF_and_Q_MASS = ax.hexbin(x = z_all, y = mass_all,
@@ -441,6 +449,8 @@ nQ = ax.errorbar(mass_QSF[0,:],mass_QSF[1,:],
                  yerr = mass_QSF[4,:], fmt = "x", elinewidth = 1.7, 
                  capsize = 6, markeredgecolor = "r", 
                  markersize = 4, label='nQ')
+ax.plot(poly_SFGs_line,(poly_SFGs[0]+poly_SFGs[1]*np.log(poly_SFGs_line)),color='royalblue',lw = 1.3, alpha = 1)
+ax.plot(poly_QGs_line,(poly_QGs[0]+poly_QGs[1]*np.log(poly_QGs_line)),color='orangered',lw = 1.3, alpha = 1)
 
 cb_SF = fig.colorbar(SF_and_Q_MASS)
 cb_SF.set_label("Number of galaxies", fontsize=10)

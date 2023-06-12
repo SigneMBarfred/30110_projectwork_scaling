@@ -2,26 +2,13 @@
 """
 Created on Sun Apr  9 16:21:53 2023
 
-@author: Nikolaj Lange Dons
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Apr  9 10:47:56 2023
-
-@author: Nikolaj Lange Dons
+@author: Nikolaj Lange Dons & Signe Barfred
 """
 
 import numpy as np
 import pandas as pd
 from astropy.io import fits
 import matplotlib.pyplot as plt
-from astropy.table import Table
-import itertools
-import os
-
-# Set directory
-os.chdir('C://Users//Nikolaj Lange Dons/OneDrive - Danmarks Tekniske Universitet\Dokumenter/4 semester/Fagprojekt/Data behandling')
 
 #loading data as recarrays
 hdu = fits.open('filtered_SED.fits',memmap=True)
@@ -38,27 +25,28 @@ df = pd.DataFrame(Fit1)
 Fit = df.to_numpy()
 
 ##############################
-# Command room # Choose everything here
+# Command room # Choose variables here
 
 # Choose redshift interval
 lower_z = 2
 upper_z = 2.5
 
-# Choose galaxy from catalouge (max = 511005)
-galaxy1 = 1
+# Choose galaxy from catalogue (max = 511005)
+galaxy1 = 3401
 galaxy2 = 6427
 galaxy3 = 3
+
 Gal1 = galaxy1+1
 Gal2 = galaxy2+1
 Gal3 = galaxy3+1
 
 # Choose galaxy fit model (Choose between 1:11)
-Fit_model1 = 8
-Fit_model2 = 2
+Fit_model1 = 9
+Fit_model2 = 7
 Fit_model3 = 3
 
 # maximum of filter # Choose value to fit under SED's
-flux_min = 3*10**-2;
+flux_min = 5*10**-2;
 
 ##############################
 
@@ -115,6 +103,7 @@ Lambda = np.array([Cwl_CFHT_u,Cwl_CFHT_ustar,Cwl_HSC_g,Cwl_HSC_r,Cwl_HSC_i,Cwl_H
           Cwl_SC_IA527,Cwl_SC_IB574,Cwl_SC_IA624,Cwl_SC_IA679,Cwl_SC_IB709,Cwl_SC_IA738,Cwl_SC_IA767,
           Cwl_SC_IB827,Cwl_SC_NB711,Cwl_SC_NB816,Cwl_IRAC_CH1,Cwl_IRAC_CH2,Cwl_GALEX_NUV])
 
+#sort filters from lowest central wavelength to largest central wavelength
 def selection_sort(Lambda):
     for i in range(len(Lambda)):
         swap = i + np.argmin(Lambda[i:])
@@ -174,12 +163,13 @@ Fit[:,1:12]= Fit[:,1:12]/Norm_faktor
 #######################################
 
 #initialize layout of plot1 
+#
 select_cat1_flux = np.logical_and((data['z_phot'] > lower_z), (data['z_phot'] < upper_z))
 
 Gflux_cat1 = Gflux[:,0,select_cat1_flux[0,:]]
 Gfluxerr_cat1 = Gfluxerr[:,0,select_cat1_flux[0,:]]
 
-# Determine redshift for each galaxy
+# Determine redshift for the galaxy chosen
 z = data['z_phot']
 z = z[:,select_cat1_flux[0,:]]
 Galaxy_z = z[:,galaxy1]
@@ -187,57 +177,63 @@ z_txt = "z = %0.2f"
 
 # Format fits model to z = (upper_z+lower_z)/2 # mean of interval
 cat1_z = (upper_z+lower_z)/2
+
+## we shift the template model to fit the galaxy's redshift
+#1 + z = fit_shifted / fit_z0
+#fit_shifted = fit_z0 + fit_z0 * z
 wl_cat1 = Fit[:,0]+Fit[:,0]*Galaxy_z
 
-fig1, ax = plt.subplots()
+ub_cat1 = Uband[:,0]+Uband[:,0]*Galaxy_z
+vb_cat1 = Vband[:,0]+Vband[:,0]*Galaxy_z
+jb_cat1 = Jband[:,0]+Jband[:,0]*Galaxy_z
 
+fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(6, 6), gridspec_kw={'height_ratios': [3, 1]})
 # Add scatterplot and error bars of choosen galaxy from catalouge
 Galaxy_txt = "Galaxy nr. %d"
-Galaxy1 = ax.errorbar(Lambda, Gflux_cat1[:,galaxy1], yerr = Gfluxerr_cat1[:,galaxy1],fmt = "o", alpha = 0.8,
-            elinewidth = 0.7, capsize = 5, markeredgecolor = "forestgreen", markersize = 2, label=Galaxy_txt%galaxy1)
-
-# Galaxy2 = ax.errorbar(Lambda, Gflux_cat1[:,galaxy2], yerr = Gfluxerr_cat1[:,galaxy2],fmt = "o", alpha = 0.8,
-#             elinewidth = 0.7, capsize = 5, markeredgecolor = "limegreen", markersize = 2, label=Galaxy_txt%galaxy2)
-
-# Galaxy3 = ax.errorbar(Lambda, Gflux_cat1[:,galaxy3], yerr = Gfluxerr_cat1[:,galaxy3],fmt = "o", alpha = 0.8,
-#             elinewidth = 0.7, capsize = 5, markeredgecolor = "darkgreen", markersize = 2, label=Galaxy_txt%galaxy3)
-
+Galaxy1 = ax1.errorbar(Lambda, Gflux_cat1[:,galaxy1], yerr = Gfluxerr_cat1[:,galaxy1],fmt = "o", alpha = 0.8,
+            elinewidth = 0.7, capsize = 5, markeredgecolor = "forestgreen", markersize = 3, label=Galaxy_txt%galaxy1)
 # Add fits model from our first catalouge
 Fitting1_txt = "Fit model nr. %d"
-Fitting1 = ax.plot(wl_cat1, Fit[:,Fit_model1], 'y', alpha = 0.6, label=(Fitting1_txt%Fit_model1))
+Fitting1 = ax1.plot(wl_cat1, Fit[:,Fit_model1], 'y', color = 'orange', lw = 0.75, alpha = 0.8, label=(Fitting1_txt%Fit_model1))
 
-# Fitting2_txt = "Fit model nr. %d"
-# Fitting2 = ax.plot(Fit['wl'], Fit.iloc[:,Fit_model2], 'limegreen', alpha = 0.6, label=(Fitting2_txt%Fit_model2))
+Fitting2_txt = "Fit model nr. %d"
+Fitting2 = ax1.plot(wl_cat1, Fit[:,Fit_model2], 'y', color = 'limegreen', lw = 0.75, alpha = 0.9, label=(Fitting2_txt%Fit_model2))
 
-# Fitting3_txt = "Fit model nr. %d"
-# Fitting3 = ax.plot(Fit['wl'], Fit.iloc[:,Fit_model3], 'darkgreen', alpha = 0.6, label=(Fitting3_txt%Fit_model3))
+#colors of templates are set to match the colorcoding we did when illustrating templates in matlab
 
-# Add Uband, Vband and Jband 
-U1 = ax.plot(Uband[:,0],Uband[:,1]*flux_min, 'b', alpha = 0.5) # label="U band"
-V1 = ax.plot(Vband[:,0],Vband[:,1]*flux_min, 'k', alpha = 0.5) # label="V band"
-J1 = ax.plot(Jband[:,0],Jband[:,1]*flux_min, 'r', alpha = 0.5) # label="J band"
+# Add Uband, Vband and Jband and scale to the flux
+U1 = ax2.plot(ub_cat1,Uband[:,1]*flux_min, 'b', alpha = 0.5) # label="U band"
+V1 = ax2.plot(vb_cat1,Vband[:,1]*flux_min, 'k', alpha = 0.5) # label="V band"
+J1 = ax2.plot(jb_cat1,Jband[:,1]*flux_min, 'r', alpha = 0.5) # label="J band"
+ax2.fill_between(ub_cat1,Uband[:,1]*flux_min, 'b', alpha = 0.3, label ='U-Band')
+ax2.fill_between(vb_cat1,Vband[:,1]*flux_min, color = 'gray', alpha = 0.3, label = 'V-Band')
+ax2.fill_between(jb_cat1,Jband[:,1]*flux_min, color = 'red', alpha = 0.3, label = 'J-Band')
 Band = []
 Band.append([U1, V1, J1])
 
 #set logarithmic scale on the x and y variable
-ax.set_xscale("log")
-ax.set_yscale("log")
-ax.set_xlim(10**-1, 10**1)
-ax.set_ylim(10**-2, 10**1)
-ax.text(0.05,0.95,z_txt%Galaxy_z,ha='left',va='top',transform=ax.transAxes,fontsize=10)
-ax.set_xlabel("Wavelength (µm)")
-ax.set_ylabel("Flux density")
-fig1_txt = "Flux Density for 3 galaxies at %.1f < z < %.1f"
-ax.set_title(fig1_txt%(lower_z,upper_z))
-legend1_txt = "Catalouge galaxy nr. %d"
-# ax.legend((Galaxy),('Catalouge galaxy nr. '), scatterpoints=1, 
-#           loc='lower right', ncol=1, fontsize=8)
-leg = ax.legend(loc='lower right', ncol=1);
+ax1.set_xscale("log")
+ax1.set_yscale("log")
+ax1.set_xlim(3*10**-1, 10**1)
+ax1.set_ylim(0.3*10**-2, 0.55*10**1)
+ax2.set_ylim(0.003, 0.07)
 
+ax1.text(0.05,0.95,z_txt%Galaxy_z,ha='left',va='top',transform=ax1.transAxes,fontsize=10)
+ax2.set_xlabel("Wavelength [µm] at "+ z_txt%Galaxy_z)
+ax1.set_ylabel("Flux density [µJy]")
+ax2.set_ylabel("")
+ax2.set_yticklabels([])
+ax2.legend()
+
+ax1.set_title("Photometric flux data & recommended SED-template \n",fontsize = 14)
+legend1_txt = "Catalouge galaxy nr. %d"
+leg = ax1.legend(loc='lower right', ncol=1);
+
+
+plt.show()
 ####################
 # Residual plot
 # How good is the fit
-
 Index1 = np.logical_and((Fit[:,0] > Lambda[0]-300*10**-6), (Fit[:,0] < Lambda[0]+300*10**-6))
 Index2 = np.logical_and((Fit[:,0] > Lambda[1]-300*10**-6), (Fit[:,0] < Lambda[1]+300*10**-6))
 Index3 = np.logical_and((Fit[:,0] > Lambda[2]-300*10**-6), (Fit[:,0] < Lambda[2]+300*10**-6))
@@ -291,11 +287,6 @@ Final_res = selection_sort(Final_res)
 
 best_fit = np.argmin(Final_res)+1
 print(best_fit)
-
-
-
-
-
 
 
 

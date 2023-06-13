@@ -5,7 +5,7 @@ Created on Wed Apr 12 10:03:50 2023
 @author: Nikolaj Lange Dons, Rasmus Bruun, Signe Barfred
 """
 
-
+#Importing necessary libraries
 import numpy as np
 from astropy.io import fits
 import matplotlib.pyplot as plt
@@ -14,19 +14,24 @@ import matplotlib.pyplot as plt
 hdu = fits.open('filtered_SED.fits',memmap=True)
 data = hdu[1].data
 
+#Defining a logical selection for filtering data
 selection_all = np.logical_and((data['z_phot'] > 0), (data['z_phot'] < 4), (data['CFHT_u_MAG'] < 50))
 
+#Calculating values for U, V, J and mass
 U = 23.9 - 2.5*np.log10(data['restU'][0,:])
 V = 23.9 - 2.5*np.log10(data['restV'][0,:])
 J = 23.9 - 2.5*np.log10(data['restJ'][0,:])
 mass = data['mass'][0,:]
 
+#Calculating UV and VJ based on the logical selection
 UV = U[selection_all[0,:]] - V[selection_all[0,:]]
 VJ = V[selection_all[0,:]] - J[selection_all[0,:]]
 
+#reshaping the UV and VJ array to have a different shape 
 UV.reshape(476363)
 VJ.reshape(476363)
 
+#calculating the difference of UV and VJ
 UVz = U - V
 VJz = V - J
 
@@ -34,6 +39,7 @@ UVz.reshape(511006)
 VJz.reshape(511006)
 
 test0 = "%d galaxies"
+#Calculating the length of the UV array
 int0 = len(UV)
 print(test0%int0)
 
@@ -68,9 +74,12 @@ print(test0%int0)
 # UVJ diagram for galaxies at all redshifts
 
 fig0, ax = plt.subplots(figsize = (8, 6))
+#Creating a hexbin plot
 hb0 = ax.hexbin(VJ, UV, vmax = 3000, cmap = "hot", gridsize = (173,100), mincnt = 0)
+#Adding colorbar to the plot based on the hexbin plot
 cb0 = fig0.colorbar(hb0, ax = ax)
 cb0.set_label("Number of galaxies")
+#Setting the x and y limits of the plot
 ax.set_xlim(0,2.5)
 ax.set_ylim(0,2.5)
 ax.set_xlabel("V - J [AB mag]", fontsize=12)
@@ -81,13 +90,16 @@ ax.set_title("UVJ diagram for galaxies at all redshifts", fontsize=18)
 
 # # UVJ diagram for cat1
 # # 0.1 < z < 0.3
-
+#Selecting data within the specified redshift range and magnitude limit
 # selection_cat1 = np.logical_and((data['z_phot'] > 0.1), (data['z_phot'] < 0.3), (data['CFHT_u_MAG'] < 50))
 
+#Calculating the U-V and V-J colors for the specified redshift
 # UV_cat1 = U[selection_cat1[0,:]] - V[selection_cat1[0,:]]
 # VJ_cat1 = V[selection_cat1[0,:]] - J[selection_cat1[0,:]]
 
 # fig1, ax = plt.subplots(figsize = (8, 6))
+
+#Creating a hexbin plot for the specified redshift
 # hb1 = ax.hexbin(VJ_cat1, UV_cat1, vmax = 50, cmap = "hot", gridsize = (173,100), mincnt = 0)
 # cb1 = fig1.colorbar(hb1, ax = ax)
 # cb1.set_label("Number of galaxies")
@@ -101,6 +113,7 @@ ax.set_title("UVJ diagram for galaxies at all redshifts", fontsize=18)
 # ax.set_title("UVJ diagram for 0.1 < z < 0.3", fontsize=18)
 
 # ######################
+#Repeat the above sections for cat2 and cat3 but with different redshifts
 
 # # UVJ diagram for cat2
 # # 0.9 < z < 1.1

@@ -32,7 +32,7 @@ lower_z = 2
 upper_z = 2.5
 
 # Choose galaxy from catalogue (max = 511005)
-galaxy1 = 3401
+galaxy1 = 14
 galaxy2 = 6427
 galaxy3 = 3
 
@@ -41,8 +41,8 @@ Gal2 = galaxy2+1
 Gal3 = galaxy3+1
 
 # Choose galaxy fit model (Choose between 1:11)
-Fit_model1 = 9
-Fit_model2 = 7
+Fit_model1 = 2
+Fit_model2 = 3
 Fit_model3 = 3
 
 # maximum of filter # Choose value to fit under SED's
@@ -191,13 +191,13 @@ fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True, figsize=(6, 6), gridspec_kw={'
 # Add scatterplot and error bars of choosen galaxy from catalouge
 Galaxy_txt = "Galaxy nr. %d"
 Galaxy1 = ax1.errorbar(Lambda, Gflux_cat1[:,galaxy1], yerr = Gfluxerr_cat1[:,galaxy1],fmt = "o", alpha = 0.8,
-            elinewidth = 0.7, capsize = 5, markeredgecolor = "forestgreen", markersize = 3, label=Galaxy_txt%galaxy1)
+            elinewidth = 0.7, capsize = 5, mfc ='black', ecolor = 'black', markeredgecolor = "black", markersize = 3.5, label=Galaxy_txt%galaxy1)
 # Add fits model from our first catalouge
 Fitting1_txt = "Fit model nr. %d"
-Fitting1 = ax1.plot(wl_cat1, Fit[:,Fit_model1], 'y', color = 'orange', lw = 0.75, alpha = 0.8, label=(Fitting1_txt%Fit_model1))
+Fitting1 = ax1.plot(wl_cat1, Fit[:,Fit_model1], 'y', color = 'blue', lw = 0.75, alpha = 0.75, label=(Fitting1_txt%Fit_model1))
 
 Fitting2_txt = "Fit model nr. %d"
-Fitting2 = ax1.plot(wl_cat1, Fit[:,Fit_model2], 'y', color = 'limegreen', lw = 0.75, alpha = 0.9, label=(Fitting2_txt%Fit_model2))
+Fitting2 = ax1.plot(wl_cat1, Fit[:,Fit_model2], 'y', color = 'cornflowerblue', lw = 0.95, alpha = 0.75, label=(Fitting2_txt%Fit_model2))
 
 #colors of templates are set to match the colorcoding we did when illustrating templates in matlab
 
